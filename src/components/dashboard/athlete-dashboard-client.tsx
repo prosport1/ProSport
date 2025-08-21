@@ -33,6 +33,7 @@ import { Calendar } from "@/components/ui/calendar";
 import { cn } from "@/lib/utils";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const profileFormSchema = z.object({
   fullName: z.string().min(2, "O nome completo deve ter pelo menos 2 caracteres."),
@@ -57,6 +58,9 @@ export function AthleteDashboardClient() {
   const [basicHtml, setBasicHtml] = useState("");
   const [plusHtml, setPlusHtml] = useState("");
   const [photoDataUri, setPhotoDataUri] = useState("");
+  
+  // Simula o plano do atleta. Em um aplicativo real, isso viria do backend.
+  const [userPlan, setUserPlan] = useState<"basic" | "plus" | "premium">("basic");
 
   const form = useForm<ProfileFormValues>({
     resolver: zodResolver(profileFormSchema),
@@ -129,11 +133,30 @@ export function AthleteDashboardClient() {
   return (
     <Card>
       <CardContent className="p-6">
+        <div className="mb-4">
+          <Label>Simular Plano do Atleta</Label>
+          <Select onValueChange={(value: "basic" | "plus" | "premium") => setUserPlan(value)} defaultValue={userPlan}>
+            <SelectTrigger className="w-[180px]">
+              <SelectValue placeholder="Selecione um plano" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="basic">Básico</SelectItem>
+              <SelectItem value="plus">Plus</SelectItem>
+              <SelectItem value="premium">Premium</SelectItem>
+            </SelectContent>
+          </Select>
+           <p className="text-sm text-muted-foreground mt-2">Isto é para fins de demonstração para mostrar/ocultar abas.</p>
+        </div>
+
         <Tabs defaultValue="profile">
           <TabsList className="grid w-full grid-cols-3">
             <TabsTrigger value="profile">Perfil</TabsTrigger>
-            <TabsTrigger value="basic" disabled={!form.formState.isValid}>Página Básica</TabsTrigger>
-            <TabsTrigger value="plus" disabled={!form.formState.isValid}>Página Plus</TabsTrigger>
+            {(userPlan === 'basic' || userPlan === 'plus' || userPlan === 'premium') && (
+              <TabsTrigger value="basic" disabled={!form.formState.isValid}>Página Básica</TabsTrigger>
+            )}
+            {(userPlan === 'plus' || userPlan === 'premium') && (
+              <TabsTrigger value="plus" disabled={!form.formState.isValid}>Página Plus</TabsTrigger>
+            )}
           </TabsList>
           
           <TabsContent value="profile">
