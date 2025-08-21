@@ -149,15 +149,11 @@ export function AthleteDashboardClient() {
            <p className="text-sm text-muted-foreground mt-2">Isto é para fins de demonstração para mostrar/ocultar abas.</p>
         </div>
 
-        <Tabs defaultValue="profile">
+        <Tabs defaultValue="profile" className="w-full">
           <TabsList className="grid w-full grid-cols-3">
             <TabsTrigger value="profile">Perfil</TabsTrigger>
-            {(userPlan === 'basic' || userPlan === 'plus' || userPlan === 'premium') && (
-              <TabsTrigger value="basic" disabled={!form.formState.isValid}>Página Básica</TabsTrigger>
-            )}
-            {(userPlan === 'plus' || userPlan === 'premium') && (
-              <TabsTrigger value="plus" disabled={!form.formState.isValid}>Página Plus</TabsTrigger>
-            )}
+            <TabsTrigger value="basic" disabled={!form.formState.isValid || !['basic', 'plus', 'premium'].includes(userPlan)}>Página Básica</TabsTrigger>
+            <TabsTrigger value="plus" disabled={!form.formState.isValid || !['plus', 'premium'].includes(userPlan)}>Página Plus</TabsTrigger>
           </TabsList>
           
           <TabsContent value="profile">
