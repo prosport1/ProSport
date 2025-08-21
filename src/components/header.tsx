@@ -13,7 +13,7 @@ import {
 
 export function Header() {
   return (
-    <header className="sticky top-0 z-40 w-full border-b bg-card">
+    <header className="sticky top-0 z-40 w-full border-b bg-card/80 backdrop-blur-sm">
       <div className="container flex h-16 items-center space-x-4 sm:justify-between sm:space-x-0">
         <div className="flex gap-6 md:gap-10">
           <Link href="/dashboard" className="flex items-center space-x-2">
@@ -27,13 +27,13 @@ export function Header() {
               href="/dashboard"
               className="flex items-center text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
             >
-              Dashboard
+              Painel
             </Link>
             <Link
               href="/admin"
               className="flex items-center text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
             >
-              Admin Panel
+              Painel do Admin
             </Link>
           </nav>
         </div>
@@ -44,7 +44,7 @@ export function Header() {
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" className="relative h-8 w-8 rounded-full">
                   <Avatar className="h-8 w-8">
-                    <AvatarImage src="https://placehold.co/40x40.png" alt="@athlete" data-ai-hint="person user" />
+                    <AvatarImage src="https://placehold.co/40x40.png" alt="@atleta" data-ai-hint="person user" />
                     <AvatarFallback>A</AvatarFallback>
                   </Avatar>
                 </Button>
@@ -52,15 +52,15 @@ export function Header() {
               <DropdownMenuContent className="w-56" align="end" forceMount>
                 <DropdownMenuLabel className="font-normal">
                   <div className="flex flex-col space-y-1">
-                    <p className="text-sm font-medium leading-none">Athlete</p>
+                    <p className="text-sm font-medium leading-none">Atleta</p>
                     <p className="text-xs leading-none text-muted-foreground">
-                      athlete@prosport.com
+                      atleta@prosport.com
                     </p>
                   </div>
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem asChild>
-                  <Link href="/">Log out</Link>
+                  <Link href="/">Sair</Link>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>

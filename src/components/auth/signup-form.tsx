@@ -21,18 +21,18 @@ import { Checkbox } from "@/components/ui/checkbox";
 
 const formSchema = z
   .object({
-    fullName: z.string().min(2, { message: "Full name is required." }),
-    email: z.string().email({ message: "Invalid email address." }),
+    fullName: z.string().min(2, { message: "O nome completo é obrigatório." }),
+    email: z.string().email({ message: "Endereço de e-mail inválido." }),
     password: z
       .string()
-      .min(8, { message: "Password must be at least 8 characters." }),
+      .min(8, { message: "A senha deve ter pelo menos 8 caracteres." }),
     confirmPassword: z.string(),
     terms: z.literal(true, {
-      errorMap: () => ({ message: "You must accept the terms and conditions." }),
+      errorMap: () => ({ message: "Você deve aceitar os termos e condições." }),
     }),
   })
   .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords don't match.",
+    message: "As senhas não coincidem.",
     path: ["confirmPassword"],
   });
 
@@ -54,8 +54,8 @@ export function SignupForm() {
     // Mock signup logic
     console.log(values);
     toast({
-      title: "Account Created",
-      description: "Welcome! Redirecting to your dashboard...",
+      title: "Conta Criada",
+      description: "Bem-vindo! Redirecionando para o seu painel...",
     });
     router.push("/dashboard");
   }
@@ -68,7 +68,7 @@ export function SignupForm() {
           name="fullName"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Full Name</FormLabel>
+              <FormLabel>Nome Completo</FormLabel>
               <FormControl>
                 <Input placeholder="Michael Jordan" {...field} />
               </FormControl>
@@ -83,7 +83,7 @@ export function SignupForm() {
             <FormItem>
               <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input placeholder="your.email@example.com" {...field} />
+                <Input placeholder="seu.email@exemplo.com" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -94,7 +94,7 @@ export function SignupForm() {
           name="password"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Password</FormLabel>
+              <FormLabel>Senha</FormLabel>
               <FormControl>
                 <Input type="password" placeholder="••••••••" {...field} />
               </FormControl>
@@ -107,7 +107,7 @@ export function SignupForm() {
           name="confirmPassword"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Confirm Password</FormLabel>
+              <FormLabel>Confirmar Senha</FormLabel>
               <FormControl>
                 <Input type="password" placeholder="••••••••" {...field} />
               </FormControl>
@@ -128,10 +128,10 @@ export function SignupForm() {
               </FormControl>
               <div className="space-y-1 leading-none">
                 <FormLabel>
-                  Accept Image Usage Terms
+                  Aceitar Termos de Uso de Imagem
                 </FormLabel>
                 <FormDescription>
-                  You agree to our Terms of Service and allow ProSport to use your provided images for generating and distributing your profile.
+                  Você concorda com nossos Termos de Serviço e permite que o ProSport use suas imagens fornecidas para gerar e distribuir seu perfil.
                 </FormDescription>
                 <FormMessage />
               </div>
@@ -139,7 +139,7 @@ export function SignupForm() {
           )}
         />
         <Button type="submit" className="w-full font-headline">
-          Sign Up
+          Cadastrar
         </Button>
       </form>
     </Form>

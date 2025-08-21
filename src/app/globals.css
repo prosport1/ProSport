@@ -4,34 +4,6 @@
 
 @layer base {
   :root {
-    --background: 225 33% 95%;
-    --foreground: 225 15% 15%;
-    --card: 225 33% 98%;
-    --card-foreground: 225 15% 15%;
-    --popover: 225 33% 98%;
-    --popover-foreground: 225 15% 15%;
-    --primary: 225 73% 57%;
-    --primary-foreground: 210 40% 98%;
-    --secondary: 225 30% 90%;
-    --secondary-foreground: 225 15% 15%;
-    --muted: 225 30% 93%;
-    --muted-foreground: 225 15% 45%;
-    --accent: 300 100% 35%;
-    --accent-foreground: 300 40% 98%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 225 20% 85%;
-    --input: 225 20% 88%;
-    --ring: 225 73% 57%;
-    --chart-1: 225 73% 57%;
-    --chart-2: 300 100% 35%;
-    --chart-3: 225 50% 40%;
-    --chart-4: 300 70% 50%;
-    --chart-5: 225 90% 60%;
-    --radius: 0.5rem;
-  }
-
-  .dark {
     --background: 225 15% 5%;
     --foreground: 225 33% 95%;
     --card: 225 15% 10%;
@@ -56,6 +28,7 @@
     --chart-3: 225 50% 60%;
     --chart-4: 300 70% 60%;
     --chart-5: 225 90% 70%;
+    --radius: 0.5rem;
   }
 }
 
@@ -65,5 +38,9 @@
   }
   body {
     @apply bg-background text-foreground;
+    background-image: url('https://placehold.co/1920x1080/000000/FFFFFF.png?text=background');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
   }
 }

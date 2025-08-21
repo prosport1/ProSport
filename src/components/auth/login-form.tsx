@@ -18,8 +18,8 @@ import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 
 const formSchema = z.object({
-  email: z.string().email({ message: "Invalid email address." }),
-  password: z.string().min(1, { message: "Password is required." }),
+  email: z.string().email({ message: "Endereço de e-mail inválido." }),
+  password: z.string().min(1, { message: "A senha é obrigatória." }),
 });
 
 export function LoginForm() {
@@ -38,8 +38,8 @@ export function LoginForm() {
     // Mock login logic
     console.log(values);
     toast({
-      title: "Login Successful",
-      description: "Redirecting to your dashboard...",
+      title: "Login bem-sucedido",
+      description: "Redirecionando para o seu painel...",
     });
     router.push("/dashboard");
   }
@@ -54,7 +54,7 @@ export function LoginForm() {
             <FormItem>
               <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input placeholder="your.email@example.com" {...field} />
+                <Input placeholder="seu.email@exemplo.com" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -65,7 +65,7 @@ export function LoginForm() {
           name="password"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Password</FormLabel>
+              <FormLabel>Senha</FormLabel>
               <FormControl>
                 <Input type="password" placeholder="••••••••" {...field} />
               </FormControl>
@@ -74,7 +74,7 @@ export function LoginForm() {
           )}
         />
         <Button type="submit" className="w-full font-headline">
-          Log In
+          Entrar
         </Button>
       </form>
     </Form>
