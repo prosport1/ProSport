@@ -29,12 +29,6 @@ export function Header() {
             >
               Painel
             </Link>
-            <Link
-              href="/admin"
-              className="flex items-center text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-            >
-              Painel do Admin
-            </Link>
           </nav>
         </div>
 
