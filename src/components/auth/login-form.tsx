@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -37,11 +38,15 @@ export function LoginForm() {
   function onSubmit(values: z.infer<typeof formSchema>) {
     // Mock login logic
     console.log(values);
+    if (values.email === "admin@prosport.com") {
+      router.push("/admin");
+    } else {
+      router.push("/dashboard");
+    }
     toast({
       title: "Login bem-sucedido",
       description: "Redirecionando para o seu painel...",
     });
-    router.push("/dashboard");
   }
 
   return (
@@ -65,7 +70,12 @@ export function LoginForm() {
           name="password"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Senha</FormLabel>
+              <div className="flex items-center justify-between">
+                <FormLabel>Senha</FormLabel>
+                <Button variant="link" asChild className="p-0 text-sm h-auto">
+                  <Link href="#">Esqueceu a senha?</Link>
+                </Button>
+              </div>
               <FormControl>
                 <Input type="password" placeholder="••••••••" {...field} />
               </FormControl>
