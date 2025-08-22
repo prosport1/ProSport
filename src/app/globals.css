@@ -38,7 +38,7 @@
   }
   body {
     @apply bg-background text-foreground;
-    background-image: url('https://placehold.co/1920x1080/000000/FFFFFF.png?text=background');
+    background-image: url('https://placehold.co/1920x1080/0a0a0a/FFFFFF.png');
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
