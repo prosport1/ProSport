@@ -1,6 +1,6 @@
 "use client";
 
-import *- React from "react";
+import * as React from "react";
 import { Check, Copy } from "lucide-react";
 import { Button, type ButtonProps } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
