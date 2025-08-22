@@ -5,6 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { format } from "date-fns";
+import { ptBR } from "date-fns/locale";
 import { CalendarIcon, Loader2, Sparkles } from "lucide-react";
 import {
   createBasicPresentation,
@@ -194,7 +195,7 @@ export function AthleteDashboardClient() {
                               <PopoverTrigger asChild>
                                 <FormControl>
                                   <Button variant={"outline"} className={cn("pl-3 text-left font-normal", !field.value && "text-muted-foreground")}>
-                                    {field.value ? format(field.value, "PPP", { locale: require('date-fns/locale/pt-BR') }) : <span>Escolha uma data</span>}
+                                    {field.value ? format(field.value, "PPP", { locale: ptBR }) : <span>Escolha uma data</span>}
                                     <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                                   </Button>
                                 </FormControl>
