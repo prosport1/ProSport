@@ -98,6 +98,15 @@ export function AthleteDashboardClient() {
   };
 
   const handleGenerateBasic = () => {
+    form.trigger();
+    if (!form.formState.isValid) {
+      toast({
+        variant: "destructive",
+        title: "Formulário Inválido",
+        description: "Por favor, preencha todos os campos obrigatórios.",
+      });
+      return;
+    }
     const values = form.getValues();
     startBasicTransition(async () => {
       const result = await createBasicPresentation({
@@ -116,6 +125,15 @@ export function AthleteDashboardClient() {
   };
 
   const handleGeneratePlus = () => {
+    form.trigger();
+    if (!form.formState.isValid) {
+       toast({
+        variant: "destructive",
+        title: "Formulário Inválido",
+        description: "Por favor, preencha todos os campos obrigatórios.",
+      });
+      return;
+    }
     if (!photoDataUri) {
       toast({
         variant: "destructive",
@@ -164,8 +182,8 @@ export function AthleteDashboardClient() {
         <Tabs defaultValue="profile" className="w-full">
           <TabsList className="grid w-full grid-cols-3">
             <TabsTrigger value="profile">Perfil</TabsTrigger>
-            <TabsTrigger value="basic" disabled={!form.formState.isValid || !['basic', 'plus', 'premium'].includes(userPlan)}>Página Básica</TabsTrigger>
-            <TabsTrigger value="plus" disabled={!form.formState.isValid || !['plus', 'premium'].includes(userPlan)}>Página Plus</TabsTrigger>
+            <TabsTrigger value="basic" disabled={!['basic', 'plus', 'premium'].includes(userPlan)}>Página Básica</TabsTrigger>
+            <TabsTrigger value="plus" disabled={!['plus', 'premium'].includes(userPlan)}>Página Plus</TabsTrigger>
           </TabsList>
           
           <TabsContent value="profile">
@@ -256,23 +274,6 @@ export function AthleteDashboardClient() {
                         <FormMessage />
                       </FormItem>
                     )} />
-                     <Button type="button" onClick={() => {
-                        form.trigger();
-                        if (form.formState.isValid) {
-                          toast({
-                            title: "Perfil Atualizado",
-                            description: "Suas informações foram salvas e estão prontas para gerar as páginas.",
-                          });
-                        } else {
-                           toast({
-                            variant: "destructive",
-                            title: "Formulário Inválido",
-                            description: "Por favor, preencha todos os campos obrigatórios.",
-                          });
-                        }
-                      }}>
-                      Salvar Perfil
-                    </Button>
                   </form>
                 </Form>
               </CardContent>
@@ -352,3 +353,5 @@ export function AthleteDashboardClient() {
     </Card>
   );
 }
+
+    
