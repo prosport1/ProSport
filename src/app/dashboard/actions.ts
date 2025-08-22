@@ -19,18 +19,10 @@ const generateSlug = (name: string) => {
 };
 
 export async function createBasicPresentation(
-  data: Omit<GenerateSponsorPresentationInput, "weightCategory" | "martialArtsRanking">
+  data: GenerateSponsorPresentationInput
 ) {
   try {
-    const input: GenerateSponsorPresentationInput = {
-      fullName: data.fullName,
-      dateOfBirth: data.dateOfBirth,
-      sport: data.sport,
-      isAmateur: data.isAmateur,
-      achievements: data.achievements,
-      details: data.details,
-    };
-    const { presentation } = await generateSponsorPresentation(input);
+    const { presentation } = await generateSponsorPresentation(data);
     const slug = generateSlug(data.fullName) + `-basic-${Date.now()}`;
     setPageContent(slug, presentation);
     const presentationUrl = `/p/${slug}`;
