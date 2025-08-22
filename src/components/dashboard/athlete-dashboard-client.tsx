@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useState, useTransition, useEffect } from "react";
@@ -182,12 +183,20 @@ export function AthleteDashboardClient() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="font-headline">Painel do Atleta</CardTitle>
-        {userPlan && (
-          <CardDescription>
-            Complete seu perfil para gerar suas Páginas Esportivas. Esta informação será usada para atrair patrocinadores. Seu plano atual é: <span className="font-bold capitalize">{userPlan}</span>
-          </CardDescription>
-        )}
+        <div className="flex justify-between items-start">
+            <div>
+                <CardTitle className="font-headline">Painel do Atleta</CardTitle>
+                <CardDescription>
+                    Complete seu perfil para gerar suas Páginas Esportivas. Esta informação será usada para atrair patrocinadores.
+                </CardDescription>
+            </div>
+            {userPlan && (
+                <div className="text-right">
+                    <span className="text-sm text-muted-foreground">Plano Atual</span>
+                    <p className="font-bold capitalize text-primary">{userPlan}</p>
+                </div>
+            )}
+        </div>
       </CardHeader>
       <CardContent className="p-6 space-y-8">
         <Form {...form}>
@@ -309,10 +318,10 @@ export function AthleteDashboardClient() {
               </div>
             )}
 
-            {isPlusPlan && (
+            {isPlusPlan && userPlan &&(
               <div className="space-y-4">
                    <CardHeader className="p-0">
-                      <CardTitle className="font-headline">Sport Page Melhorada</CardTitle>
+                      <CardTitle className="font-headline">Sport Page <span className="capitalize">{userPlan}</span></CardTitle>
                       <CardDescription>Crie uma apresentação visualmente deslumbrante, no estilo NFL/NBA, para impressionar os patrocinadores.</CardDescription>
                   </CardHeader>
                   <Button onClick={handleGeneratePlus} disabled={isPlusPending || !form.formState.isValid || !photoDataUri}>
@@ -345,3 +354,4 @@ export function AthleteDashboardClient() {
     </Card>
   );
 }
+ 
