@@ -38,7 +38,7 @@ const prompt = ai.definePrompt({
   output: {schema: GenerateSponsorPresentationOutputSchema},
   prompt: `You are an AI assistant specialized in creating presentations for athletes to attract potential sponsors.
 
-  Based on the athlete's data, generate a compelling presentation highlighting their achievements, stats, and potential.
+  Based on the athlete's data, generate a compelling presentation highlighting their achievements and potential.
   Use a modern style inspired by NFL presentations.
 
   Athlete Data:
@@ -49,7 +49,6 @@ const prompt = ai.definePrompt({
   {{#if weightCategory}}Weight Category: {{{weightCategory}}}{{/if}}
   {{#if martialArtsRanking}}Martial Arts Ranking: {{{martialArtsRanking}}}{{/if}}
   Achievements: {{{achievements}}}
-  Stats: {{{stats}}}
 
   Presentation:`,
 });

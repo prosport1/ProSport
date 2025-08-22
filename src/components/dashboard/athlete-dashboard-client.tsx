@@ -46,7 +46,6 @@ const profileFormSchema = z.object({
   isAmateur: z.string({ required_error: "Por favor, selecione um status." }),
   details: z.string().min(10, "Os detalhes devem ter pelo menos 10 caracteres."),
   achievements: z.string().min(10, "As conquistas devem ter pelo menos 10 caracteres."),
-  stats: z.string().min(5, "As estatísticas devem ter pelo menos 5 caracteres."),
   photo: z.any().optional(),
 });
 
@@ -194,7 +193,7 @@ export function AthleteDashboardClient() {
                                 </FormControl>
                               </PopoverTrigger>
                               <PopoverContent className="w-auto p-0" align="start">
-                                <Calendar mode="single" selected={field.value} onSelect={field.onChange} disabled={(date) => date > new Date() || date < new Date("1900-01-01")} initialFocus />
+                                <Calendar mode="single" selected={field.value} onSelect={field.onChange} disabled={(date) => date > new Date() || date < new Date("1900-01-01")} captionLayout="dropdown-buttons" fromYear={1960} toYear={2023} initialFocus />
                               </PopoverContent>
                             </Popover>
                             <FormMessage />
@@ -238,13 +237,6 @@ export function AthleteDashboardClient() {
                       <FormItem>
                         <FormLabel>Conquistas</FormLabel>
                         <FormControl><Textarea placeholder="Liste seus títulos, campeonatos e conquistas significativas." className="resize-none" {...field} /></FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )} />
-                    <FormField control={form.control} name="stats" render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Estatísticas</FormLabel>
-                        <FormControl><Textarea placeholder="Forneça estatísticas importantes como recorde de vitórias/derrotas, recordes pessoais, etc." className="resize-none" {...field} /></FormControl>
                         <FormMessage />
                       </FormItem>
                     )} />
