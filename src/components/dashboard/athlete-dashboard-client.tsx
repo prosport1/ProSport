@@ -119,7 +119,7 @@ export function AthleteDashboardClient() {
     startBasicTransition(async () => {
       const result = await createBasicPresentation({
         ...values,
-        dateOfBirth: format(values.dateOfBirth, "PPP", { locale: ptBR }),
+        dateOfBirth: format(values.dateOfBirth, "dd/MM/yyyy"),
         isAmateur: values.isAmateur === "true",
       });
       if (result.error) {
@@ -154,9 +154,8 @@ export function AthleteDashboardClient() {
     startPlusTransition(async () => {
       const result = await createEnhancedSportpage({
         ...values,
-        dateOfBirth: format(values.dateOfBirth, "PPP", { locale: ptBR }),
+        dateOfBirth: format(values.dateOfBirth, "dd/MM/yyyy"),
         isAmateur: values.isAmateur === "true",
-        achievements: values.achievements,
         photoDataUri,
       });
       if (result.error) {
