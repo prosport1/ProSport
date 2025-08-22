@@ -45,7 +45,7 @@ const prompt = ai.definePrompt({
 
   The sportpage should include:
   - A professional-looking header with the athlete's name and sport.
-  - A compelling hero section with the athlete's photo.  Make sure to reference the photo using: {{media url=photoDataUri}}
+  - A compelling hero section with the athlete's photo.  Make sure to reference the photo using: {{{media url=photoDataUri}}}
   - Key details about the athlete, including date of birth, sport, amateur/professional status, achievements, and other relevant details.
   - Modern fonts and a dynamic layout.
   - Ensure the design reflects the high-energy and professional aesthetic of the NFL/NBA.
