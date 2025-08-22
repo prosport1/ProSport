@@ -251,6 +251,23 @@ export function AthleteDashboardClient() {
                         <FormMessage />
                       </FormItem>
                     )} />
+                     <Button type="button" onClick={() => {
+                        form.trigger();
+                        if (form.formState.isValid) {
+                          toast({
+                            title: "Perfil Atualizado",
+                            description: "Suas informações foram salvas e estão prontas para gerar as páginas.",
+                          });
+                        } else {
+                           toast({
+                            variant: "destructive",
+                            title: "Formulário Inválido",
+                            description: "Por favor, preencha todos os campos obrigatórios.",
+                          });
+                        }
+                      }}>
+                      Salvar Perfil
+                    </Button>
                   </form>
                 </Form>
               </CardContent>
