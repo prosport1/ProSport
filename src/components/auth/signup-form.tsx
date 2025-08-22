@@ -57,6 +57,13 @@ export function SignupForm() {
   function onSubmit(values: z.infer<typeof formSchema>) {
     // Mock signup logic
     console.log(values);
+
+    // In a real app, you would save the user and their plan.
+    // For this demo, we'll store the plan in sessionStorage.
+    if (typeof window !== "undefined") {
+      sessionStorage.setItem("userPlan", values.plan);
+    }
+    
     toast({
       title: "Conta Criada",
       description: "Bem-vindo! Redirecionando para o seu painel...",

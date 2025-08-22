@@ -16,8 +16,6 @@ const GenerateSponsorPresentationInputSchema = z.object({
   dateOfBirth: z.string().describe('The date of birth of the athlete.'),
   sport: z.string().describe('The sport the athlete participates in.'),
   isAmateur: z.boolean().describe('Whether the athlete is an amateur or professional.'),
-  weightCategory: z.string().optional().describe('The weight category of the athlete, if applicable.'),
-  martialArtsRanking: z.string().optional().describe('The ranking/graduation of the athlete in martial arts, if applicable.'),
   achievements: z.string().describe('The achievements of the athlete.'),
   details: z.string().describe('Additional details about the athlete, such as weight class, martial arts ranking, etc.'),
 });
@@ -41,15 +39,13 @@ const prompt = ai.definePrompt({
   Based on the athlete's data, generate a compelling presentation highlighting their achievements and potential.
   Use a modern style inspired by NFL presentations.
 
-  From the athlete's data, you must infer and create a "Statistics" section. This section should include plausible metrics relevant to the athlete's sport. For example, for a fighter, it could be height, weight, reach, wins, losses. For a soccer player, it could be goals, assists, etc.
+  From the athlete's data, you must infer and create a "Statistics" section. This section should include plausible metrics relevant to the athlete's sport. For example, for a fighter, it could be height, weight, reach, wins, losses, inferred from the details. For a soccer player, it could be goals, assists, etc.
 
   Athlete Data:
   Full Name: {{{fullName}}}
   Date of Birth: {{{dateOfBirth}}}
   Sport: {{{sport}}}
   Amateur/Professional: {{#if isAmateur}}Amateur{{else}}Professional{{/if}}
-  {{#if weightCategory}}Weight Category: {{{weightCategory}}}{{/if}}
-  {{#if martialArtsRanking}}Martial Arts Ranking: {{{martialArtsRanking}}}{{/if}}
   Achievements: {{{achievements}}}
   Details: {{{details}}}
 
