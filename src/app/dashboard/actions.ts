@@ -19,7 +19,7 @@ const generateSlug = (name: string) => {
 };
 
 export async function createBasicPresentation(
-  data: Omit<GenerateSponsorPresentationInput, "weightCategory" | "martialArtsRanking"> & { details: string }
+  data: Omit<GenerateSponsorPresentationInput, "weightCategory" | "martialArtsRanking">
 ) {
   try {
     const input: GenerateSponsorPresentationInput = {
@@ -28,7 +28,7 @@ export async function createBasicPresentation(
       sport: data.sport,
       isAmateur: data.isAmateur,
       achievements: data.achievements,
-      stats: data.stats,
+      details: data.details,
     };
     const { presentation } = await generateSponsorPresentation(input);
     const slug = generateSlug(data.fullName) + `-basic-${Date.now()}`;

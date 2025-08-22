@@ -46,7 +46,6 @@ const profileFormSchema = z.object({
   isAmateur: z.string({ required_error: "Por favor, selecione um status." }),
   details: z.string().min(10, "Os detalhes devem ter pelo menos 10 caracteres."),
   achievements: z.string().min(10, "As conquistas devem ter pelo menos 10 caracteres."),
-  stats: z.string().min(2, "As estatísticas são obrigatórias."),
   photo: z.any().optional(),
 });
 
@@ -188,13 +187,13 @@ export function AthleteDashboardClient() {
                               <PopoverTrigger asChild>
                                 <FormControl>
                                   <Button variant={"outline"} className={cn("pl-3 text-left font-normal", !field.value && "text-muted-foreground")}>
-                                    {field.value ? format(field.value, "PPP") : <span>Escolha uma data</span>}
+                                    {field.value ? format(field.value, "PPP", { locale: require('date-fns/locale/pt-BR') }) : <span>Escolha uma data</span>}
                                     <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                                   </Button>
                                 </FormControl>
                               </PopoverTrigger>
                               <PopoverContent className="w-auto p-0" align="start">
-                                <Calendar mode="single" selected={field.value} onSelect={field.onChange} disabled={(date) => date > new Date() || date < new Date("1900-01-01")} captionLayout="dropdown-buttons" fromYear={1960} toYear={2023} initialFocus />
+                                <Calendar mode="single" selected={field.value} onSelect={field.onChange} disabled={(date) => date > new Date() || date < new Date("1900-01-01")} captionLayout="dropdown-buttons" fromYear={1960} toYear={new Date().getFullYear()} initialFocus />
                               </PopoverContent>
                             </Popover>
                             <FormMessage />
@@ -238,13 +237,6 @@ export function AthleteDashboardClient() {
                       <FormItem>
                         <FormLabel>Conquistas</FormLabel>
                         <FormControl><Textarea placeholder="Liste seus títulos, campeonatos e conquistas significativas." className="resize-none" {...field} /></FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )} />
-                     <FormField control={form.control} name="stats" render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Estatísticas</FormLabel>
-                        <FormControl><Textarea placeholder="Ex: Altura: 1.80m, Peso: 75kg, Vitórias: 10, Derrotas: 2" className="resize-none" {...field} /></FormControl>
                         <FormMessage />
                       </FormItem>
                     )} />
