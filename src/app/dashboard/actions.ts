@@ -9,11 +9,18 @@ import {
   type GenerateEnhancedSportpageInput,
 } from "@/ai/flows/generate-enhanced-sportpage";
 
+const generateSlug = (name: string) => {
+  return name
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-');
+};
+
 export async function createBasicPresentation(
   data: Omit<GenerateSponsorPresentationInput, "weightCategory" | "martialArtsRanking"> & { details: string }
 ) {
   try {
-    // The AI prompt uses achievements and stats, so we ensure they are present.
     const input: GenerateSponsorPresentationInput = {
       fullName: data.fullName,
       dateOfBirth: data.dateOfBirth,
@@ -21,11 +28,11 @@ export async function createBasicPresentation(
       isAmateur: data.isAmateur,
       achievements: data.achievements,
       stats: data.stats,
-      // We can parse details to extract optional fields if needed, or pass it along.
-      // For now, let's keep it simple.
     };
     const { presentation } = await generateSponsorPresentation(input);
-    return { presentation };
+    const slug = generateSlug(data.fullName);
+    const presentationUrl = `/p/${slug}-basic-${Date.now()}`;
+    return { presentation, presentationUrl };
   } catch (error) {
     console.error(error);
     return { error: "Failed to generate basic presentation." };
@@ -37,7 +44,9 @@ export async function createEnhancedSportpage(
 ) {
   try {
     const { sportpageHtml } = await generateEnhancedSportpage(data);
-    return { sportpageHtml };
+    const slug = generateSlug(data.fullName);
+    const sportpageUrl = `/p/${slug}-plus-${Date.now()}`;
+    return { sportpageHtml, sportpageUrl };
   } catch (error) {
     console.error(error);
     return { error: "Failed to generate enhanced sportpage." };

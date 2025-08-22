@@ -5,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { format } from "date-fns";
-import { CalendarIcon, Loader2, Sparkles } from "lucide-react";
+import { CalendarIcon, Loader2, Sparkles, Link as LinkIcon } from "lucide-react";
 import {
   createBasicPresentation,
   createEnhancedSportpage,
@@ -35,6 +35,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
+import { CopyButton } from "@/components/ui/copy-button";
 
 const profileFormSchema = z.object({
   fullName: z.string().min(2, "O nome completo deve ter pelo menos 2 caracteres."),
@@ -59,6 +60,8 @@ export function AthleteDashboardClient() {
   const [basicHtml, setBasicHtml] = useState("");
   const [plusHtml, setPlusHtml] = useState("");
   const [photoDataUri, setPhotoDataUri] = useState("");
+  const [basicUrl, setBasicUrl] = useState("");
+  const [plusUrl, setPlusUrl] = useState("");
   
   // Simula o plano do atleta. Em um aplicativo real, isso viria do backend.
   const [userPlan, setUserPlan] = useState<"basic" | "plus" | "premium">("basic");
@@ -99,6 +102,7 @@ export function AthleteDashboardClient() {
         toast({ variant: "destructive", title: "Erro", description: result.error });
       } else {
         setBasicHtml(result.presentation || "");
+        setBasicUrl(result.presentationUrl || "");
         toast({ title: "Sucesso", description: "Página esportiva básica gerada!" });
       }
     });
@@ -125,6 +129,7 @@ export function AthleteDashboardClient() {
         toast({ variant: "destructive", title: "Erro", description: result.error });
       } else {
         setPlusHtml(result.sportpageHtml || "");
+        setPlusUrl(result.sportpageUrl || "");
         toast({ title: "Sucesso", description: "Página Esportiva Melhorada gerada!" });
       }
     });
@@ -285,6 +290,17 @@ export function AthleteDashboardClient() {
                   {isBasicPending ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Sparkles className="mr-2 h-4 w-4" />}
                   Gerar Página Básica
                 </Button>
+                {basicUrl && (
+                  <div className="mt-4 space-y-4">
+                    <div className="space-y-2">
+                       <Label>Link Compartilhável</Label>
+                       <div className="flex items-center gap-2">
+                         <Input value={new URL(basicUrl, window.location.origin).href} readOnly />
+                         <CopyButton textToCopy={new URL(basicUrl, window.location.origin).href}>Copiar</CopyButton>
+                       </div>
+                    </div>
+                  </div>
+                )}
                 {basicHtml && (
                   <div className="mt-4">
                     <h3 className="mb-2 text-lg font-semibold font-headline">Pré-visualização</h3>
@@ -308,6 +324,17 @@ export function AthleteDashboardClient() {
                   {isPlusPending ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Sparkles className="mr-2 h-4 w-4" />}
                   Gerar Página Melhorada
                 </Button>
+                {plusUrl && (
+                  <div className="mt-4 space-y-4">
+                    <div className="space-y-2">
+                       <Label>Link Compartilhável</Label>
+                       <div className="flex items-center gap-2">
+                         <Input value={new URL(plusUrl, window.location.origin).href} readOnly />
+                         <CopyButton textToCopy={new URL(plusUrl, window.location.origin).href}>Copiar</CopyButton>
+                       </div>
+                    </div>
+                  </div>
+                )}
                 {plusHtml && (
                   <div className="mt-4">
                     <h3 className="mb-2 text-lg font-semibold font-headline">Pré-visualização</h3>
