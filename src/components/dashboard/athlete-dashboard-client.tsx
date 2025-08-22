@@ -156,6 +156,7 @@ export function AthleteDashboardClient() {
         ...values,
         dateOfBirth: format(values.dateOfBirth, "PPP", { locale: ptBR }),
         isAmateur: values.isAmateur === "true",
+        achievements: values.achievements,
         photoDataUri,
       });
       if (result.error) {
@@ -252,10 +253,10 @@ export function AthleteDashboardClient() {
                 <FormMessage />
               </FormItem>
             )} />
-            <FormField control={form.control} name="photo" render={({ field }) => (
+             <FormField control={form.control} name="photo" render={({ field }) => (
               <FormItem>
                 <FormLabel>Foto do Perfil {isPlusPlan ? "(Obrigatória para o seu plano)" : ""}</FormLabel>
-                <FormControl><Input type="file" accept="image/*" onChange={handleFileChange} disabled={!isPlusPlan} /></FormControl>
+                <FormControl><Input type="file" accept="image/*" onChange={handleFileChange} disabled={!isPlusPlan && !isBasicPlan} /></FormControl>
                 <FormDescription>
                   Uma foto de alta qualidade para sua Página Esportiva. Máx 4MB. 
                   {isBasicPlan && " (Disponível apenas para planos Plus e Premium)"}
@@ -309,7 +310,7 @@ export function AthleteDashboardClient() {
                   </CardHeader>
                   <Button onClick={handleGeneratePlus} disabled={isPlusPending || !form.formState.isValid || !photoDataUri}>
                     {isPlusPending ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Sparkles className="mr-2 h-4 w-4" />}
-                    Gerar Sport Page Melhorada
+                    Gerar Sport Page
                   </Button>
                   {plusUrl && (
                     <div className="mt-4 space-y-4">
