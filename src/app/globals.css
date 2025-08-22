@@ -36,13 +36,30 @@
   * {
     @apply border-border;
   }
-  body {
-    @apply text-foreground;
+  html {
+    overflow: hidden;
+    height: 100%;
+  }
+
+  html:before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     background-image: url('https://firebasestudio.promptlab.gallery/transcoded/1defa1a9-b3a6-4448-b425-6677f2025178.jpeg');
     background-color: #000;
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    background-attachment: fixed;
+    z-index: -1;
+  }
+  
+  body {
+    @apply text-foreground;
+    height: 100%;
+    overflow: auto;
+    background-color: transparent;
   }
 }
