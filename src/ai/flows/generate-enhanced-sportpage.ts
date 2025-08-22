@@ -17,6 +17,7 @@ const GenerateEnhancedSportpageInputSchema = z.object({
   sport: z.string().describe('The sport the athlete participates in.'),
   isAmateur: z.boolean().describe('Whether the athlete is an amateur or professional.'),
   details: z.string().describe('Additional details about the athlete, such as weight class, martial arts ranking, etc.'),
+  achievements: z.string().describe('The achievements of the athlete.'),
   photoDataUri: z
     .string()
     .describe(
@@ -45,7 +46,7 @@ const prompt = ai.definePrompt({
   The sportpage should include:
   - A professional-looking header with the athlete's name and sport.
   - A compelling hero section with the athlete's photo.  Make sure to reference the photo using: {{media url=photoDataUri}}
-  - Key details about the athlete, including date of birth, sport, amateur/professional status, and other relevant details.
+  - Key details about the athlete, including date of birth, sport, amateur/professional status, achievements, and other relevant details.
   - Modern fonts and a dynamic layout.
   - Ensure the design reflects the high-energy and professional aesthetic of the NFL/NBA.
 
@@ -54,6 +55,7 @@ const prompt = ai.definePrompt({
   - Date of Birth: {{{dateOfBirth}}}
   - Sport: {{{sport}}}
   - Amateur/Professional: {{#if isAmateur}}Amateur{{else}}Professional{{/if}}
+  - Achievements: {{{achievements}}}
   - Details: {{{details}}}
 
   Return the complete HTML code for the sportpage.

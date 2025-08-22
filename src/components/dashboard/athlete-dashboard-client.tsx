@@ -169,6 +169,7 @@ export function AthleteDashboardClient() {
   };
   
   const isPlusPlan = userPlan === 'plus' || userPlan === 'premium';
+  const isBasicPlan = userPlan === 'basic';
 
   return (
     <Card>
@@ -253,11 +254,11 @@ export function AthleteDashboardClient() {
             )} />
             <FormField control={form.control} name="photo" render={({ field }) => (
               <FormItem>
-                <FormLabel>Foto do Perfil {isPlusPlan ? "(para o Plano Plus)" : ""}</FormLabel>
+                <FormLabel>Foto do Perfil {isPlusPlan ? "(Obrigatória para o seu plano)" : ""}</FormLabel>
                 <FormControl><Input type="file" accept="image/*" onChange={handleFileChange} disabled={!isPlusPlan} /></FormControl>
                 <FormDescription>
-                  Uma foto de alta qualidade para sua Página Esportiva melhorada. Máx 4MB. 
-                  {!isPlusPlan && " (Disponível apenas para planos Plus e Premium)"}
+                  Uma foto de alta qualidade para sua Página Esportiva. Máx 4MB. 
+                  {isBasicPlan && " (Disponível apenas para planos Plus e Premium)"}
                 </FormDescription>
                 <FormMessage />
               </FormItem>
@@ -268,7 +269,7 @@ export function AthleteDashboardClient() {
         <Separator />
         
         <div className="space-y-8">
-            {!isPlusPlan && (
+            {isBasicPlan && (
               <div className="space-y-4">
                   <CardHeader className="p-0">
                       <CardTitle className="font-headline">Sport Page Básica</CardTitle>
@@ -303,7 +304,7 @@ export function AthleteDashboardClient() {
             {isPlusPlan && (
               <div className="space-y-4">
                    <CardHeader className="p-0">
-                      <CardTitle className="font-headline">Sport Page Melhorada (Plano Plus)</CardTitle>
+                      <CardTitle className="font-headline">Sport Page Melhorada</CardTitle>
                       <CardDescription>Crie uma apresentação visualmente deslumbrante, no estilo NFL/NBA, para impressionar os patrocinadores.</CardDescription>
                   </CardHeader>
                   <Button onClick={handleGeneratePlus} disabled={isPlusPending || !form.formState.isValid || !photoDataUri}>
