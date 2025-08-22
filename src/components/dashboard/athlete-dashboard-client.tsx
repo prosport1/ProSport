@@ -62,11 +62,11 @@ export function AthleteDashboardClient() {
   const [basicUrl, setBasicUrl] = useState("");
   const [plusUrl, setPlusUrl] = useState("");
   
-  const [userPlan, setUserPlan] = useState<"basic" | "plus" | "premium">("basic");
+  const [userPlan, setUserPlan] = useState<"basic" | "plus" | "premium" | null>(null);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const plan = sessionStorage.getItem("userPlan") as "basic" | "plus" | "premium";
+      const plan = sessionStorage.getItem("userPlan") as "basic" | "plus" | "premium" | null;
       if (plan) {
         setUserPlan(plan);
       }
@@ -168,16 +168,17 @@ export function AthleteDashboardClient() {
     });
   };
   
-  const isPlusDisabled = !['plus', 'premium'].includes(userPlan);
-  const showBasicSection = ['basic', 'plus', 'premium'].includes(userPlan);
+  const canGeneratePlus = userPlan === 'plus' || userPlan === 'premium';
 
   return (
     <Card>
       <CardHeader>
         <CardTitle className="font-headline">Painel do Atleta</CardTitle>
-        <CardDescription>
-          Complete seu perfil para gerar suas Páginas Esportivas. Esta informação será usada para atrair patrocinadores. Seu plano atual é: <span className="font-bold capitalize">{userPlan}</span>
-        </CardDescription>
+        {userPlan && (
+          <CardDescription>
+            Complete seu perfil para gerar suas Páginas Esportivas. Esta informação será usada para atrair patrocinadores. Seu plano atual é: <span className="font-bold capitalize">{userPlan}</span>
+          </CardDescription>
+        )}
       </CardHeader>
       <CardContent className="p-6 space-y-8">
         <Form {...form}>
@@ -252,9 +253,12 @@ export function AthleteDashboardClient() {
             )} />
             <FormField control={form.control} name="photo" render={({ field }) => (
               <FormItem>
-                <FormLabel>Foto do Perfil (para o Plano Plus)</FormLabel>
-                <FormControl><Input type="file" accept="image/*" onChange={handleFileChange} disabled={isPlusDisabled} /></FormControl>
-                <FormDescription>Uma foto de alta qualidade para sua Página Esportiva melhorada. Máx 4MB. {isPlusDisabled && "(Apenas para planos Plus e Premium)"}</FormDescription>
+                <FormLabel>Foto do Perfil {canGeneratePlus ? "(para o Plano Plus)" : ""}</FormLabel>
+                <FormControl><Input type="file" accept="image/*" onChange={handleFileChange} disabled={!canGeneratePlus} /></FormControl>
+                <FormDescription>
+                  Uma foto de alta qualidade para sua Página Esportiva melhorada. Máx 4MB. 
+                  {!canGeneratePlus && " (Disponível apenas para planos Plus e Premium)"}
+                </FormDescription>
                 <FormMessage />
               </FormItem>
             )} />
@@ -264,42 +268,39 @@ export function AthleteDashboardClient() {
         <Separator />
         
         <div className="space-y-8">
-            {showBasicSection && (
-              <div className="space-y-4">
-                  <CardHeader className="p-0">
-                      <CardTitle className="font-headline">Página Esportiva Básica</CardTitle>
-                      <CardDescription>Gere uma página limpa e profissional para compartilhar com potenciais patrocinadores.</CardDescription>
-                  </CardHeader>
-                  <Button onClick={handleGenerateBasic} disabled={isBasicPending || !form.formState.isValid}>
-                      {isBasicPending ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Sparkles className="mr-2 h-4 w-4" />}
-                      Gerar Página Básica
-                  </Button>
-                  {basicUrl && (
-                      <div className="mt-4 space-y-4">
-                      <div className="space-y-2">
-                          <Label>Link Compartilhável</Label>
-                          <div className="flex items-center gap-2">
-                              <Input value={new URL(basicUrl, window.location.origin).href} readOnly />
-                              <CopyButton textToCopy={new URL(basicUrl, window.location.origin).href}>Copiar</CopyButton>
-                          </div>
-                      </div>
-                      </div>
-                  )}
-                  {basicHtml && (
-                      <div className="mt-4">
-                      <h3 className="mb-2 text-lg font-semibold font-headline">Pré-visualização</h3>
-                      <div className="rounded-lg border bg-background">
-                          <iframe srcDoc={basicHtml} className="w-full h-[600px] border-0 rounded-lg" sandbox="allow-scripts" />
-                      </div>
-                      </div>
-                  )}
-              </div>
-            )}
+            <div className="space-y-4">
+                <CardHeader className="p-0">
+                    <CardTitle className="font-headline">Página Esportiva Básica</CardTitle>
+                    <CardDescription>Gere uma página limpa e profissional para compartilhar com potenciais patrocinadores.</CardDescription>
+                </CardHeader>
+                <Button onClick={handleGenerateBasic} disabled={isBasicPending || !form.formState.isValid}>
+                    {isBasicPending ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Sparkles className="mr-2 h-4 w-4" />}
+                    Gerar Página Básica
+                </Button>
+                {basicUrl && (
+                    <div className="mt-4 space-y-4">
+                    <div className="space-y-2">
+                        <Label>Link Compartilhável</Label>
+                        <div className="flex items-center gap-2">
+                            <Input value={new URL(basicUrl, window.location.origin).href} readOnly />
+                            <CopyButton textToCopy={new URL(basicUrl, window.location.origin).href}>Copiar</CopyButton>
+                        </div>
+                    </div>
+                    </div>
+                )}
+                {basicHtml && (
+                    <div className="mt-4">
+                    <h3 className="mb-2 text-lg font-semibold font-headline">Pré-visualização</h3>
+                    <div className="rounded-lg border bg-background">
+                        <iframe srcDoc={basicHtml} className="w-full h-[600px] border-0 rounded-lg" sandbox="allow-scripts" />
+                    </div>
+                    </div>
+                )}
+            </div>
 
+            {canGeneratePlus && <Separator />}
 
-            {!isPlusDisabled && <Separator />}
-
-            {!isPlusDisabled && (
+            {canGeneratePlus && (
               <div className="space-y-4">
                    <CardHeader className="p-0">
                       <CardTitle className="font-headline">Página Esportiva Melhorada (Plano Plus)</CardTitle>
