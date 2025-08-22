@@ -67,9 +67,8 @@ export function AthleteDashboardClient() {
   useEffect(() => {
     if (typeof window !== "undefined") {
       const plan = sessionStorage.getItem("userPlan") as "basic" | "plus" | "premium" | null;
-      if (plan) {
-        setUserPlan(plan);
-      }
+      // Default to basic if no plan is found
+      setUserPlan(plan || "basic"); 
     }
   }, []);
 
@@ -118,9 +117,12 @@ export function AthleteDashboardClient() {
     const values = form.getValues();
     startBasicTransition(async () => {
       const result = await createBasicPresentation({
-        ...values,
+        fullName: values.fullName,
         dateOfBirth: format(values.dateOfBirth, "dd/MM/yyyy"),
+        sport: values.sport,
         isAmateur: values.isAmateur === "true",
+        achievements: values.achievements,
+        details: values.details,
       });
       if (result.error) {
         toast({ variant: "destructive", title: "Erro", description: result.error });
@@ -152,12 +154,18 @@ export function AthleteDashboardClient() {
     }
     const values = form.getValues();
     startPlusTransition(async () => {
-      const result = await createEnhancedSportpage({
-        ...values,
+      const dataToSend = {
+        fullName: values.fullName,
         dateOfBirth: format(values.dateOfBirth, "dd/MM/yyyy"),
+        sport: values.sport,
         isAmateur: values.isAmateur === "true",
-        photoDataUri,
-      });
+        details: values.details,
+        achievements: values.achievements,
+        photoDataUri: photoDataUri,
+      };
+      
+      const result = await createEnhancedSportpage(dataToSend);
+
       if (result.error) {
         toast({ variant: "destructive", title: "Erro", description: result.error });
       } else {
@@ -255,10 +263,10 @@ export function AthleteDashboardClient() {
              <FormField control={form.control} name="photo" render={({ field }) => (
               <FormItem>
                 <FormLabel>Foto do Perfil {isPlusPlan ? "(Obrigatória para o seu plano)" : ""}</FormLabel>
-                <FormControl><Input type="file" accept="image/*" onChange={handleFileChange} disabled={!isPlusPlan && !isBasicPlan} /></FormControl>
+                <FormControl><Input type="file" accept="image/*" onChange={handleFileChange} /></FormControl>
                 <FormDescription>
                   Uma foto de alta qualidade para sua Página Esportiva. Máx 4MB. 
-                  {isBasicPlan && " (Disponível apenas para planos Plus e Premium)"}
+                  {!isPlusPlan && " (O envio de fotos está disponível apenas para planos Plus e Premium)"}
                 </FormDescription>
                 <FormMessage />
               </FormItem>
@@ -337,3 +345,5 @@ export function AthleteDashboardClient() {
     </Card>
   );
 }
+
+    
