@@ -68,6 +68,13 @@ export function AthleteDashboardClient() {
   const form = useForm<ProfileFormValues>({
     resolver: zodResolver(profileFormSchema),
     mode: "onChange",
+    defaultValues: {
+      fullName: "",
+      sport: "",
+      isAmateur: undefined,
+      details: "",
+      achievements: "",
+    }
   });
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
