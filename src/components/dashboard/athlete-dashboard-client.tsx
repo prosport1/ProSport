@@ -168,7 +168,7 @@ export function AthleteDashboardClient() {
     });
   };
   
-  const canGeneratePlus = userPlan === 'plus' || userPlan === 'premium';
+  const isPlusPlan = userPlan === 'plus' || userPlan === 'premium';
 
   return (
     <Card>
@@ -253,11 +253,11 @@ export function AthleteDashboardClient() {
             )} />
             <FormField control={form.control} name="photo" render={({ field }) => (
               <FormItem>
-                <FormLabel>Foto do Perfil {canGeneratePlus ? "(para o Plano Plus)" : ""}</FormLabel>
-                <FormControl><Input type="file" accept="image/*" onChange={handleFileChange} disabled={!canGeneratePlus} /></FormControl>
+                <FormLabel>Foto do Perfil {isPlusPlan ? "(para o Plano Plus)" : ""}</FormLabel>
+                <FormControl><Input type="file" accept="image/*" onChange={handleFileChange} disabled={!isPlusPlan} /></FormControl>
                 <FormDescription>
                   Uma foto de alta qualidade para sua Página Esportiva melhorada. Máx 4MB. 
-                  {!canGeneratePlus && " (Disponível apenas para planos Plus e Premium)"}
+                  {!isPlusPlan && " (Disponível apenas para planos Plus e Premium)"}
                 </FormDescription>
                 <FormMessage />
               </FormItem>
@@ -268,47 +268,47 @@ export function AthleteDashboardClient() {
         <Separator />
         
         <div className="space-y-8">
-            <div className="space-y-4">
-                <CardHeader className="p-0">
-                    <CardTitle className="font-headline">Página Esportiva Básica</CardTitle>
-                    <CardDescription>Gere uma página limpa e profissional para compartilhar com potenciais patrocinadores.</CardDescription>
-                </CardHeader>
-                <Button onClick={handleGenerateBasic} disabled={isBasicPending || !form.formState.isValid}>
-                    {isBasicPending ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Sparkles className="mr-2 h-4 w-4" />}
-                    Gerar Página Básica
-                </Button>
-                {basicUrl && (
-                    <div className="mt-4 space-y-4">
-                    <div className="space-y-2">
-                        <Label>Link Compartilhável</Label>
-                        <div className="flex items-center gap-2">
-                            <Input value={new URL(basicUrl, window.location.origin).href} readOnly />
-                            <CopyButton textToCopy={new URL(basicUrl, window.location.origin).href}>Copiar</CopyButton>
-                        </div>
-                    </div>
-                    </div>
-                )}
-                {basicHtml && (
-                    <div className="mt-4">
-                    <h3 className="mb-2 text-lg font-semibold font-headline">Pré-visualização</h3>
-                    <div className="rounded-lg border bg-background">
-                        <iframe srcDoc={basicHtml} className="w-full h-[600px] border-0 rounded-lg" sandbox="allow-scripts" />
-                    </div>
-                    </div>
-                )}
-            </div>
+            {!isPlusPlan && (
+              <div className="space-y-4">
+                  <CardHeader className="p-0">
+                      <CardTitle className="font-headline">Sport Page Básica</CardTitle>
+                      <CardDescription>Gere uma página limpa e profissional para compartilhar com potenciais patrocinadores.</CardDescription>
+                  </CardHeader>
+                  <Button onClick={handleGenerateBasic} disabled={isBasicPending || !form.formState.isValid}>
+                      {isBasicPending ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Sparkles className="mr-2 h-4 w-4" />}
+                      Gerar Sport Page Básica
+                  </Button>
+                  {basicUrl && (
+                      <div className="mt-4 space-y-4">
+                      <div className="space-y-2">
+                          <Label>Link Compartilhável</Label>
+                          <div className="flex items-center gap-2">
+                              <Input value={new URL(basicUrl, window.location.origin).href} readOnly />
+                              <CopyButton textToCopy={new URL(basicUrl, window.location.origin).href}>Copiar</CopyButton>
+                          </div>
+                      </div>
+                      </div>
+                  )}
+                  {basicHtml && (
+                      <div className="mt-4">
+                      <h3 className="mb-2 text-lg font-semibold font-headline">Pré-visualização</h3>
+                      <div className="rounded-lg border bg-background">
+                          <iframe srcDoc={basicHtml} className="w-full h-[600px] border-0 rounded-lg" sandbox="allow-scripts" />
+                      </div>
+                      </div>
+                  )}
+              </div>
+            )}
 
-            {canGeneratePlus && <Separator />}
-
-            {canGeneratePlus && (
+            {isPlusPlan && (
               <div className="space-y-4">
                    <CardHeader className="p-0">
-                      <CardTitle className="font-headline">Página Esportiva Melhorada (Plano Plus)</CardTitle>
+                      <CardTitle className="font-headline">Sport Page Melhorada (Plano Plus)</CardTitle>
                       <CardDescription>Crie uma apresentação visualmente deslumbrante, no estilo NFL/NBA, para impressionar os patrocinadores.</CardDescription>
                   </CardHeader>
                   <Button onClick={handleGeneratePlus} disabled={isPlusPending || !form.formState.isValid || !photoDataUri}>
                     {isPlusPending ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Sparkles className="mr-2 h-4 w-4" />}
-                    Gerar Página Melhorada
+                    Gerar Sport Page Melhorada
                   </Button>
                   {plusUrl && (
                     <div className="mt-4 space-y-4">
