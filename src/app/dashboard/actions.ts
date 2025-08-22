@@ -8,6 +8,7 @@ import {
   generateEnhancedSportpage,
   type GenerateEnhancedSportpageInput,
 } from "@/ai/flows/generate-enhanced-sportpage";
+import { setPageContent } from "@/lib/storage";
 
 const generateSlug = (name: string) => {
   return name
@@ -18,7 +19,7 @@ const generateSlug = (name: string) => {
 };
 
 export async function createBasicPresentation(
-  data: Omit<GenerateSponsorPresentationInput, "weightCategory" | "martialArtsRanking" | "stats"> & { details: string }
+  data: Omit<GenerateSponsorPresentationInput, "weightCategory" | "martialArtsRanking"> & { details: string }
 ) {
   try {
     const input: GenerateSponsorPresentationInput = {
@@ -27,11 +28,12 @@ export async function createBasicPresentation(
       sport: data.sport,
       isAmateur: data.isAmateur,
       achievements: data.achievements,
-      stats: "", // This is now empty
+      stats: data.stats,
     };
     const { presentation } = await generateSponsorPresentation(input);
-    const slug = generateSlug(data.fullName);
-    const presentationUrl = `/p/${slug}-basic-${Date.now()}`;
+    const slug = generateSlug(data.fullName) + `-basic-${Date.now()}`;
+    setPageContent(slug, presentation);
+    const presentationUrl = `/p/${slug}`;
     return { presentation, presentationUrl };
   } catch (error) {
     console.error(error);
@@ -44,8 +46,9 @@ export async function createEnhancedSportpage(
 ) {
   try {
     const { sportpageHtml } = await generateEnhancedSportpage(data);
-    const slug = generateSlug(data.fullName);
-    const sportpageUrl = `/p/${slug}-plus-${Date.now()}`;
+    const slug = generateSlug(data.fullName) + `-plus-${Date.now()}`;
+    setPageContent(slug, sportpageHtml);
+    const sportpageUrl = `/p/${slug}`;
     return { sportpageHtml, sportpageUrl };
   } catch (error) {
     console.error(error);

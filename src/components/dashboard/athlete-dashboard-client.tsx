@@ -5,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { format } from "date-fns";
-import { CalendarIcon, Loader2, Sparkles, Link as LinkIcon } from "lucide-react";
+import { CalendarIcon, Loader2, Sparkles } from "lucide-react";
 import {
   createBasicPresentation,
   createEnhancedSportpage,
@@ -46,6 +46,7 @@ const profileFormSchema = z.object({
   isAmateur: z.string({ required_error: "Por favor, selecione um status." }),
   details: z.string().min(10, "Os detalhes devem ter pelo menos 10 caracteres."),
   achievements: z.string().min(10, "As conquistas devem ter pelo menos 10 caracteres."),
+  stats: z.string().min(2, "As estatísticas são obrigatórias."),
   photo: z.any().optional(),
 });
 
@@ -240,6 +241,13 @@ export function AthleteDashboardClient() {
                         <FormMessage />
                       </FormItem>
                     )} />
+                     <FormField control={form.control} name="stats" render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Estatísticas</FormLabel>
+                        <FormControl><Textarea placeholder="Ex: Altura: 1.80m, Peso: 75kg, Vitórias: 10, Derrotas: 2" className="resize-none" {...field} /></FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )} />
                     <FormField control={form.control} name="photo" render={({ field }) => (
                       <FormItem>
                         <FormLabel>Foto do Perfil (para o Plano Plus)</FormLabel>
@@ -297,7 +305,7 @@ export function AthleteDashboardClient() {
                   <div className="mt-4">
                     <h3 className="mb-2 text-lg font-semibold font-headline">Pré-visualização</h3>
                     <div className="rounded-lg border bg-background">
-                       <iframe srcDoc={basicHtml} className="w-full h-[600px] border-0 rounded-lg" sandbox="" />
+                       <iframe srcDoc={basicHtml} className="w-full h-[600px] border-0 rounded-lg" sandbox="allow-scripts" />
                     </div>
                   </div>
                 )}
@@ -331,7 +339,7 @@ export function AthleteDashboardClient() {
                   <div className="mt-4">
                     <h3 className="mb-2 text-lg font-semibold font-headline">Pré-visualização</h3>
                     <div className="rounded-lg border bg-background">
-                      <iframe srcDoc={plusHtml} className="w-full h-[600px] border-0 rounded-lg" sandbox="" />
+                      <iframe srcDoc={plusHtml} className="w-full h-[600px] border-0 rounded-lg" sandbox="allow-scripts" />
                     </div>
                   </div>
                 )}

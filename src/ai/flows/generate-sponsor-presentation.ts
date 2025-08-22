@@ -49,6 +49,7 @@ const prompt = ai.definePrompt({
   {{#if weightCategory}}Weight Category: {{{weightCategory}}}{{/if}}
   {{#if martialArtsRanking}}Martial Arts Ranking: {{{martialArtsRanking}}}{{/if}}
   Achievements: {{{achievements}}}
+  Stats: {{{stats}}}
 
   Presentation:`,
 });
