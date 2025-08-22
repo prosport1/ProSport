@@ -37,10 +37,12 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply text-foreground;
     background-image: url('https://firebasestudio.promptlab.gallery/transcoded/1defa1a9-b3a6-4448-b425-6677f2025178.jpeg');
+    background-color: #000;
     background-size: cover;
     background-position: center;
+    background-repeat: no-repeat;
     background-attachment: fixed;
   }
 }

@@ -23,7 +23,7 @@ export default function RootLayout({
       </head>
       <body
         className={cn(
-          "min-h-screen bg-background/80 font-body antialiased backdrop-blur-sm"
+          "min-h-screen font-body antialiased backdrop-blur-sm"
         )}
       >
         {children}
