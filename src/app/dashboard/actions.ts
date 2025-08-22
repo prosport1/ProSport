@@ -6,8 +6,8 @@ import {
 } from "@/ai/flows/generate-sponsor-presentation";
 import {
   generateEnhancedSportpage,
-  type GenerateEnhancedSportpageInput,
 } from "@/ai/flows/generate-enhanced-sportpage";
+import type { GenerateEnhancedSportpageInput } from "@/ai/flows/generate-enhanced-sportpage";
 import { setPageContent } from "@/lib/storage";
 
 const generateSlug = (name: string) => {
@@ -33,15 +33,24 @@ export async function createBasicPresentation(
   }
 }
 
+interface CreateEnhancedSportpageData extends GenerateEnhancedSportpageInput {
+  photoDataUri: string;
+}
+
 export async function createEnhancedSportpage(
-  data: GenerateEnhancedSportpageInput
+  data: CreateEnhancedSportpageData
 ) {
   try {
-    const { sportpageHtml } = await generateEnhancedSportpage(data);
+    const { photoDataUri, ...athleteData } = data;
+    const { sportpageHtml: htmlTemplate } = await generateEnhancedSportpage(athleteData);
+
+    // Replace the placeholder with the actual image data URI
+    const finalHtml = htmlTemplate.replace("__IMAGE_PLACEHOLDER__", photoDataUri);
+
     const slug = generateSlug(data.fullName) + `-plus-${Date.now()}`;
-    setPageContent(slug, sportpageHtml);
+    setPageContent(slug, finalHtml);
     const sportpageUrl = `/p/${slug}`;
-    return { sportpageHtml, sportpageUrl };
+    return { sportpageHtml: finalHtml, sportpageUrl };
   } catch (error) {
     console.error(error);
     return { error: "Failed to generate enhanced sportpage." };
