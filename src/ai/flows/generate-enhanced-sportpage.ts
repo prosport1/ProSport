@@ -41,28 +41,20 @@ const prompt = ai.definePrompt({
   output: {schema: GenerateEnhancedSportpageOutputSchema},
   prompt: `You are an expert web designer specializing in creating engaging sportpages for athletes, styled after professional sports leagues like the NFL and NBA.
 
-  Using the athlete's information, create a visually appealing and informative sportpage to attract potential sponsors and fans.
+  Using the athlete's information and the provided photo, create a visually appealing and informative sportpage to attract potential sponsors and fans.
 
   The sportpage should include:
   - A professional-looking header with the athlete's name and sport.
-  - A compelling hero section with the athlete's photo. Make sure to reference the photo using: {{media url=photoDataUri}}
+  - A compelling hero section with the athlete's photo. You MUST use the provided image as the src for the img tag.
   - Key details about the athlete, including date of birth, sport, amateur/professional status, achievements, and other relevant details.
   - Modern fonts and a dynamic layout.
   - Ensure the design reflects the high-energy and professional aesthetic of the NFL/NBA.
-
-  Athlete Information:
-  - Full Name: {{{fullName}}}
-  - Date of Birth: {{{dateOfBirth}}}
-  - Sport: {{{sport}}}
-  - Amateur/Professional: {{#if isAmateur}}Amateur{{else}}Professional{{/if}}
-  - Achievements: {{{achievements}}}
-  - Details: {{{details}}}
 
   Return ONLY the HTML for the content inside the <body> tag. The output should start with a <div... and end with a </div>.
   It will be embedded in an existing page. Do NOT include <!DOCTYPE html>, <html>, <head>, or <body> tags.
   Use Tailwind CSS classes for styling.
 
-  Here is an example structure:
+  Here is an example structure. Use the provided photo for the 'src' attribute of the image tag:
   \`\`\`html
   <div class="font-sans bg-[#1a1a1a] text-[#f1f1f1] p-4">
     <div class="container mx-auto p-4 max-w-4xl">
@@ -94,8 +86,18 @@ const prompt = ai.definePrompt({
     </div>
   </div>
   \`\`\`
+
+  Athlete Information:
+  - Full Name: {{{fullName}}}
+  - Date of Birth: {{{dateOfBirth}}}
+  - Sport: {{{sport}}}
+  - Amateur/Professional: {{#if isAmateur}}Amateur{{else}}Professional{{/if}}
+  - Achievements: {{{achievements}}}
+  - Details: {{{details}}}
+  - Photo: {{media url=photoDataUri}}
 `,
 });
+
 
 const generateEnhancedSportpageFlow = ai.defineFlow(
   {
