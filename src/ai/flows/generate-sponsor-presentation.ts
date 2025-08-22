@@ -22,7 +22,7 @@ const GenerateSponsorPresentationInputSchema = z.object({
 export type GenerateSponsorPresentationInput = z.infer<typeof GenerateSponsorPresentationInputSchema>;
 
 const GenerateSponsorPresentationOutputSchema = z.object({
-  presentation: z.string().describe('The generated sponsor presentation.'),
+  presentation: z.string().describe('The generated sponsor presentation in Markdown format.'),
 });
 export type GenerateSponsorPresentationOutput = z.infer<typeof GenerateSponsorPresentationOutputSchema>;
 
@@ -37,19 +37,42 @@ const prompt = ai.definePrompt({
   prompt: `You are an AI assistant specialized in creating presentations for athletes to attract potential sponsors.
 
   Based on the athlete's data, generate a compelling presentation highlighting their achievements and potential.
-  Use a modern style inspired by NFL presentations.
+  Use a modern style inspired by NFL presentations, in Markdown format.
 
   From the athlete's data, you must infer and create a "Statistics" section. This section should include plausible metrics relevant to the athlete's sport. For example, for a fighter, it could be height, weight, reach, wins, losses, inferred from the details. For a soccer player, it could be goals, assists, etc.
 
   Athlete Data:
-  Full Name: {{{fullName}}}
-  Date of Birth: {{{dateOfBirth}}}
-  Sport: {{{sport}}}
-  Amateur/Professional: {{#if isAmateur}}Amateur{{else}}Professional{{/if}}
-  Achievements: {{{achievements}}}
-  Details: {{{details}}}
+  - Full Name: {{{fullName}}}
+  - Date of Birth: {{{dateOfBirth}}}
+  - Sport: {{{sport}}}
+  - Amateur/Professional: {{#if isAmateur}}Amateur{{else}}Professional{{/if}}
+  - Achievements: {{{achievements}}}
+  - Details: {{{details}}}
 
-  Presentation:`,
+  Generate the presentation in Markdown format, following this example structure:
+
+  \`\`\`markdown
+  # Sponsor Presentation: {{{fullName}}}
+
+  ## Overview
+  - **Sport:** {{{sport}}}
+  - **Status:** {{#if isAmateur}}Amateur{{else}}Professional{{/if}}
+  - **Born:** {{{dateOfBirth}}}
+
+  ## Statistics
+  *You must infer these stats from the details provided.*
+  - **Height:** (e.g., 1.80m)
+  - **Weight:** (e.g., 77kg)
+  - **Reach:** (e.g., 185cm)
+  - **Record:** (e.g., 10 Wins, 2 Losses)
+
+  ## Achievements
+  {{{achievements}}}
+
+  ## About
+  {{{details}}}
+  \`\`\`
+`,
 });
 
 const generateSponsorPresentationFlow = ai.defineFlow(
