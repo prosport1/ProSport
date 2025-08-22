@@ -7,10 +7,22 @@ export default function SportPage({ params }: { params: { slug: string } }) {
   if (!content) {
     notFound();
   }
+  
+  // Check if content is a full HTML document
+  if (content.trim().startsWith('<!DOCTYPE html>')) {
+     return (
+        <div
+        dangerouslySetInnerHTML={{ __html: content }}
+        />
+     );
+  }
 
+  // If content is Markdown or partial HTML, wrap it
   return (
-    <div
-      dangerouslySetInnerHTML={{ __html: content }}
-    />
+    <div className="prose prose-invert mx-auto p-8">
+      <div
+        dangerouslySetInnerHTML={{ __html: content }}
+      />
+    </div>
   );
 }

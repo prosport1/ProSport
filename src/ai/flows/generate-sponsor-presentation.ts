@@ -39,7 +39,7 @@ const prompt = ai.definePrompt({
   Based on the athlete's data, generate a compelling presentation highlighting their achievements and potential.
   Use a modern style inspired by NFL presentations, in Markdown format.
 
-  From the athlete's data, you must infer and create a "Statistics" section. This section should include plausible metrics relevant to the athlete's sport. For example, for a fighter, it could be height, weight, reach, wins, losses, inferred from the details. For a soccer player, it could be goals, assists, etc.
+  Create a "Statistics" section based on the information from the "Details" section. Include plausible metrics relevant to the athlete's sport. For example, for a fighter, extract height, weight, reach, and record from the details provided. For a soccer player, it could be goals, assists, etc.
 
   Athlete Data:
   - Full Name: {{{fullName}}}
@@ -60,7 +60,7 @@ const prompt = ai.definePrompt({
   - **Born:** {{{dateOfBirth}}}
 
   ## Statistics
-  *You must infer these stats from the details provided.*
+  *Based on the details provided.*
   - **Height:** (e.g., 1.80m)
   - **Weight:** (e.g., 77kg)
   - **Reach:** (e.g., 185cm)

@@ -58,25 +58,16 @@ const prompt = ai.definePrompt({
   - Achievements: {{{achievements}}}
   - Details: {{{details}}}
 
-  Return the complete HTML code for the sportpage, following this example structure:
+  Return ONLY the HTML for the content inside the <body> tag. The output should start with a <div... and end with a </div>.
+  It will be embedded in an existing page. Do NOT include <!DOCTYPE html>, <html>, <head>, or <body> tags.
+  Use Tailwind CSS classes for styling.
+
+  Here is an example structure:
   \`\`\`html
-  <!DOCTYPE html>
-  <html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Athlete Profile</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Teko:wght@400;700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    <style>
-      body { font-family: 'Roboto', sans-serif; background-color: #1a1a1a; color: #f1f1f1; }
-      .font-teko { font-family: 'Teko', sans-serif; }
-    </style>
-  </head>
-  <body>
+  <div class="font-sans bg-[#1a1a1a] text-[#f1f1f1] p-4">
     <div class="container mx-auto p-4 max-w-4xl">
       <header class="text-center mb-8 border-b-4 border-yellow-400 pb-4">
-        <h1 class="font-teko text-7xl font-bold tracking-wider text-white uppercase">{{{fullName}}}</h1>
+        <h1 class="font-black text-7xl tracking-wider text-white uppercase" style="font-family: 'Teko', sans-serif;">{{{fullName}}}</h1>
         <p class="text-2xl text-gray-300">{{{sport}}}</p>
       </header>
       <main>
@@ -86,7 +77,7 @@ const prompt = ai.definePrompt({
           </div>
           <div class="md:col-span-2">
             <div class="bg-gray-800 p-6 rounded-lg">
-              <h2 class="font-teko text-4xl mb-4 border-b border-gray-600 pb-2">Athlete Details</h2>
+              <h2 class="font-black text-4xl mb-4 border-b border-gray-600 pb-2" style="font-family: 'Teko', sans-serif;">Athlete Details</h2>
               <div class="space-y-3 text-lg">
                 <p><strong>Date of Birth:</strong> {{{dateOfBirth}}}</p>
                 <p><strong>Status:</strong> {{#if isAmateur}}Amateur{{else}}Professional{{/if}}</p>
@@ -94,15 +85,14 @@ const prompt = ai.definePrompt({
               </div>
             </div>
             <div class="bg-gray-800 p-6 rounded-lg mt-8">
-              <h2 class="font-teko text-4xl mb-4 border-b border-gray-600 pb-2">Achievements</h2>
+              <h2 class="font-black text-4xl mb-4 border-b border-gray-600 pb-2" style="font-family: 'Teko', sans-serif;">Achievements</h2>
               <p class="text-lg whitespace-pre-wrap">{{{achievements}}}</p>
             </div>
           </div>
         </div>
       </main>
     </div>
-  </body>
-  </html>
+  </div>
   \`\`\`
 `,
 });
