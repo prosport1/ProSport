@@ -59,8 +59,8 @@ const prompt = ai.definePrompt({
   <div class="font-sans bg-[#1a1a1a] text-[#f1f1f1] p-4">
     <div class="container mx-auto p-4 max-w-4xl">
       <header class="text-center mb-8 border-b-4 border-yellow-400 pb-4">
-        <h1 class="font-black text-7xl tracking-wider text-white uppercase" style="font-family: 'Teko', sans-serif;">{{{fullName}}}</h1>
-        <p class="text-2xl text-gray-300">{{{sport}}}</p>
+        <h1 class="font-black text-7xl tracking-wider text-white uppercase" style="font-family: 'Teko', sans-serif;">Michael 'Venom' Page</h1>
+        <p class="text-2xl text-gray-300">MMA</p>
       </header>
       <main>
         <div class="grid md:grid-cols-3 gap-8">
@@ -71,14 +71,14 @@ const prompt = ai.definePrompt({
             <div class="bg-gray-800 p-6 rounded-lg">
               <h2 class="font-black text-4xl mb-4 border-b border-gray-600 pb-2" style="font-family: 'Teko', sans-serif;">Athlete Details</h2>
               <div class="space-y-3 text-lg">
-                <p><strong>Date of Birth:</strong> {{{dateOfBirth}}}</p>
-                <p><strong>Status:</strong> {{#if isAmateur}}Amateur{{else}}Professional{{/if}}</p>
-                <p><strong>Details:</strong> {{{details}}}</p>
+                <p><strong>Date of Birth:</strong> 04/07/1987</p>
+                <p><strong>Status:</strong> Professional</p>
+                <p><strong>Details:</strong> Welterweight, Striker</p>
               </div>
             </div>
             <div class="bg-gray-800 p-6 rounded-lg mt-8">
               <h2 class="font-black text-4xl mb-4 border-b border-gray-600 pb-2" style="font-family: 'Teko', sans-serif;">Achievements</h2>
-              <p class="text-lg whitespace-pre-wrap">{{{achievements}}}</p>
+              <p class="text-lg whitespace-pre-wrap">Multiple Kickboxing World Championships.</p>
             </div>
           </div>
         </div>
