@@ -30,7 +30,5 @@ export const GenerateEnhancedSportpageInputSchema = z.object({
 export type GenerateEnhancedSportpageInput = z.infer<typeof GenerateEnhancedSportpageInputSchema>;
 
 // Output schema for the enhanced sportpage.
-export const GenerateEnhancedSportpageOutputSchema = z.object({
-    sportpageHtml: z.string().describe("The full HTML content for the sportpage, as a single string."),
-});
+export const GenerateEnhancedSportpageOutputSchema = z.string().describe("The full HTML content for the sportpage, as a single string.");
 export type GenerateEnhancedSportpageOutput = z.infer<typeof GenerateEnhancedSportpageOutputSchema>;

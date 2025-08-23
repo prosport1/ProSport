@@ -43,7 +43,7 @@ export async function createEnhancedSportpage(
   try {
     const { photoDataUri, ...athleteData } = data;
     const aiInput: GenerateEnhancedSportpageInput = athleteData;
-    const { sportpageHtml } = await generateEnhancedSportpage(aiInput);
+    const sportpageHtml = await generateEnhancedSportpage(aiInput);
 
     if (!sportpageHtml) {
       throw new Error("AI did not return HTML content.");
