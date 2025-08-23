@@ -1,3 +1,4 @@
+
 'use server';
 
 /**
@@ -39,8 +40,6 @@ const prompt = ai.definePrompt({
   Based on the athlete's data, generate a compelling presentation highlighting their achievements and potential.
   Use a modern style inspired by NFL presentations, in Markdown format.
 
-  Create a "Statistics" section based on the information from the "Details" section. Include plausible metrics relevant to the athlete's sport. For example, for a fighter, extract height, weight, reach, and record from the details provided. For a soccer player, it could be goals, assists, etc.
-
   Athlete Data:
   - Full Name: {{{fullName}}}
   - Date of Birth: {{{dateOfBirth}}}
@@ -49,29 +48,27 @@ const prompt = ai.definePrompt({
   - Achievements: {{{achievements}}}
   - Details: {{{details}}}
 
-  Generate the presentation in Markdown format, following this example structure:
+  Generate the presentation in Markdown format. Create a "Statistics" section based on plausible metrics relevant to the sport, derived from the "Details" section.
 
-  \`\`\`markdown
-  # Sponsor Presentation: {{{fullName}}}
+  Example Structure:
+  # Sponsor Presentation: [Athlete's Name]
 
   ## Overview
-  - **Sport:** {{{sport}}}
-  - **Status:** {{#if isAmateur}}Amateur{{else}}Professional{{/if}}
-  - **Born:** {{{dateOfBirth}}}
+  - **Sport:** [Sport]
+  - **Status:** [Amateur/Professional]
+  - **Born:** [Date of Birth]
 
   ## Statistics
   *Based on the details provided.*
   - **Height:** (e.g., 1.80m)
   - **Weight:** (e.g., 77kg)
-  - **Reach:** (e.g., 185cm)
   - **Record:** (e.g., 10 Wins, 2 Losses)
 
   ## Achievements
-  {{{achievements}}}
+  [Achievements]
 
   ## About
-  {{{details}}}
-  \`\`\`
+  [Details]
 `,
 });
 

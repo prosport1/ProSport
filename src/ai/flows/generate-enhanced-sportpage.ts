@@ -36,14 +36,13 @@ const prompt = ai.definePrompt({
   output: {schema: GenerateEnhancedSportpageOutputSchema},
   prompt: `You are an expert web designer specializing in creating engaging sportpages for athletes, styled after professional sports leagues like the NFL and NBA.
 
-  Using the athlete's information, create a visually appealing and informative sportpage.
+  Based on the athlete's data, generate a visually appealing and informative sportpage.
 
   You MUST create an HTML structure that includes an <img> tag. For the 'src' attribute of this <img> tag, you MUST use the exact placeholder string "__IMAGE_PLACEHOLDER__". The application will replace this placeholder with the actual athlete's photo.
 
   The sportpage should include:
   - A professional-looking header with the athlete's name and sport.
-  - An <img> tag with src="__IMAGE_PLACEHOLDER__".
-  - Key details about the athlete, including date of birth, sport, amateur/professional status, achievements, and other relevant details.
+  - Key details about the athlete: date of birth, sport, amateur/professional status, achievements, and other relevant details.
   - Modern fonts and a dynamic layout.
   - Ensure the design reflects the high-energy and professional aesthetic of the NFL/NBA.
 
