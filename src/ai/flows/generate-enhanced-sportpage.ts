@@ -13,7 +13,6 @@ import {ai} from '@/ai/genkit';
 import { GenerateEnhancedSportpageInputSchema, GenerateEnhancedSportpageOutputSchema, type GenerateEnhancedSportpageInput, type GenerateEnhancedSportpageOutput } from './types';
 import {googleAI} from '@genkit-ai/googleai';
 
-
 /**
  * Generates an enhanced sportpage by calling the Genkit flow.
  * @param input The athlete's data.
