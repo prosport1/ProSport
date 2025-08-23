@@ -5,27 +5,10 @@
  * @fileOverview A flow to generate a sponsor presentation for athletes.
  *
  * - generateSponsorPresentation - A function that generates a sponsor presentation.
- * - GenerateSponsorPresentationInput - The input type for the generateSponsorPresentation function.
- * - GenerateSponsorPresentationOutput - The return type for the generateSponsorPresentation function.
  */
 
 import {ai} from '@/ai/genkit';
-import {z} from 'genkit';
-
-const GenerateSponsorPresentationInputSchema = z.object({
-  fullName: z.string().describe('The full name of the athlete.'),
-  dateOfBirth: z.string().describe('The date of birth of the athlete.'),
-  sport: z.string().describe('The sport the athlete participates in.'),
-  isAmateur: z.boolean().describe('Whether the athlete is an amateur or professional.'),
-  achievements: z.string().describe('The achievements of the athlete.'),
-  details: z.string().describe('Additional details about the athlete, such as weight class, martial arts ranking, etc.'),
-});
-export type GenerateSponsorPresentationInput = z.infer<typeof GenerateSponsorPresentationInputSchema>;
-
-const GenerateSponsorPresentationOutputSchema = z.object({
-  presentation: z.string().describe('The generated sponsor presentation in Markdown format.'),
-});
-export type GenerateSponsorPresentationOutput = z.infer<typeof GenerateSponsorPresentationOutputSchema>;
+import { GenerateSponsorPresentationInputSchema, GenerateSponsorPresentationOutputSchema, type GenerateSponsorPresentationInput, type GenerateSponsorPresentationOutput } from './types';
 
 export async function generateSponsorPresentation(input: GenerateSponsorPresentationInput): Promise<GenerateSponsorPresentationOutput> {
   return generateSponsorPresentationFlow(input);

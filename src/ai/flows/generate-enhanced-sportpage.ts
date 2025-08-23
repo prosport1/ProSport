@@ -7,29 +7,10 @@
  * modern design inspired by major sports leagues (NFL, NBA).
  *
  * - generateEnhancedSportpage - A function that handles the sportpage generation.
- * - GenerateEnhancedSportpageInput - The input type for the function.
- * - GenerateEnhancedSportpageOutput - The return type for the function.
  */
 
 import {ai} from '@/ai/genkit';
-import {z} from 'genkit';
-
-// Input schema for the athlete's data, excluding the photo.
-export const GenerateEnhancedSportpageInputSchema = z.object({
-    fullName: z.string().describe("The full name of the athlete."),
-    dateOfBirth: z.string().describe("The date of birth of the athlete in DD/MM/YYYY format."),
-    sport: z.string().describe("The primary sport of the athlete."),
-    isAmateur: z.boolean().describe("True if the athlete is amateur, false if professional."),
-    details: z.string().describe("A comma-separated list of key details (e.g., Weight Class, Rank, Team)."),
-    achievements: z.string().describe("A comma-separated list of significant achievements."),
-});
-export type GenerateEnhancedSportpageInput = z.infer<typeof GenerateEnhancedSportpageInputSchema>;
-
-// Output schema expects a single string of HTML content.
-const GenerateEnhancedSportpageOutputSchema = z.object({
-    sportpageHtml: z.string().describe("The full HTML content for the sportpage, as a single string."),
-});
-export type GenerateEnhancedSportpageOutput = z.infer<typeof GenerateEnhancedSportpageOutputSchema>;
+import { GenerateEnhancedSportpageInputSchema, GenerateEnhancedSportpageOutputSchema, type GenerateEnhancedSportpageInput, type GenerateEnhancedSportpageOutput } from './types';
 
 
 /**

@@ -3,11 +3,12 @@
 
 import {
   generateSponsorPresentation,
-  type GenerateSponsorPresentationInput,
 } from "@/ai/flows/generate-sponsor-presentation";
+import type { GenerateSponsorPresentationInput } from "@/ai/flows/types";
 import { setPageContent } from "@/lib/storage";
 import { testAiConnection } from "@/ai/flows/test-ai-connection";
-import { generateEnhancedSportpage, type GenerateEnhancedSportpageInput } from '@/ai/flows/generate-enhanced-sportpage';
+import { generateEnhancedSportpage } from '@/ai/flows/generate-enhanced-sportpage';
+import type { GenerateEnhancedSportpageInput } from '@/ai/flows/types';
 
 const generateSlug = (name: string) => {
   return name
