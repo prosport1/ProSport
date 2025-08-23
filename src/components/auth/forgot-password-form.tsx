@@ -4,7 +4,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -20,10 +19,9 @@ import { useToast } from "@/hooks/use-toast";
 
 const formSchema = z.object({
   email: z.string().email({ message: "Endereço de e-mail inválido." }),
-  password: z.string().min(1, { message: "A senha é obrigatória." }),
 });
 
-export function LoginForm() {
+export function ForgotPasswordForm() {
   const router = useRouter();
   const { toast } = useToast();
 
@@ -31,22 +29,19 @@ export function LoginForm() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       email: "",
-      password: "",
     },
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    // Mock login logic
+    // Mock password reset logic
     console.log(values);
-    if (values.email === "admin@prosport.com") {
-      router.push("/admin");
-    } else {
-      router.push("/dashboard");
-    }
     toast({
-      title: "Login bem-sucedido",
-      description: "Redirecionando para o seu painel...",
+      title: "Link de Redefinição Enviado",
+      description: "Se uma conta existir com este e-mail, um link será enviado.",
     });
+    // In a real app, you would not redirect immediately
+    // but for demo purposes we will.
+    router.push("/");
   }
 
   return (
@@ -65,26 +60,8 @@ export function LoginForm() {
             </FormItem>
           )}
         />
-        <FormField
-          control={form.control}
-          name="password"
-          render={({ field }) => (
-            <FormItem>
-              <div className="flex items-center justify-between">
-                <FormLabel>Senha</FormLabel>
-                <Button variant="link" asChild className="p-0 text-sm h-auto">
-                  <Link href="/forgot-password">Esqueceu a senha?</Link>
-                </Button>
-              </div>
-              <FormControl>
-                <Input type="password" placeholder="••••••••" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
         <Button type="submit" className="w-full font-headline">
-          Entrar
+          Enviar Link de Redefinição
         </Button>
       </form>
     </Form>
