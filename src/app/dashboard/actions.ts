@@ -1,12 +1,10 @@
 
 "use server";
 
-import ReactDOMServer from 'react-dom/server';
 import {
   generateSponsorPresentation,
   type GenerateSponsorPresentationInput,
 } from "@/ai/flows/generate-sponsor-presentation";
-import { PlusSportpage, type PlusSportpageProps } from "@/components/sportpages/plus-sportpage";
 import { setPageContent } from "@/lib/storage";
 import { testAiConnection } from "@/ai/flows/test-ai-connection";
 import { generateEnhancedSportpage, type GenerateEnhancedSportpageInput } from '@/ai/flows/generate-enhanced-sportpage';
@@ -34,7 +32,7 @@ export async function createBasicPresentation(
   }
 }
 
-interface CreateEnhancedSportpageData extends PlusSportpageProps {
+interface CreateEnhancedSportpageData extends GenerateEnhancedSportpageInput {
   photoDataUri: string;
 }
 
@@ -62,7 +60,6 @@ export async function createEnhancedSportpage(
     return { sportpageHtml: finalHtml, sportpageUrl };
   } catch (error) {
     console.error("Error in createEnhancedSportpage:", error);
-    // This error is now much less likely as we removed the AI part.
     return { error: "Failed to generate enhanced sportpage." };
   }
 }

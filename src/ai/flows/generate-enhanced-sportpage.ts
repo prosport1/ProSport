@@ -64,6 +64,7 @@ Use the following data to populate the HTML:
 
 The final HTML should be a complete document starting with <!DOCTYPE html> and including <head> and <body> tags.
 Inside the <head>, you must include a script tag to load Tailwind CSS: <script src="https://cdn.tailwindcss.com"></script>.
+Do not use any other external libraries or scripts.
 `,
 });
 
