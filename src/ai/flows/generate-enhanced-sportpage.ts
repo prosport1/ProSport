@@ -52,39 +52,6 @@ const prompt = ai.definePrompt({
   It will be embedded in an existing page. Do NOT include <!DOCTYPE html>, <html>, <head>, or <body> tags.
   Use Tailwind CSS classes for styling.
 
-  Here is an example structure.
-  \`\`\`html
-  <div class="font-sans bg-[#1a1a1a] text-[#f1f1f1] p-4">
-    <div class="container mx-auto p-4 max-w-4xl">
-      <header class="text-center mb-8 border-b-4 border-yellow-400 pb-4">
-        <h1 class="font-black text-7xl tracking-wider text-white uppercase" style="font-family: 'Teko', sans-serif;">{{fullName}}</h1>
-        <p class="text-2xl text-gray-300">{{sport}}</p>
-      </header>
-      <main>
-        <div class="grid md:grid-cols-3 gap-8">
-          <div class="md:col-span-1">
-            <img src="__IMAGE_PLACEHOLDER__" alt="{{fullName}}" class="rounded-lg shadow-2xl w-full">
-          </div>
-          <div class="md:col-span-2">
-            <div class="bg-gray-800 p-6 rounded-lg">
-              <h2 class="font-black text-4xl mb-4 border-b border-gray-600 pb-2" style="font-family: 'Teko', sans-serif;">Athlete Details</h2>
-              <div class="space-y-3 text-lg">
-                <p><strong>Date of Birth:</strong> {{dateOfBirth}}</p>
-                <p><strong>Status:</strong> {{#if isAmateur}}Amateur{{else}}Professional{{/if}}</p>
-                <p><strong>Details:</strong> {{details}}</p>
-              </div>
-            </div>
-            <div class="bg-gray-800 p-6 rounded-lg mt-8">
-              <h2 class="font-black text-4xl mb-4 border-b border-gray-600 pb-2" style="font-family: 'Teko', sans-serif;">Achievements</h2>
-              <p class="text-lg whitespace-pre-wrap">{{achievements}}</p>
-            </div>
-          </div>
-        </div>
-      </main>
-    </div>
-  </div>
-  \`\`\`
-
   Athlete Information:
   - Full Name: {{{fullName}}}
   - Date of Birth: {{{dateOfBirth}}}
