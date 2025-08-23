@@ -1,60 +1,71 @@
 
 'use server';
-
 /**
- * @fileOverview Generates an enhanced sportpage for athletes on the Plus plan, styled like NFL/NBA presentations.
+ * @fileOverview A flow to generate an enhanced, visually appealing sportpage for an athlete.
+ * 
+ * This flow takes athlete data and generates an HTML page with a professional,
+ * modern design inspired by major sports leagues (NFL, NBA).
  *
- * - generateEnhancedSportpage - A function that generates the enhanced sportpage.
- * - GenerateEnhancedSportpageInput - The input type for the generateEnhancedSportpage function.
- * - GenerateEnhancedSportpageOutput - The return type for the generateEnhancedSportpage function.
+ * - generateEnhancedSportpage - A function that handles the sportpage generation.
+ * - GenerateEnhancedSportpageInput - The input type for the function.
+ * - GenerateEnhancedSportpageOutput - The return type for the function.
  */
 
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
 
-const GenerateEnhancedSportpageInputSchema = z.object({
-  fullName: z.string().describe('The full name of the athlete.'),
-  dateOfBirth: z.string().describe('The date of birth of the athlete.'),
-  sport: z.string().describe('The sport the athlete participates in.'),
-  isAmateur: z.boolean().describe('Whether the athlete is an amateur or professional.'),
-  details: z.string().describe('Additional details about the athlete, such as weight class, martial arts ranking, etc.'),
-  achievements: z.string().describe('The achievements of the athlete.'),
+// Input schema for the athlete's data, excluding the photo.
+export const GenerateEnhancedSportpageInputSchema = z.object({
+    fullName: z.string().describe("The full name of the athlete."),
+    dateOfBirth: z.string().describe("The date of birth of the athlete in DD/MM/YYYY format."),
+    sport: z.string().describe("The primary sport of the athlete."),
+    isAmateur: z.boolean().describe("True if the athlete is amateur, false if professional."),
+    details: z.string().describe("A comma-separated list of key details (e.g., Weight Class, Rank, Team)."),
+    achievements: z.string().describe("A comma-separated list of significant achievements."),
 });
 export type GenerateEnhancedSportpageInput = z.infer<typeof GenerateEnhancedSportpageInputSchema>;
 
+// Output schema expects a single string of HTML content.
 const GenerateEnhancedSportpageOutputSchema = z.object({
-  sportpageHtml: z.string().describe('The HTML content of the enhanced sportpage.'),
+    sportpageHtml: z.string().describe("The full HTML content for the sportpage, as a single string."),
 });
 export type GenerateEnhancedSportpageOutput = z.infer<typeof GenerateEnhancedSportpageOutputSchema>;
 
+
+/**
+ * Generates an enhanced sportpage by calling the Genkit flow.
+ * @param input The athlete's data.
+ * @returns The generated HTML for the sportpage.
+ */
 export async function generateEnhancedSportpage(input: GenerateEnhancedSportpageInput): Promise<GenerateEnhancedSportpageOutput> {
   return generateEnhancedSportpageFlow(input);
 }
 
+
 const prompt = ai.definePrompt({
-  name: 'generateEnhancedSportpagePrompt',
-  output: {schema: GenerateEnhancedSportpageOutputSchema},
-  prompt: `You are an expert web designer specializing in creating engaging sportpages for athletes, styled after professional sports leagues like the NFL and NBA.
+    name: 'generateEnhancedSportpagePrompt',
+    input: { schema: GenerateEnhancedSportpageInputSchema },
+    output: { schema: GenerateEnhancedSportpageOutputSchema },
+    prompt: `
+You are an expert web designer AI specializing in creating stunning, professional athlete profile pages.
+Your task is to generate a complete, single-file HTML page using Tailwind CSS for styling.
+The design should be modern, clean, and impressive, inspired by official NFL or NBA player profile pages.
+The entire output must be a single HTML string.
 
-  Your task is to generate the HTML for an athlete's profile page based on the data provided.
+You MUST use the placeholder "__IMAGE_PLACEHOLDER__" for the 'src' attribute of the main athlete image tag. Do NOT use any other placeholder.
 
-  **Instructions:**
-  1.  The output MUST be only the HTML for the content inside the <body> tag. It should start with a <div> and end with a </div>.
-  2.  Use Tailwind CSS classes for all styling.
-  3.  The design must be professional, modern, and reflect the high-energy aesthetic of the NFL/NBA.
-  4.  You MUST create an HTML structure that includes an <img> tag for the athlete's photo.
-  5.  For the 'src' attribute of this <img> tag, you MUST use the exact placeholder string "__IMAGE_PLACEHOLDER__". The application will replace this with the actual photo.
+Use the following data to populate the HTML:
+- Full Name: {{{fullName}}}
+- Date of Birth: {{{dateOfBirth}}}
+- Sport: {{{sport}}}
+- Status: {{#if isAmateur}}Amateur{{else}}Professional{{/if}}
+- Details: {{{details}}}
+- Achievements: {{{achievements}}}
 
-  **Athlete Information:**
-  - Full Name: {{{fullName}}}
-  - Date of Birth: {{{dateOfBirth}}}
-  - Sport: {{{sport}}}
-  - Amateur/Professional: {{#if isAmateur}}Amateur{{else}}Professional{{/if}}
-  - Achievements: {{{achievements}}}
-  - Details: {{{details}}}
+The final HTML should be a complete document starting with <!DOCTYPE html> and including <head> and <body> tags.
+Inside the <head>, you must include a script tag to load Tailwind CSS: <script src="https://cdn.tailwindcss.com"></script>.
 `,
 });
-
 
 const generateEnhancedSportpageFlow = ai.defineFlow(
   {
@@ -63,7 +74,10 @@ const generateEnhancedSportpageFlow = ai.defineFlow(
     outputSchema: GenerateEnhancedSportpageOutputSchema,
   },
   async (input) => {
-    const {output} = await prompt(input);
-    return output!;
+    const { output } = await prompt(input);
+    if (!output) {
+      throw new Error("AI failed to generate a response.");
+    }
+    return output;
   }
 );

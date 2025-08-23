@@ -37,21 +37,20 @@ const prompt = ai.definePrompt({
   output: {schema: GenerateSponsorPresentationOutputSchema},
   prompt: `
 You are an AI assistant specialized in creating presentations for athletes to attract potential sponsors.
-Your output MUST be in Markdown format.
+Your task is to generate a compelling presentation in Markdown format based on the athlete's data.
+The presentation must be professional and visually clean.
+You must create a "Statistics" section. In this section, invent plausible metrics relevant to the sport, deriving them from the provided "Details" and "Achievements".
 
-Generate a compelling presentation based on the athlete's data.
-The presentation should be modern and professional, inspired by sports league styles.
-Create a "Statistics" section with plausible metrics relevant to the sport, derived from the "Details" and "Achievements" sections.
-
-Athlete Data:
+Use the following data:
 - Full Name: {{{fullName}}}
 - Date of Birth: {{{dateOfBirth}}}
 - Sport: {{{sport}}}
-- Amateur/Professional: {{#if isAmateur}}Amateur{{else}}Professional{{/if}}
-- Achievements: {{{achievements}}}
-- Details: {{{details}}}
+- Status: {{#if isAmateur}}Amateur{{else}}Professional{{/if}}
+- Achievements List: {{{achievements}}}
+- Athlete Details: {{{details}}}
 
-Use this structure for the output:
+Structure your response EXACTLY as follows, using the data provided:
+
 # Sponsor Presentation: {{{fullName}}}
 
 ## Overview
@@ -60,19 +59,16 @@ Use this structure for the output:
 - **Born:** {{{dateOfBirth}}}
 
 ## Statistics
-*Based on the details provided.*
-- Height: (e.g., 1.80m)
-- Weight: (e.g., 77kg)
-- Record: (e.g., 10 Wins, 2 Losses)
-- Other relevant stats...
+- *Invent plausible metrics based on the details and achievements provided. For example: Height, Weight, Record, etc.*
 
 ## Achievements
-{{{achievements}}}
+- *List the achievements here.*
 
 ## About
-{{{details}}}
+- *Provide the athlete's details here.*
 `,
 });
+
 
 const generateSponsorPresentationFlow = ai.defineFlow(
   {

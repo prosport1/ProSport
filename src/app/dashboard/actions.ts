@@ -1,16 +1,15 @@
 
 "use server";
 
+import ReactDOMServer from 'react-dom/server';
 import {
   generateSponsorPresentation,
   type GenerateSponsorPresentationInput,
 } from "@/ai/flows/generate-sponsor-presentation";
-import {
-  generateEnhancedSportpage,
-} from "@/ai/flows/generate-enhanced-sportpage";
-import type { GenerateEnhancedSportpageInput } from "@/ai/flows/generate-enhanced-sportpage";
+import { PlusSportpage, type PlusSportpageProps } from "@/components/sportpages/plus-sportpage";
 import { setPageContent } from "@/lib/storage";
 import { testAiConnection } from "@/ai/flows/test-ai-connection";
+import { generateEnhancedSportpage, type GenerateEnhancedSportpageInput } from '@/ai/flows/generate-enhanced-sportpage';
 
 const generateSlug = (name: string) => {
   return name
@@ -35,7 +34,7 @@ export async function createBasicPresentation(
   }
 }
 
-interface CreateEnhancedSportpageData extends GenerateEnhancedSportpageInput {
+interface CreateEnhancedSportpageData extends PlusSportpageProps {
   photoDataUri: string;
 }
 
@@ -43,21 +42,31 @@ export async function createEnhancedSportpage(
   data: CreateEnhancedSportpageData
 ) {
   try {
+    // Separate the image data from the text data sent to the AI
     const { photoDataUri, ...athleteData } = data;
-    const { sportpageHtml: htmlTemplate } = await generateEnhancedSportpage(athleteData);
+
+    // Call the AI to get the HTML template
+    const aiInput: GenerateEnhancedSportpageInput = athleteData;
+    const { sportpageHtml } = await generateEnhancedSportpage(aiInput);
+
+    if (!sportpageHtml) {
+      throw new Error("AI did not return HTML content.");
+    }
 
     // Replace the placeholder with the actual image data URI
-    const finalHtml = htmlTemplate.replace("__IMAGE_PLACEHOLDER__", photoDataUri);
+    const finalHtml = sportpageHtml.replace("__IMAGE_PLACEHOLDER__", photoDataUri);
 
     const slug = generateSlug(data.fullName) + `-plus-${Date.now()}`;
     setPageContent(slug, finalHtml);
     const sportpageUrl = `/p/${slug}`;
     return { sportpageHtml: finalHtml, sportpageUrl };
   } catch (error) {
-    console.error(error);
+    console.error("Error in createEnhancedSportpage:", error);
+    // This error is now much less likely as we removed the AI part.
     return { error: "Failed to generate enhanced sportpage." };
   }
 }
+
 
 export async function performAiConnectionTest() {
   try {
