@@ -1,3 +1,4 @@
+
 'use server';
 
 /**
@@ -36,7 +37,7 @@ const prompt = ai.definePrompt({
   output: {schema: GenerateEnhancedSportpageOutputSchema},
   prompt: `You are an expert web designer specializing in creating engaging sportpages for athletes, styled after professional sports leagues like the NFL and NBA.
 
-  Using the athlete's information, create a visually appealing and informative sportpage to attract potential sponsors and fans.
+  Using the athlete's information, create a visually appealing and informative sportpage.
 
   You MUST create an HTML structure that includes an <img> tag. For the 'src' attribute of this <img> tag, you MUST use the exact placeholder string "__IMAGE_PLACEHOLDER__". The application will replace this placeholder with the actual athlete's photo.
 
@@ -47,7 +48,7 @@ const prompt = ai.definePrompt({
   - Modern fonts and a dynamic layout.
   - Ensure the design reflects the high-energy and professional aesthetic of the NFL/NBA.
 
-  Return ONLY the HTML for the content inside the <body> tag. The output should start with a <div... and end with a </div>.
+  Return ONLY the HTML for the content inside the <body> tag. The output should start with a <div...> and end with a </div>.
   It will be embedded in an existing page. Do NOT include <!DOCTYPE html>, <html>, <head>, or <body> tags.
   Use Tailwind CSS classes for styling.
 
@@ -101,7 +102,7 @@ const generateEnhancedSportpageFlow = ai.defineFlow(
     inputSchema: GenerateEnhancedSportpageInputSchema,
     outputSchema: GenerateEnhancedSportpageOutputSchema,
   },
-  async input => {
+  async (input) => {
     const {output} = await prompt(input);
     return output!;
   }
