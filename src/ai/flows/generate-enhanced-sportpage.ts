@@ -33,7 +33,6 @@ export async function generateEnhancedSportpage(input: GenerateEnhancedSportpage
 
 const prompt = ai.definePrompt({
   name: 'generateEnhancedSportpagePrompt',
-  input: {schema: GenerateEnhancedSportpageInputSchema},
   output: {schema: GenerateEnhancedSportpageOutputSchema},
   prompt: `You are an expert web designer specializing in creating engaging sportpages for athletes, styled after professional sports leagues like the NFL and NBA.
 
