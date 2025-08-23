@@ -10,6 +10,7 @@ import {
 } from "@/ai/flows/generate-enhanced-sportpage";
 import type { GenerateEnhancedSportpageInput } from "@/ai/flows/generate-enhanced-sportpage";
 import { setPageContent } from "@/lib/storage";
+import { testAiConnection } from "@/ai/flows/test-ai-connection";
 
 const generateSlug = (name: string) => {
   return name
@@ -55,5 +56,18 @@ export async function createEnhancedSportpage(
   } catch (error) {
     console.error(error);
     return { error: "Failed to generate enhanced sportpage." };
+  }
+}
+
+export async function performAiConnectionTest() {
+  try {
+    const result = await testAiConnection();
+    return { message: result.message };
+  } catch (error) {
+    console.error("AI Connection Test Failed:", error);
+    if (error instanceof Error) {
+      return { error: `AI Connection Failed: ${error.message}` };
+    }
+    return { error: "An unknown error occurred during the AI connection test." };
   }
 }
