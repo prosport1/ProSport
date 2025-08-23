@@ -28,19 +28,21 @@ const prompt = ai.definePrompt({
     input: { schema: GenerateEnhancedSportpageInputSchema },
     output: { schema: GenerateEnhancedSportpageOutputSchema },
     prompt: `
-You are an expert web designer. Create a professional athlete profile page using Tailwind CSS.
-Generate ONLY the HTML content for the <body> tag.
-The 'src' for the main athlete image MUST be exactly "__IMAGE_PLACEHOLDER__". Do not use any other placeholder.
+You are an expert web designer specializing in Tailwind CSS.
+Your task is to generate the HTML for a professional athlete profile page.
 
-Use this data:
+Instructions:
+1.  Generate ONLY the HTML content for the <body> tag.
+2.  Do NOT include <!DOCTYPE html>, <html>, <head>, <body>, or <script> tags.
+3.  The 'src' attribute for the main athlete image MUST be exactly "__IMAGE_PLACEHOLDER__". Do not use any other placeholder.
+
+Use the following data to create the page:
 - Full Name: {{{fullName}}}
 - Date of Birth: {{{dateOfBirth}}}
 - Sport: {{{sport}}}
 - Status: {{#if isAmateur}}Amateur{{else}}Professional{{/if}}
 - Details: {{{details}}}
 - Achievements: {{{achievements}}}
-
-Do NOT include <!DOCTYPE html>, <html>, <head>, <body>, or <script> tags.
 `,
 });
 
