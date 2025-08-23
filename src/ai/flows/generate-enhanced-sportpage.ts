@@ -29,11 +29,12 @@ const prompt = ai.definePrompt({
     output: { schema: GenerateEnhancedSportpageOutputSchema },
     prompt: `
 You are an expert web designer AI specializing in creating stunning, professional athlete profile pages.
-Your task is to generate a complete, single-file HTML page using Tailwind CSS for styling.
+Your task is to generate the INNER HTML content for a <body> tag using Tailwind CSS for styling.
 The design should be modern, clean, and impressive, inspired by official NFL or NBA player profile pages.
-The entire output must be a single HTML string.
 
-You MUST use the placeholder "__IMAGE_PLACEHOLDER__" for the 'src' attribute of the main athlete image tag. Do NOT use any other placeholder.
+- DO NOT include <!DOCTYPE html>, <html>, <head>, or <body> tags.
+- DO NOT include the <script src="https://cdn.tailwindcss.com"></script> tag.
+- You MUST use the placeholder "__IMAGE_PLACEHOLDER__" for the 'src' attribute of the main athlete image tag. Do NOT use any other placeholder.
 
 Use the following data to populate the HTML:
 - Full Name: {{{fullName}}}
@@ -43,9 +44,7 @@ Use the following data to populate the HTML:
 - Details: {{{details}}}
 - Achievements: {{{achievements}}}
 
-The final HTML should be a complete document starting with <!DOCTYPE html> and including <head> and <body> tags.
-Inside the <head>, you must include a script tag to load Tailwind CSS: <script src="https://cdn.tailwindcss.com"></script>.
-Do not use any other external libraries or scripts.
+Generate only the HTML content that would appear inside the <body> tag.
 `,
 });
 

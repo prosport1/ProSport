@@ -41,10 +41,7 @@ export async function createEnhancedSportpage(
   data: CreateEnhancedSportpageData
 ) {
   try {
-    // Separate the image data from the text data sent to the AI
     const { photoDataUri, ...athleteData } = data;
-
-    // Call the AI to get the HTML template
     const aiInput: GenerateEnhancedSportpageInput = athleteData;
     const { sportpageHtml } = await generateEnhancedSportpage(aiInput);
 
@@ -52,7 +49,6 @@ export async function createEnhancedSportpage(
       throw new Error("AI did not return HTML content.");
     }
 
-    // Replace the placeholder with the actual image data URI
     const finalHtml = sportpageHtml.replace("__IMAGE_PLACEHOLDER__", photoDataUri);
 
     const slug = generateSlug(data.fullName) + `-plus-${Date.now()}`;
