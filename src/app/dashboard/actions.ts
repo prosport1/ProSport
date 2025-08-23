@@ -55,9 +55,10 @@ export async function createEnhancedSportpage(
     setPageContent(slug, finalHtml);
     const sportpageUrl = `/p/${slug}`;
     return { sportpageHtml: finalHtml, sportpageUrl };
-  } catch (error) {
+  } catch (error: any) {
     console.error("Error in createEnhancedSportpage:", error);
-    return { error: "Failed to generate enhanced sportpage." };
+    // Return the specific error message instead of a generic one.
+    return { error: `Failed to generate enhanced sportpage: ${error.message}` };
   }
 }
 
