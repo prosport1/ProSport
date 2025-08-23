@@ -35,40 +35,42 @@ const prompt = ai.definePrompt({
   name: 'generateSponsorPresentationPrompt',
   input: {schema: GenerateSponsorPresentationInputSchema},
   output: {schema: GenerateSponsorPresentationOutputSchema},
-  prompt: `You are an AI assistant specialized in creating presentations for athletes to attract potential sponsors.
+  prompt: `
+You are an AI assistant specialized in creating presentations for athletes to attract potential sponsors.
+Your output MUST be in Markdown format.
 
-  Based on the athlete's data, generate a compelling presentation highlighting their achievements and potential.
-  Use a modern style inspired by NFL presentations, in Markdown format.
+Generate a compelling presentation based on the athlete's data.
+The presentation should be modern and professional, inspired by sports league styles.
+Create a "Statistics" section with plausible metrics relevant to the sport, derived from the "Details" and "Achievements" sections.
 
-  Athlete Data:
-  - Full Name: {{{fullName}}}
-  - Date of Birth: {{{dateOfBirth}}}
-  - Sport: {{{sport}}}
-  - Amateur/Professional: {{#if isAmateur}}Amateur{{else}}Professional{{/if}}
-  - Achievements: {{{achievements}}}
-  - Details: {{{details}}}
+Athlete Data:
+- Full Name: {{{fullName}}}
+- Date of Birth: {{{dateOfBirth}}}
+- Sport: {{{sport}}}
+- Amateur/Professional: {{#if isAmateur}}Amateur{{else}}Professional{{/if}}
+- Achievements: {{{achievements}}}
+- Details: {{{details}}}
 
-  Generate the presentation in Markdown format. Create a "Statistics" section based on plausible metrics relevant to the sport, derived from the "Details" section.
+Use this structure for the output:
+# Sponsor Presentation: {{{fullName}}}
 
-  Example Structure:
-  # Sponsor Presentation: [Athlete's Name]
+## Overview
+- **Sport:** {{{sport}}}
+- **Status:** {{#if isAmateur}}Amateur{{else}}Professional{{/if}}
+- **Born:** {{{dateOfBirth}}}
 
-  ## Overview
-  - **Sport:** [Sport]
-  - **Status:** [Amateur/Professional]
-  - **Born:** [Date of Birth]
+## Statistics
+*Based on the details provided.*
+- Height: (e.g., 1.80m)
+- Weight: (e.g., 77kg)
+- Record: (e.g., 10 Wins, 2 Losses)
+- Other relevant stats...
 
-  ## Statistics
-  *Based on the details provided.*
-  - **Height:** (e.g., 1.80m)
-  - **Weight:** (e.g., 77kg)
-  - **Record:** (e.g., 10 Wins, 2 Losses)
+## Achievements
+{{{achievements}}}
 
-  ## Achievements
-  [Achievements]
-
-  ## About
-  [Details]
+## About
+{{{details}}}
 `,
 });
 

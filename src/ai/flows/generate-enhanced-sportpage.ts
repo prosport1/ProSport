@@ -36,21 +36,16 @@ const prompt = ai.definePrompt({
   output: {schema: GenerateEnhancedSportpageOutputSchema},
   prompt: `You are an expert web designer specializing in creating engaging sportpages for athletes, styled after professional sports leagues like the NFL and NBA.
 
-  Based on the athlete's data, generate a visually appealing and informative sportpage.
+  Your task is to generate the HTML for an athlete's profile page based on the data provided.
 
-  You MUST create an HTML structure that includes an <img> tag. For the 'src' attribute of this <img> tag, you MUST use the exact placeholder string "__IMAGE_PLACEHOLDER__". The application will replace this placeholder with the actual athlete's photo.
+  **Instructions:**
+  1.  The output MUST be only the HTML for the content inside the <body> tag. It should start with a <div> and end with a </div>.
+  2.  Use Tailwind CSS classes for all styling.
+  3.  The design must be professional, modern, and reflect the high-energy aesthetic of the NFL/NBA.
+  4.  You MUST create an HTML structure that includes an <img> tag for the athlete's photo.
+  5.  For the 'src' attribute of this <img> tag, you MUST use the exact placeholder string "__IMAGE_PLACEHOLDER__". The application will replace this with the actual photo.
 
-  The sportpage should include:
-  - A professional-looking header with the athlete's name and sport.
-  - Key details about the athlete: date of birth, sport, amateur/professional status, achievements, and other relevant details.
-  - Modern fonts and a dynamic layout.
-  - Ensure the design reflects the high-energy and professional aesthetic of the NFL/NBA.
-
-  Return ONLY the HTML for the content inside the <body> tag. The output should start with a <div...> and end with a </div>.
-  It will be embedded in an existing page. Do NOT include <!DOCTYPE html>, <html>, <head>, or <body> tags.
-  Use Tailwind CSS classes for styling.
-
-  Athlete Information:
+  **Athlete Information:**
   - Full Name: {{{fullName}}}
   - Date of Birth: {{{dateOfBirth}}}
   - Sport: {{{sport}}}
