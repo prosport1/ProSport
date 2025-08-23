@@ -24,7 +24,7 @@ export async function generateEnhancedSportpage(input: GenerateEnhancedSportpage
 }
 
 
-const prompt = ai.definePrompt({
+const generateEnhancedSportpagePrompt = ai.definePrompt({
     name: 'generateEnhancedSportpagePrompt',
     input: { schema: GenerateEnhancedSportpageInputSchema },
     output: { schema: GenerateEnhancedSportpageOutputSchema },
@@ -55,7 +55,7 @@ const generateEnhancedSportpageFlow = ai.defineFlow(
     outputSchema: GenerateEnhancedSportpageOutputSchema,
   },
   async (input) => {
-    const { output } = await prompt(input);
+    const { output } = await generateEnhancedSportpagePrompt(input);
     if (!output) {
       throw new Error("AI failed to generate a response.");
     }
