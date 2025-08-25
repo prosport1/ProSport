@@ -29,6 +29,7 @@ import {
 const formSchema = z
   .object({
     companyName: z.string().min(2, { message: "O nome da empresa é obrigatório." }),
+    cnpj: z.string().min(1, { message: "O CNPJ é obrigatório." }),
     sponsorshipType: z.string({ required_error: "Selecione o tipo de patrocínio." }),
     sportInterest: z.string().min(2, { message: "A modalidade de interesse é obrigatória." }),
     email: z.string().email({ message: "Endereço de e-mail inválido." }),
@@ -50,6 +51,7 @@ export function CompanySignupForm() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       companyName: "",
+      cnpj: "",
       sponsorshipType: "",
       sportInterest: "",
       email: "",
@@ -80,6 +82,19 @@ export function CompanySignupForm() {
               <FormLabel>Nome da Empresa</FormLabel>
               <FormControl>
                 <Input placeholder="Ex: Nike" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="cnpj"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>CNPJ</FormLabel>
+              <FormControl>
+                <Input placeholder="00.000.000/0000-00" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
