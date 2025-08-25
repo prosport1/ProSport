@@ -1,3 +1,4 @@
+
 import Link from "next/link";
 import { Icons } from "@/components/icons";
 import { Button } from "@/components/ui/button";
@@ -28,6 +29,18 @@ export function Header() {
               className="flex items-center text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
             >
               Painel
+            </Link>
+            <Link
+              href="/plans"
+              className="flex items-center text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+            >
+              Planos
+            </Link>
+             <Link
+              href="/checkout"
+              className="flex items-center text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+            >
+              Assinatura
             </Link>
           </nav>
         </div>

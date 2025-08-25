@@ -18,7 +18,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { Checkbox } from "@/components/ui/checkbox";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 const formSchema = z
   .object({
@@ -28,9 +27,6 @@ const formSchema = z
       .string()
       .min(8, { message: "A senha deve ter pelo menos 8 caracteres." }),
     confirmPassword: z.string(),
-    plan: z.enum(["basic", "plus", "premium"], {
-      required_error: "Você precisa selecionar um plano.",
-    }),
     terms: z.literal(true, {
       errorMap: () => ({ message: "Você deve aceitar os termos e condições." }),
     }),
@@ -58,10 +54,10 @@ export function SignupForm() {
     // Mock signup logic
     console.log(values);
 
-    // In a real app, you would save the user and their plan.
-    // For this demo, we'll store the plan in sessionStorage.
+    // In a real app, you would save the user.
+    // For this demo, we'll store a default plan in sessionStorage.
     if (typeof window !== "undefined") {
-      sessionStorage.setItem("userPlan", values.plan);
+      sessionStorage.setItem("userPlan", "basic");
     }
     
     toast({
@@ -121,42 +117,6 @@ export function SignupForm() {
               <FormLabel>Confirmar Senha</FormLabel>
               <FormControl>
                 <Input type="password" placeholder="••••••••" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="plan"
-          render={({ field }) => (
-            <FormItem className="space-y-3">
-              <FormLabel>Escolha seu Plano</FormLabel>
-              <FormControl>
-                <RadioGroup
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                  className="flex flex-col space-y-1"
-                >
-                  <FormItem className="flex items-center space-x-3 space-y-0">
-                    <FormControl>
-                      <RadioGroupItem value="basic" />
-                    </FormControl>
-                    <FormLabel className="font-normal">Básico</FormLabel>
-                  </FormItem>
-                  <FormItem className="flex items-center space-x-3 space-y-0">
-                    <FormControl>
-                      <RadioGroupItem value="plus" />
-                    </FormControl>
-                    <FormLabel className="font-normal">Plus</FormLabel>
-                  </FormItem>
-                  <FormItem className="flex items-center space-x-3 space-y-0">
-                    <FormControl>
-                      <RadioGroupItem value="premium" />
-                    </FormControl>
-                    <FormLabel className="font-normal">Premium</FormLabel>
-                  </FormItem>
-                </RadioGroup>
               </FormControl>
               <FormMessage />
             </FormItem>

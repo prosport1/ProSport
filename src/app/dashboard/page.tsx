@@ -1,3 +1,6 @@
+
+"use client";
+
 import { Header } from "@/components/header";
 import { AthleteDashboardClient } from "@/components/dashboard/athlete-dashboard-client";
 

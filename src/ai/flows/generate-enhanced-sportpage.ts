@@ -11,7 +11,6 @@
 
 import {ai} from '@/ai/genkit';
 import { GenerateEnhancedSportpageInputSchema, GenerateEnhancedSportpageOutputSchema, type GenerateEnhancedSportpageInput, type GenerateEnhancedSportpageOutput } from './types';
-import {googleAI} from '@genkit-ai/googleai';
 
 /**
  * Generates an enhanced sportpage by calling the Genkit flow.
@@ -22,12 +21,11 @@ export async function generateEnhancedSportpage(input: GenerateEnhancedSportpage
   return generateEnhancedSportpageFlow(input);
 }
 
-
 const generateEnhancedSportpagePrompt = ai.definePrompt({
     name: 'generateEnhancedSportpagePrompt',
     input: { schema: GenerateEnhancedSportpageInputSchema },
     output: { schema: GenerateEnhancedSportpageOutputSchema },
-    model: googleAI('gemini-1.5-flash'),
+    model: 'googleai/gemini-1.5-flash-latest',
     prompt: `
 You are an expert web designer specializing in Tailwind CSS.
 Your task is to generate the HTML for a professional athlete profile page.
