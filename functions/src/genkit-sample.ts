@@ -27,7 +27,7 @@ const ai = genkit({
   plugins: [
     // Configure the Google AI plugin.
     googleAI({
-      apiKey: apiKey,
+      apiKey: apiKey.value(),
     }),
   ],
 });
