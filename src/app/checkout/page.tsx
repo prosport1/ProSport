@@ -4,6 +4,8 @@ import { Header } from "@/components/header";
 import { CheckoutForm } from '@/components/checkout/checkout-form';
 import { Skeleton } from '@/components/ui/skeleton';
 
+export const dynamic = 'force-dynamic';
+
 function CheckoutSkeleton() {
     return (
         <div className="mx-auto grid max-w-4xl grid-cols-1 gap-8 md:grid-cols-2">
