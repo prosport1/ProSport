@@ -21,7 +21,7 @@ export default function CompanySignupPage() {
               <Icons.logo className="h-12 w-12 text-primary" />
             </div>
             <CardTitle className="font-headline text-3xl font-bold">
-              Crie sua Conta de Patrocinador
+              Crie sua Conta de Clube/Empresa
             </CardTitle>
             <CardDescription>
               Junte-se à ProSport e encontre seu próximo campeão.
