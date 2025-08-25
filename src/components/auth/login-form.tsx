@@ -1,3 +1,4 @@
+
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -23,7 +24,12 @@ const formSchema = z.object({
   password: z.string().min(1, { message: "A senha é obrigatória." }),
 });
 
-export function LoginForm() {
+interface LoginFormProps {
+  userType: "athlete" | "company";
+}
+
+
+export function LoginForm({ userType }: LoginFormProps) {
   const router = useRouter();
   const { toast } = useToast();
 
@@ -40,8 +46,10 @@ export function LoginForm() {
     console.log(values);
     if (values.email === "admin@prosport.com") {
       router.push("/admin");
-    } else {
+    } else if (userType === 'athlete') {
       router.push("/dashboard");
+    } else {
+      router.push("/company/dashboard");
     }
     toast({
       title: "Login bem-sucedido",
