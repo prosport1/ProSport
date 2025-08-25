@@ -21,7 +21,7 @@ export default function CompanyLoginPage() {
               <Icons.logo className="h-12 w-12 text-primary" />
             </div>
             <CardTitle className="font-headline text-3xl font-bold">
-              Portal do Patrocinador
+              Portal Clube/Empresas
             </CardTitle>
             <CardDescription>
               Acesse para encontrar os melhores atletas.
