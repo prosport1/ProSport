@@ -34,7 +34,7 @@ export default function PortalPage() {
               <Link href="/company/login">Sou Patrocinador</Link>
             </Button>
             <Button asChild className="w-full font-headline md:col-span-1" size="lg" variant="outline">
-               <Link href="/company/login">Empresas/Clubes</Link>
+               <Link href="/club/login">Empresas/Clubes</Link>
             </Button>
           </CardContent>
         </Card>
