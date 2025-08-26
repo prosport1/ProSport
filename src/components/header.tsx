@@ -12,7 +12,11 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-export function Header() {
+interface HeaderProps {
+  plansPath?: string;
+}
+
+export function Header({ plansPath = "/plans" }: HeaderProps) {
   return (
     <header className="sticky top-0 z-40 w-full border-b bg-card/80 backdrop-blur-sm">
       <div className="container flex h-16 items-center space-x-4 sm:justify-between sm:space-x-0">
@@ -31,7 +35,7 @@ export function Header() {
               Painel
             </Link>
             <Link
-              href="/plans"
+              href={plansPath}
               className="flex items-center text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
             >
               Planos
