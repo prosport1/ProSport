@@ -14,7 +14,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pt-BR">
+    <html lang="pt-BR" className="h-full">
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
@@ -23,11 +23,16 @@ export default function RootLayout({
       </head>
       <body
         className={cn(
-          "min-h-screen font-body antialiased"
+          "min-h-screen font-body antialiased flex flex-col"
         )}
       >
-        {children}
+        <div className="flex-1">
+            {children}
+        </div>
         <Toaster />
+        <footer className="w-full bg-card/80 backdrop-blur-sm p-4 text-center text-muted-foreground text-sm mt-auto">
+          © {new Date().getFullYear()} Direitos Reservados ProSport
+        </footer>
       </body>
     </html>
   );
