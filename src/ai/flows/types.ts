@@ -26,6 +26,7 @@ export const GenerateEnhancedSportpageInputSchema = z.object({
     isAmateur: z.boolean().describe("True if the athlete is amateur, false if professional."),
     details: z.string().describe("A comma-separated list of key details (e.g., Weight Class, Rank, Team)."),
     achievements: z.string().describe("A comma-separated list of significant achievements."),
+    youtubeLink: z.string().optional().describe("An optional link to a YouTube video showcase."),
 });
 export type GenerateEnhancedSportpageInput = z.infer<typeof GenerateEnhancedSportpageInputSchema>;
 

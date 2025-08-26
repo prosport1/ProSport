@@ -48,6 +48,7 @@ const profileFormSchema = z.object({
   details: z.string().min(1, "Os detalhes são obrigatórios."),
   achievements: z.string().min(1, "As conquistas são obrigatórias."),
   photo: z.any().optional(),
+  youtubeLink: z.string().url("Por favor, insira uma URL válida do YouTube.").optional().or(z.literal('')),
 });
 
 type ProfileFormValues = z.infer<typeof profileFormSchema>;
@@ -83,6 +84,7 @@ export function AthleteDashboardClient() {
       details: "",
       achievements: "",
       photo: undefined,
+      youtubeLink: "",
     }
   });
 
@@ -163,6 +165,7 @@ export function AthleteDashboardClient() {
         details: values.details,
         achievements: values.achievements,
         photoDataUri: photoDataUri,
+        youtubeLink: values.youtubeLink,
       };
       
       const result = await createEnhancedSportpage(dataToSend);
@@ -178,6 +181,7 @@ export function AthleteDashboardClient() {
   };
   
   const isPlusPlan = userPlan === 'plus' || userPlan === 'premium';
+  const isPremiumPlan = userPlan === 'premium';
   const isBasicPlan = userPlan === 'basic';
   const canGeneratePlus = isPlusPlan && form.formState.isValid && !!photoDataUri;
 
@@ -367,13 +371,34 @@ export function AthleteDashboardClient() {
                 </FormItem>
               )}
             />
+             {isPremiumPlan && (
+              <FormField
+                control={form.control}
+                name="youtubeLink"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Link do Vídeo (YouTube)</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder="https://www.youtube.com/watch?v=..."
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormDescription>
+                      Adicione um link para um vídeo de destaque do YouTube.
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            )}
           </form>
         </Form>
         
         <Separator />
         
         <div className="space-y-8">
-            {isBasicPlan && (
+            {(isBasicPlan || !isPlusPlan) && (
               <div className="space-y-4">
                   <CardHeader className="p-0">
                       <CardTitle className="font-headline">Sport Page Básica</CardTitle>
@@ -430,7 +455,7 @@ export function AthleteDashboardClient() {
                     <div className="mt-4">
                       <h3 className="mb-2 text-lg font-semibold font-headline">Pré-visualização</h3>
                       <div className="rounded-lg border bg-background">
-                        <iframe srcDoc={plusHtml} className="w-full h-[600px] border-0 rounded-lg" sandbox="allow-scripts" />
+                        <iframe srcDoc={plusHtml} className="w-full h-[600px] border-0 rounded-lg" sandbox="allow-scripts allow-same-origin" />
                       </div>
                     </div>
                   )}

@@ -24,9 +24,28 @@ export async function createBasicPresentation(
   try {
     const { presentation } = await generateSponsorPresentation(data);
     const slug = generateSlug(data.fullName) + `-basic-${Date.now()}`;
-    setPageContent(slug, presentation);
+    // For basic presentation, wrap it in a simple preformatted HTML for better viewing
+    const htmlContent = `
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>${data.fullName} - Presentation</title>
+      <style>
+        body { font-family: sans-serif; line-height: 1.6; padding: 2rem; background-color: #f4f4f9; color: #333; }
+        pre { white-space: pre-wrap; background-color: #fff; padding: 1.5rem; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+      </style>
+    </head>
+    <body>
+      <pre>${presentation}</pre>
+    </body>
+    </html>
+    `;
+
+    setPageContent(slug, htmlContent);
     const presentationUrl = `/p/${slug}`;
-    return { presentation, presentationUrl };
+    return { presentation: htmlContent, presentationUrl };
   } catch (error) {
     console.error(error);
     return { error: "Failed to generate basic presentation." };
