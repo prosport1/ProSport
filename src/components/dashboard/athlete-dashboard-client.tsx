@@ -201,111 +201,171 @@ export function AthleteDashboardClient() {
       <CardContent className="p-6 space-y-8">
         <Form {...form}>
           <form className="space-y-8">
-            <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
-                <FormField control={form.control} name="fullName" render={({ field }) => (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <FormField
+                control={form.control}
+                name="fullName"
+                render={({ field }) => (
                   <FormItem>
                     <FormLabel>Nome Completo</FormLabel>
-                    <FormControl><Input placeholder="ex: Jane Doe" {...field} /></FormControl>
+                    <FormControl>
+                      <Input placeholder="ex: Jane Doe" {...field} />
+                    </FormControl>
                     <FormMessage />
                   </FormItem>
-                )} />
-                <FormField
-                  control={form.control}
-                  name="dateOfBirth"
-                  render={({ field }) => (
-                    <FormItem className="flex flex-col">
-                      <FormLabel>Data de Nascimento</FormLabel>
-                      <Popover>
-                        <PopoverTrigger asChild>
-                          <FormControl>
-                            <Button
-                              variant={"outline"}
-                              className={cn(
-                                "w-full pl-3 text-left font-normal",
-                                !field.value && "text-muted-foreground"
-                              )}
-                            >
-                              {field.value ? (
-                                format(field.value, "PPP", { locale: ptBR })
-                              ) : (
-                                <span>Escolha uma data</span>
-                              )}
-                              <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                            </Button>
-                          </FormControl>
-                        </PopoverTrigger>
-                        <PopoverContent className="w-auto p-0" align="start">
-                          <Calendar
-                            mode="single"
-                            selected={field.value}
-                            onSelect={field.onChange}
-                            disabled={(date) =>
-                              date > new Date() || date < new Date("1900-01-01")
-                            }
-                            initialFocus
-                            locale={ptBR}
-                            captionLayout="dropdown-buttons"
-                            fromYear={1960}
-                            toYear={new Date().getFullYear()}
-                          />
-                        </PopoverContent>
-                      </Popover>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="dateOfBirth"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Data de Nascimento</FormLabel>
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <FormControl>
+                          <Button
+                            variant={"outline"}
+                            className={cn(
+                              "w-full justify-start text-left font-normal",
+                              !field.value && "text-muted-foreground"
+                            )}
+                          >
+                            <CalendarIcon className="mr-2 h-4 w-4" />
+                            {field.value ? (
+                              format(field.value, "PPP", { locale: ptBR })
+                            ) : (
+                              <span>Escolha uma data</span>
+                            )}
+                          </Button>
+                        </FormControl>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-auto p-0" align="start">
+                        <Calendar
+                          mode="single"
+                          selected={field.value}
+                          onSelect={field.onChange}
+                          disabled={(date) =>
+                            date > new Date() || date < new Date("1900-01-01")
+                          }
+                          initialFocus
+                          locale={ptBR}
+                          captionLayout="dropdown-buttons"
+                          fromYear={1960}
+                          toYear={new Date().getFullYear()}
+                        />
+                      </PopoverContent>
+                    </Popover>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
             </div>
-            <FormField control={form.control} name="sport" render={({ field }) => (
-              <FormItem>
-                <FormLabel>Esporte</FormLabel>
-                <FormControl><Input placeholder="ex: Jiu-Jitsu Brasileiro" {...field} /></FormControl>
-                <FormMessage />
-              </FormItem>
-            )} />
-            <FormField control={form.control} name="isAmateur" render={({ field }) => (
-              <FormItem className="space-y-3">
-                <FormLabel>Status</FormLabel>
-                <FormControl>
-                  <RadioGroup onValueChange={field.onChange} defaultValue={field.value} className="flex flex-col space-y-1">
-                    <FormItem className="flex items-center space-x-3 space-y-0">
-                      <FormControl><RadioGroupItem value="true" /></FormControl>
-                      <FormLabel className="font-normal">Amador</FormLabel>
-                    </FormItem>
-                    <FormItem className="flex items-center space-x-3 space-y-0">
-                      <FormControl><RadioGroupItem value="false" /></FormControl>
-                      <FormLabel className="font-normal">Profissional</FormLabel>
-                    </FormItem>
-                  </RadioGroup>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )} />
-            <FormField control={form.control} name="details" render={({ field }) => (
-              <FormItem>
-                <FormLabel>Detalhes</FormLabel>
-                <FormControl><Textarea placeholder="Descreva sua categoria de peso, faixa, etc." className="resize-none" {...field} /></FormControl>
-                <FormDescription>Isso ajuda os patrocinadores a entenderem seu perfil atlético específico.</FormDescription>
-                <FormMessage />
-              </FormItem>
-            )} />
-            <FormField control={form.control} name="achievements" render={({ field }) => (
-              <FormItem>
-                <FormLabel>Conquistas</FormLabel>
-                <FormControl><Textarea placeholder="Liste seus títulos, campeonatos e conquistas significativas." className="resize-none" {...field} /></FormControl>
-                <FormMessage />
-              </FormItem>
-            )} />
-             <FormField control={form.control} name="photo" render={({ field }) => (
-              <FormItem>
-                <FormLabel>Foto do Perfil {isPlusPlan ? "(Obrigatória para o seu plano)" : ""}</FormLabel>
-                <FormControl><Input type="file" accept="image/*" onChange={handleFileChange} /></FormControl>
-                <FormDescription>
-                  Uma foto de alta qualidade para sua Página Esportiva. Máx 4MB. 
-                  {!isPlusPlan && " (O envio de fotos está disponível apenas para planos Plus e Premium)"}
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
-            )} />
+            <FormField
+              control={form.control}
+              name="sport"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Esporte</FormLabel>
+                  <FormControl>
+                    <Input placeholder="ex: Jiu-Jitsu Brasileiro" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="isAmateur"
+              render={({ field }) => (
+                <FormItem className="space-y-3">
+                  <FormLabel>Status</FormLabel>
+                  <FormControl>
+                    <RadioGroup
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                      className="flex flex-col space-y-1"
+                    >
+                      <FormItem className="flex items-center space-x-3 space-y-0">
+                        <FormControl>
+                          <RadioGroupItem value="true" />
+                        </FormControl>
+                        <FormLabel className="font-normal">Amador</FormLabel>
+                      </FormItem>
+                      <FormItem className="flex items-center space-x-3 space-y-0">
+                        <FormControl>
+                          <RadioGroupItem value="false" />
+                        </FormControl>
+                        <FormLabel className="font-normal">
+                          Profissional
+                        </FormLabel>
+                      </FormItem>
+                    </RadioGroup>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="details"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Detalhes</FormLabel>
+                  <FormControl>
+                    <Textarea
+                      placeholder="Descreva sua categoria de peso, faixa, etc."
+                      className="resize-none"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormDescription>
+                    Isso ajuda os patrocinadores a entenderem seu perfil
+                    atlético específico.
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="achievements"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Conquistas</FormLabel>
+                  <FormControl>
+                    <Textarea
+                      placeholder="Liste seus títulos, campeonatos e conquistas significativas."
+                      className="resize-none"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="photo"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>
+                    Foto do Perfil{" "}
+                    {isPlusPlan ? "(Obrigatória para o seu plano)" : ""}
+                  </FormLabel>
+                  <FormControl>
+                    <Input type="file" accept="image/*" onChange={handleFileChange} />
+                  </FormControl>
+                  <FormDescription>
+                    Uma foto de alta qualidade para sua Página Esportiva. Máx
+                    4MB.
+                    {!isPlusPlan &&
+                      " (O envio de fotos está disponível apenas para planos Plus e Premium)"}
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
           </form>
         </Form>
         
@@ -380,6 +440,3 @@ export function AthleteDashboardClient() {
     </Card>
   );
 }
- 
-
-    
