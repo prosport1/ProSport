@@ -28,15 +28,15 @@ import {
 
 const formSchema = z
   .object({
-    companyName: z.string().min(2, { message: "O nome da empresa é obrigatório." }),
+    companyName: z.string().min(1, { message: "O nome da empresa é obrigatório." }),
     cnpj: z.string().min(1, { message: "O CNPJ é obrigatório." }),
-    sponsorshipType: z.string({ required_error: "Selecione o tipo de patrocínio." }),
-    sportInterest: z.string().min(2, { message: "A modalidade de interesse é obrigatória." }),
-    email: z.string().email({ message: "Endereço de e-mail inválido." }),
+    sponsorshipType: z.string().min(1, { message: "Selecione o tipo de patrocínio." }),
+    sportInterest: z.string().min(1, { message: "A modalidade de interesse é obrigatória." }),
+    email: z.string().min(1, { message: "O e-mail é obrigatório." }).email({ message: "Endereço de e-mail inválido." }),
     password: z
       .string()
       .min(8, { message: "A senha deve ter pelo menos 8 caracteres." }),
-    confirmPassword: z.string(),
+    confirmPassword: z.string().min(1, { message: "A confirmação da senha é obrigatória." }),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "As senhas não coincidem.",

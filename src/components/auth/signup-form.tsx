@@ -1,3 +1,4 @@
+
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -21,12 +22,12 @@ import { Checkbox } from "@/components/ui/checkbox";
 
 const formSchema = z
   .object({
-    fullName: z.string().min(2, { message: "O nome completo é obrigatório." }),
-    email: z.string().email({ message: "Endereço de e-mail inválido." }),
+    fullName: z.string().min(1, { message: "O nome completo é obrigatório." }),
+    email: z.string().min(1, { message: "O e-mail é obrigatório." }).email({ message: "Endereço de e-mail inválido." }),
     password: z
       .string()
       .min(8, { message: "A senha deve ter pelo menos 8 caracteres." }),
-    confirmPassword: z.string(),
+    confirmPassword: z.string().min(1, { message: "A confirmação da senha é obrigatória." }),
     terms: z.literal(true, {
       errorMap: () => ({ message: "Você deve aceitar os termos e condições." }),
     }),
