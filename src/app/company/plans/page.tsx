@@ -2,7 +2,7 @@
 import { Header } from "@/components/header";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Check, ToggleLeft, ToggleRight } from "lucide-react";
+import { Check } from "lucide-react";
 import Link from "next/link";
 
 const plan = {
