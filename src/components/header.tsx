@@ -41,12 +41,6 @@ export function Header({ plansPath = "/plans", dashboardPath = "/dashboard" }: H
             >
               Planos
             </Link>
-             <Link
-              href="/checkout"
-              className="flex items-center text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-            >
-              Assinatura
-            </Link>
           </nav>
         </div>
 
