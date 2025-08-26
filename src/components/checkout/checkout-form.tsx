@@ -17,6 +17,7 @@ const planDetails = {
   basic: { name: "Básico", monthlyPrice: 9.90, annualPrice: 99.90 },
   plus: { name: "Plus", monthlyPrice: 29.90, annualPrice: 299.90 },
   premium: { name: "Premium", monthlyPrice: 59.90, annualPrice: 599.90 },
+  pro: { name: "Pro", monthlyPrice: 2000.00, annualPrice: 20000.00 },
 };
 
 export function CheckoutForm() {
@@ -27,6 +28,7 @@ export function CheckoutForm() {
   const [isAnnual, setIsAnnual] = useState(false);
 
   if (!plan || !planDetails[plan]) {
+    const defaultPlanPath = plan === 'pro' ? '/company/plans' : '/plans';
     return (
         <Card>
             <CardHeader>
@@ -34,7 +36,7 @@ export function CheckoutForm() {
                 <CardDescription>Por favor, selecione um plano válido.</CardDescription>
             </CardHeader>
             <CardFooter>
-                <Button onClick={() => router.push('/plans')}>Ver Planos</Button>
+                <Button onClick={() => router.push(defaultPlanPath)}>Ver Planos</Button>
             </CardFooter>
         </Card>
     );
@@ -55,13 +57,23 @@ export function CheckoutForm() {
     router.push('/dashboard');
   }
 
+  const handleCompanySubscription = () => {
+     toast({
+      title: "Inscrição realizada com sucesso!",
+      description: `Bem-vindo ao plano ${details.name}. Você será redirecionado para o painel.`,
+    });
+    router.push('/company/dashboard');
+  }
+
+  const isCompanyPlan = plan === 'pro';
+
   return (
     <div className="mx-auto grid max-w-4xl grid-cols-1 gap-8 md:grid-cols-2">
       <div className="flex flex-col gap-8">
         <Card>
           <CardHeader>
             <CardTitle className="font-headline text-3xl">Finalize sua Assinatura</CardTitle>
-            <CardDescription>Você está a um passo de impulsionar sua carreira.</CardDescription>
+            <CardDescription>Você está a um passo de impulsionar sua carreira ou encontrar novos talentos.</CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
             <div>
@@ -82,7 +94,7 @@ export function CheckoutForm() {
                 <Label htmlFor="billing-frequency" className="flex flex-col">
                   <span>Anual</span>
                   <span className="font-bold">R$ {details.annualPrice.toFixed(2)}</span>
-                  <span className="text-xs text-green-400">Economize 2 meses!</span>
+                  { !isCompanyPlan && <span className="text-xs text-green-400">Economize 2 meses!</span>}
                 </Label>
             </div>
           </CardContent>
@@ -138,7 +150,7 @@ export function CheckoutForm() {
                 </div>
               </CardContent>
               <CardFooter>
-                <Button className="w-full font-headline" onClick={handleSubscription}>Assinar Agora</Button>
+                <Button className="w-full font-headline" onClick={isCompanyPlan ? handleCompanySubscription : handleSubscription}>Assinar Agora</Button>
               </CardFooter>
             </Card>
           </TabsContent>
