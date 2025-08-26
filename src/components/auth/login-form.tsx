@@ -25,7 +25,7 @@ const formSchema = z.object({
 });
 
 interface LoginFormProps {
-  userType: "athlete" | "company";
+  userType: "athlete" | "company" | "club";
 }
 
 
@@ -48,6 +48,10 @@ export function LoginForm({ userType }: LoginFormProps) {
       router.push("/admin");
     } else if (userType === 'athlete') {
       router.push("/dashboard");
+    } else if (userType === 'company') {
+      router.push("/company/dashboard");
+    } else if (userType === 'club') {
+        router.push('/club/dashboard');
     } else {
       router.push("/company/dashboard");
     }

@@ -28,7 +28,7 @@ export default function ClubLoginPage() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <LoginForm userType="company" />
+            <LoginForm userType="club" />
             <div className="mt-4 text-center text-sm">
               Não tem uma conta?{" "}
               <Button variant="link" asChild className="p-0">
