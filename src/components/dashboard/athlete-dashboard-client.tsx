@@ -179,6 +179,7 @@ export function AthleteDashboardClient() {
   
   const isPlusPlan = userPlan === 'plus' || userPlan === 'premium';
   const isBasicPlan = userPlan === 'basic';
+  const canGeneratePlus = isPlusPlan && form.formState.isValid && !!photoDataUri;
 
   return (
     <Card>
@@ -404,13 +405,13 @@ export function AthleteDashboardClient() {
               </div>
             )}
 
-            {isPlusPlan && userPlan &&(
+            {isPlusPlan && (
               <div className="space-y-4">
                    <CardHeader className="p-0">
                       <CardTitle className="font-headline">Sport Page <span className="capitalize">{userPlan}</span></CardTitle>
                       <CardDescription>Crie uma apresentação visualmente deslumbrante, no estilo NFL/NBA, para impressionar os patrocinadores.</CardDescription>
                   </CardHeader>
-                  <Button onClick={handleGeneratePlus} disabled={isPlusPending || !form.formState.isValid || !photoDataUri}>
+                  <Button onClick={handleGeneratePlus} disabled={isPlusPending || !canGeneratePlus}>
                     {isPlusPending ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Sparkles className="mr-2 h-4 w-4" />}
                     Gerar Sport Page
                   </Button>
