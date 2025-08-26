@@ -14,14 +14,15 @@ import {
 
 interface HeaderProps {
   plansPath?: string;
+  dashboardPath?: string;
 }
 
-export function Header({ plansPath = "/plans" }: HeaderProps) {
+export function Header({ plansPath = "/plans", dashboardPath = "/dashboard" }: HeaderProps) {
   return (
     <header className="sticky top-0 z-40 w-full border-b bg-card/80 backdrop-blur-sm">
       <div className="container flex h-16 items-center space-x-4 sm:justify-between sm:space-x-0">
         <div className="flex gap-6 md:gap-10">
-          <Link href="/dashboard" className="flex items-center space-x-2">
+          <Link href={dashboardPath} className="flex items-center space-x-2">
             <Icons.logo className="h-6 w-6 text-primary" />
             <span className="inline-block font-headline font-bold">
               ProSport
@@ -29,7 +30,7 @@ export function Header({ plansPath = "/plans" }: HeaderProps) {
           </Link>
           <nav className="hidden gap-6 md:flex">
             <Link
-              href="/dashboard"
+              href={dashboardPath}
               className="flex items-center text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
             >
               Painel
