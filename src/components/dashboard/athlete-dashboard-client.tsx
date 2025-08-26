@@ -39,14 +39,14 @@ import { CopyButton } from "@/components/ui/copy-button";
 import { Separator } from "@/components/ui/separator";
 
 const profileFormSchema = z.object({
-  fullName: z.string().min(2, "O nome completo deve ter pelo menos 2 caracteres."),
+  fullName: z.string().min(2, "O nome completo é obrigatório."),
   dateOfBirth: z.date({
     required_error: "A data de nascimento é obrigatória.",
   }),
   sport: z.string().min(2, "O esporte é obrigatório."),
   isAmateur: z.string({ required_error: "Por favor, selecione um status." }),
-  details: z.string().min(10, "Os detalhes devem ter pelo menos 10 caracteres."),
-  achievements: z.string().min(10, "As conquistas devem ter pelo menos 10 caracteres."),
+  details: z.string().min(1, "Os detalhes são obrigatórios."),
+  achievements: z.string().min(1, "As conquistas são obrigatórias."),
   photo: z.any().optional(),
 });
 
@@ -209,25 +209,51 @@ export function AthleteDashboardClient() {
                     <FormMessage />
                   </FormItem>
                 )} />
-                <FormField control={form.control} name="dateOfBirth" render={({ field }) => (
-                  <FormItem className="flex flex-col">
-                    <FormLabel>Data de Nascimento</FormLabel>
-                    <Popover>
-                      <PopoverTrigger asChild>
-                        <FormControl>
-                          <Button variant={"outline"} className={cn("pl-3 text-left font-normal", !field.value && "text-muted-foreground")}>
-                            {field.value ? format(field.value, "PPP", { locale: ptBR }) : <span>Escolha uma data</span>}
-                            <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                          </Button>
-                        </FormControl>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-auto p-0" align="start">
-                        <Calendar locale={ptBR} mode="single" selected={field.value} onSelect={field.onChange} disabled={(date) => date > new Date() || date < new Date("1900-01-01")} captionLayout="dropdown-buttons" fromYear={1960} toYear={new Date().getFullYear()} initialFocus />
-                      </PopoverContent>
-                    </Popover>
-                    <FormMessage />
-                  </FormItem>
-                )} />
+                <FormField
+                  control={form.control}
+                  name="dateOfBirth"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-col">
+                      <FormLabel>Data de Nascimento</FormLabel>
+                      <Popover>
+                        <PopoverTrigger asChild>
+                          <FormControl>
+                            <Button
+                              variant={"outline"}
+                              className={cn(
+                                "w-full pl-3 text-left font-normal",
+                                !field.value && "text-muted-foreground"
+                              )}
+                            >
+                              {field.value ? (
+                                format(field.value, "PPP", { locale: ptBR })
+                              ) : (
+                                <span>Escolha uma data</span>
+                              )}
+                              <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                            </Button>
+                          </FormControl>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-auto p-0" align="start">
+                          <Calendar
+                            mode="single"
+                            selected={field.value}
+                            onSelect={field.onChange}
+                            disabled={(date) =>
+                              date > new Date() || date < new Date("1900-01-01")
+                            }
+                            initialFocus
+                            locale={ptBR}
+                            captionLayout="dropdown-buttons"
+                            fromYear={1960}
+                            toYear={new Date().getFullYear()}
+                          />
+                        </PopoverContent>
+                      </Popover>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
             </div>
             <FormField control={form.control} name="sport" render={({ field }) => (
               <FormItem>
@@ -355,3 +381,5 @@ export function AthleteDashboardClient() {
   );
 }
  
+
+    
