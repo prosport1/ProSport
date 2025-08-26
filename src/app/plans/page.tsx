@@ -40,6 +40,7 @@ const plans = [
     description: "Envio de links para empresas, clubes e para a grande mídia (TV, revistas, jornais).",
     features: [
       "Tudo do plano Plus",
+      "Inclusão de Vídeo do YouTube",
       "Divulgação para mídias de TV e jornais",
       "Análise de Patrocinador (em breve)",
       "Geração de Mídia com IA (em breve)",
