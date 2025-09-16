@@ -7,9 +7,10 @@ import { defineSecret, defineString } from "firebase-functions/params";
 import OpenAI from "openai";
 import type { ChatCompletionMessageParam } from "openai/resources/chat/completions";
 import Stripe from "stripe";
-import { HttpsError, onCall } from "firebase-functions/v2/https";
+import { HttpsError, onCall, onRequest } from "firebase-functions/v2/https";
 import { genkit, z } from 'genkit';
 import { googleAI } from '@genkit-ai/googleai';
+import { getFirestore } from "firebase-admin/firestore";
 
 const ai = genkit({
     plugins: [
@@ -18,11 +19,12 @@ const ai = genkit({
 });
 
 // ---------- Firebase Admin ----------
-// LINHA 23: A linha initializeApp(); foi REMOVIDA daqui para a "Inicialização Tardia".
+// A inicialização foi movida para dentro das funções para "Inicialização Tardia" quando necessário.
 
 // ---------- Secrets ----------
 const OPENAI_API_KEY = defineSecret("OPENAI_API_KEY");
 const STRIPE_SECRET_KEY = defineSecret("STRIPE_SECRET_KEY");
+const STRIPE_WEBHOOK_SECRET = defineSecret("STRIPE_WEBHOOK_SECRET");
 const NEXT_PUBLIC_APP_URL = defineString("NEXT_PUBLIC_APP_URL", {
   default: "http://localhost:9003",
 });
@@ -51,6 +53,7 @@ type Payload = z.infer<typeof PayloadSchema>;
 const CreateCheckoutPayloadSchema = z.object({
   planId: z.string(),
   isAnnual: z.boolean(),
+  userId: z.string(),
 });
 
 // Tipos explícitos para o objeto de planos
@@ -167,7 +170,6 @@ Diretrizes visuais sugeridas:
 
 // ---------- Garantia de Background ----------
 async function ensureBackground(modalidade: string): Promise<string | null> {
-  // LINHA 228: ADICIONADA A INICIALIZAÇÃO TARDIA
   if (getApps().length === 0) {
       initializeApp();
   }
@@ -470,7 +472,6 @@ const generateLandingFlow = ai.defineFlow(
 
                 html = completion.choices[0]?.message?.content || "";
                 
-                // LINHA 496: ADICIONADA ESTA LINHA PARA VER A RESPOSTA DA IA.
                 logger.info("---- RESPOSTA RECEBIDA DA OPENAI ----", { response: html });
 
                 if (!html.includes("<!doctype html")) {
@@ -478,7 +479,6 @@ const generateLandingFlow = ai.defineFlow(
                 }
             } catch (err: any) {
                 usedFallback = true;
-                // LINHA 503: ALTERADA ESTA LINHA PARA VER O ERRO COMPLETO DA IA.
                 logger.error("!!!! ERRO DETALHADO DA API OPENAI !!!!", err);
                 html = buildFallbackHTML(data);
             }
@@ -518,7 +518,7 @@ const createStripeCheckoutSessionFlow = ai.defineFlow(
     },
     async (payload) => {
         try {
-            const { planId, isAnnual } = payload;
+            const { planId, isAnnual, userId } = payload;
             const appUrl = NEXT_PUBLIC_APP_URL.value();
 
             const stripe = new Stripe(STRIPE_SECRET_KEY.value(), {
@@ -542,13 +542,34 @@ const createStripeCheckoutSessionFlow = ai.defineFlow(
                 throw new HttpsError('not-found', `Price ID não encontrado para o plano: ${planId} (${billingCycle}).`);
             }
             logger.info(`Price ID encontrado: ${priceId}`);
+            
+            if (getApps().length === 0) {
+              initializeApp();
+            }
+            const db = getFirestore();
+            const userDoc = await db.collection('users').doc(userId).get();
+            const user = userDoc.data();
+            
+            let customerId = user?.stripeCustomerId;
+
+            if (!customerId) {
+                const customer = await stripe.customers.create({
+                    metadata: {
+                        firebaseUID: userId,
+                    },
+                });
+                customerId = customer.id;
+                await db.collection('users').doc(userId).update({ stripeCustomerId: customerId });
+            }
+
 
             const session = await stripe.checkout.sessions.create({
                 payment_method_types: ['card'],
                 line_items: [ { price: priceId, quantity: 1 } ],
                 mode: 'subscription',
-                success_url: `${appUrl}/success?session_id={CHECKOUT_SESSION_ID}`,
-                cancel_url: `${appUrl}/cancel`,
+                customer: customerId,
+                success_url: `${appUrl}/portal/success?session_id={CHECKOUT_SESSION_ID}`,
+                cancel_url: `${appUrl}/portal/cancel`,
             });
 
             if (!session.url) {
@@ -571,6 +592,9 @@ const createStripeCheckoutSessionFlow = ai.defineFlow(
 export const generateLanding = onCall(
     { memory: '1GiB', region: "southamerica-east1", timeoutSeconds: 120, secrets: [OPENAI_API_KEY], cors: true },
     async (request) => {
+        if (getApps().length === 0) {
+            initializeApp();
+        }
         try {
             const data = PayloadSchema.parse(request.data);
             return await generateLandingFlow(data);
@@ -589,6 +613,9 @@ export const generateLanding = onCall(
 export const createStripeCheckoutSession = onCall(
     { memory: '1GiB', region: 'southamerica-east1', secrets: [STRIPE_SECRET_KEY], cors: true },
     async (request) => {
+        if (getApps().length === 0) {
+          initializeApp();
+        }
         try {
             const data = CreateCheckoutPayloadSchema.parse(request.data);
             return await createStripeCheckoutSessionFlow(data);
@@ -603,3 +630,88 @@ export const createStripeCheckoutSession = onCall(
         }
     }
 );
+
+// ---------- Stripe Webhook ----------
+export const stripeWebhook = onRequest(
+    { region: 'southamerica-east1', secrets: [STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET] },
+    async (request, response) => {
+        if (getApps().length === 0) {
+            initializeApp();
+        }
+        
+        const stripe = new Stripe(STRIPE_SECRET_KEY.value(), { apiVersion: '2024-06-20' });
+        const webhookSecret = STRIPE_WEBHOOK_SECRET.value();
+        
+        let event: Stripe.Event;
+
+        if (request.rawBody) {
+            const signature = request.headers['stripe-signature'];
+            if (!signature) {
+                logger.error("⚠️  Webhook signature verification failed. No signature header.");
+                response.status(400).send('Webhook Error: No signature header');
+                return;
+            }
+            try {
+                event = stripe.webhooks.constructEvent(request.rawBody, signature, webhookSecret);
+            } catch (err: any) {
+                logger.error(`⚠️  Webhook signature verification failed.`, { error: err.message });
+                response.status(400).send(`Webhook Error: ${err.message}`);
+                return;
+            }
+        } else {
+            logger.error("⚠️  Webhook error. No rawBody.");
+            response.status(400).send('Webhook Error: No rawBody');
+            return;
+        }
+
+        const db = getFirestore();
+
+        try {
+            switch (event.type) {
+                case 'checkout.session.completed': {
+                    const session = event.data.object as Stripe.Checkout.Session;
+                    if (!session.customer || !session.subscription) {
+                        throw new Error(`checkout.session.completed missing customer or subscription. Session ID: ${session.id}`);
+                    }
+                    const customerId = session.customer as string;
+                    
+                    const userQuery = await db.collection('users').where('stripeCustomerId', '==', customerId).limit(1).get();
+                    if (userQuery.empty) {
+                        throw new Error(`User with stripeCustomerId ${customerId} not found.`);
+                    }
+                    const userDoc = userQuery.docs[0];
+                    await userDoc.ref.update({ planStatus: 'active' });
+                    logger.info(`✅ User ${userDoc.id} plan set to active.`);
+                    break;
+                }
+
+                case 'customer.subscription.deleted': {
+                    const subscription = event.data.object as Stripe.Subscription;
+                    const customerId = subscription.customer as string;
+                    
+                    const userQuery = await db.collection('users').where('stripeCustomerId', '==', customerId).limit(1).get();
+                     if (userQuery.empty) {
+                        // Not necessarily an error. The customer might not be a user in our system.
+                        logger.warn(`User with stripeCustomerId ${customerId} not found for subscription cancellation.`);
+                        break;
+                    }
+                    const userDoc = userQuery.docs[0];
+                    await userDoc.ref.update({ planStatus: 'inactive' });
+                    logger.info(`✅ User ${userDoc.id} plan set to inactive due to subscription deletion.`);
+                    break;
+                }
+
+                default:
+                    logger.log(`🤷‍♀️ Unhandled event type: ${event.type}`);
+            }
+
+            response.status(200).send({ received: true });
+
+        } catch (error: any) {
+            logger.error("🔥 Webhook handler error:", error);
+            response.status(500).send({ error: error.message });
+        }
+    }
+);
+
+    

@@ -1,7 +1,6 @@
-
 'use client';
 
-import { useState, useTransition } from 'react';
+import { useState, useTransition, useEffect } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -12,6 +11,7 @@ import { CreditCard } from 'lucide-react';
 import { Loader2 } from 'lucide-react';
 import { getFunctions, httpsCallable, HttpsCallable } from 'firebase/functions';
 import { app } from '@/lib/firebase';
+import { getAuth, onAuthStateChanged, User } from 'firebase/auth';
 
 const planDetails = {
   basic: { name: "Básico", monthlyPrice: 9.90, annualPrice: 99.90 },
@@ -22,12 +22,6 @@ const planDetails = {
 
 // --- Firebase Functions ---
 const functions = getFunctions(app, 'southamerica-east1');
-// Em desenvolvimento, descomente a linha abaixo para usar o emulador
-// import { connectFunctionsEmulator } from 'firebase/functions';
-// if (process.env.NODE_ENV === 'development') {
-//    connectFunctionsEmulator(functions, '127.0.0.1', 5001);
-// }
-
 const createStripeCheckoutSession: HttpsCallable<any, any> = httpsCallable(functions, 'createStripeCheckoutSession');
 // --- Fim Firebase Functions ---
 
@@ -39,6 +33,27 @@ export function CheckoutForm() {
   const plan = searchParams.get('plan') as keyof typeof planDetails | null;
   const [isAnnual, setIsAnnual] = useState(false);
   const [isProcessing, startTransition] = useTransition();
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    const auth = getAuth(app);
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setCurrentUser(user);
+      } else {
+        // Se não houver usuário logado, redirecione para a página de login
+        toast({
+            variant: 'destructive',
+            title: 'Sessão Expirada',
+            description: 'Por favor, faça login para continuar.',
+        });
+        router.push('/portal/athlete/login');
+      }
+    });
+
+    return () => unsubscribe();
+  }, [router, toast]);
+
 
   if (!plan || !planDetails[plan]) {
     const defaultPlanPath = plan === 'pro' ? '/portal/company/plans' : '/portal/plans';
@@ -60,12 +75,23 @@ export function CheckoutForm() {
   const isCompanyPlan = plan === 'pro';
 
   const handleCreateCheckoutSession = async () => {
+    if (!currentUser) {
+        toast({
+            variant: 'destructive',
+            title: 'Não autenticado',
+            description: 'Você precisa estar logado para fazer uma assinatura.',
+        });
+        return;
+    }
+      
     startTransition(async () => {
       try {
-          const result = await createStripeCheckoutSession({ planId: plan, isAnnual });
+          const result = await createStripeCheckoutSession({ planId: plan, isAnnual, userId: currentUser.uid });
           const data = result.data as { url?: string };
           
           if (data.url) {
+              // Armazena o plano selecionado no sessionStorage
+              sessionStorage.setItem("userPlan", plan);
               router.push(data.url);
           } else {
                throw new Error('Não foi possível obter a URL de checkout.');
@@ -139,7 +165,7 @@ export function CheckoutForm() {
                 </p>
             </CardContent>
             <CardFooter>
-                <Button className="w-full font-headline" onClick={handleCreateCheckoutSession} disabled={isProcessing}>
+                <Button className="w-full font-headline" onClick={handleCreateCheckoutSession} disabled={isProcessing || !currentUser}>
                     {isProcessing ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
                     {isProcessing ? 'Processando...' : 'Pagar com Cartão'}
                 </Button>
@@ -149,3 +175,5 @@ export function CheckoutForm() {
     </div>
   );
 }
+
+    
