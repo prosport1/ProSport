@@ -27,7 +27,7 @@ export default function CompanyPlansPage() {
   // For now, this is a static page. State for monthly/annual toggle would be added here.
   return (
     <div className="flex min-h-screen w-full flex-col">
-      <Header plansPath="/company/plans" dashboardPath="/company/dashboard" />
+      <Header plansPath="/portal/company/plans" dashboardPath="/portal/company/dashboard" />
       <main className="flex-1">
         <section className="container flex flex-col items-center gap-6 py-12 md:py-24">
           <div className="mx-auto max-w-2xl text-center">
@@ -60,7 +60,7 @@ export default function CompanyPlansPage() {
               </CardContent>
               <CardFooter>
                 <Button asChild className="w-full font-headline">
-                  <Link href={`/checkout?plan=${plan.id}`}>{plan.cta}</Link>
+                  <Link href={`/portal/checkout?plan=${plan.id}`}>{plan.cta}</Link>
                 </Button>
               </CardFooter>
             </Card>

@@ -1,3 +1,4 @@
+
 "use client";
 
 import Link from "next/link";
@@ -33,12 +34,12 @@ export default function CompanyLoginPage() {
             <div className="mt-4 text-center text-sm">
               Não tem uma conta?{" "}
               <Button variant="link" asChild className="p-0">
-                <Link href="/company/signup">Cadastre-se</Link>
+                <Link href="/portal/company/signup">Cadastre-se</Link>
               </Button>
             </div>
              <div className="mt-6 text-center text-sm">
               <Button variant="link" asChild className="p-0">
-                <Link href="/">Voltar ao portal</Link>
+                <Link href="/portal/athlete/login">Voltar ao portal</Link>
               </Button>
             </div>
           </CardContent>

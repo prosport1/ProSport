@@ -28,7 +28,7 @@ export default function CoverPage() {
           Sua carreira para o próximo nível. Conectamos atletas, patrocinadores e clubes.
         </p>
         <Button asChild className="mt-8 font-headline" size="lg">
-          <Link href="/portal">Entrar</Link>
+          <Link href="/portal/athlete/login">Entrar</Link>
         </Button>
       </div>
     </div>

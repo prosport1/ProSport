@@ -19,8 +19,8 @@ interface HeaderProps {
 }
 
 export function Header({
-  plansPath = "/plans",
-  dashboardPath = "/dashboard",
+  plansPath = "/portal/plans",
+  dashboardPath = "/portal/dashboard",
   sportPageUrl,
 }: HeaderProps) {
   return (

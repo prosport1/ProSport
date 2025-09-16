@@ -89,7 +89,7 @@ export default function PlansPage() {
                 </CardContent>
                 <CardFooter>
                   <Button asChild className="w-full font-headline" variant={plan.featured ? "default" : "outline"}>
-                    <Link href={`/checkout?plan=${plan.id}`}>{plan.cta}</Link>
+                    <Link href={`/portal/checkout?plan=${plan.id}`}>{plan.cta}</Link>
                   </Button>
                 </CardFooter>
               </Card>

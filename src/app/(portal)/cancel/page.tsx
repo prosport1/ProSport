@@ -17,7 +17,7 @@ export default function CancelPage() {
         </CardHeader>
         <CardContent>
           <Button asChild>
-            <Link href="/plans">Ver Planos</Link>
+            <Link href="/portal/plans">Ver Planos</Link>
           </Button>
         </CardContent>
       </Card>

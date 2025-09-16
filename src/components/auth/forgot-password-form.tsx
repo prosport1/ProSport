@@ -1,3 +1,4 @@
+
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -41,7 +42,7 @@ export function ForgotPasswordForm() {
     });
     // In a real app, you would not redirect immediately
     // but for demo purposes we will.
-    router.push("/");
+    router.push("/portal/athlete/login");
   }
 
   return (

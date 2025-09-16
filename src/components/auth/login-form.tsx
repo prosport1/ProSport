@@ -55,11 +55,11 @@ export function LoginForm({ userType }: LoginFormProps) {
       if (values.email === "admin@prosport.com") {
         router.push("/admin");
       } else if (userType === 'athlete') {
-        router.push("/dashboard");
+        router.push("/portal/dashboard");
       } else if (userType === 'company' || userType === 'club') {
-        router.push("/company/dashboard");
+        router.push("/portal/company/dashboard");
       } else {
-        router.push("/company/dashboard");
+        router.push("/portal/company/dashboard");
       }
     } catch (error: any) {
       console.error("Firebase Auth Error:", error);
@@ -102,7 +102,7 @@ export function LoginForm({ userType }: LoginFormProps) {
               <div className="flex items-center justify-between">
                 <FormLabel>Senha</FormLabel>
                 <Button variant="link" asChild className="p-0 text-sm h-auto">
-                  <Link href="/forgot-password">Esqueceu a senha?</Link>
+                  <Link href="/portal/forgot-password">Esqueceu a senha?</Link>
                 </Button>
               </div>
               <FormControl>

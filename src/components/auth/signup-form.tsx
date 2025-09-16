@@ -61,7 +61,7 @@ export function SignupForm() {
         title: "Conta Criada",
         description: "Bem-vindo! Redirecionando para o seu painel...",
       });
-      router.push("/dashboard");
+      router.push("/portal/dashboard");
 
     } catch (error: any) {
        console.error("Firebase Signup Error:", error);

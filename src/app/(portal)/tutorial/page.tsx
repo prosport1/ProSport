@@ -33,7 +33,7 @@ const tutorialSteps = [
 export default function TutorialPage() {
   return (
     <div className="flex min-h-screen w-full flex-col">
-      <Header />
+      <Header dashboardPath="/portal/dashboard" />
       <main className="container flex-1 py-12 md:py-24">
         <div className="mx-auto max-w-3xl">
             <Card>
@@ -63,7 +63,7 @@ export default function TutorialPage() {
                     </Accordion>
                      <div className="mt-8 text-center">
                         <Button asChild>
-                            <Link href="/dashboard">Voltar ao Painel</Link>
+                            <Link href="/portal/dashboard">Voltar ao Painel</Link>
                         </Button>
                     </div>
                 </CardContent>

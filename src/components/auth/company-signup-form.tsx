@@ -68,7 +68,7 @@ export function CompanySignupForm() {
       title: "Conta Criada",
       description: "Bem-vindo! Redirecionando para a escolha de planos...",
     });
-    router.push("/company/plans");
+    router.push("/portal/company/plans");
   }
 
   return (

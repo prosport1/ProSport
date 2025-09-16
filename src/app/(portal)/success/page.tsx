@@ -19,7 +19,7 @@ export default function SuccessPage() {
         </CardHeader>
         <CardContent>
           <Button asChild>
-            <Link href="/dashboard">Ir para o Painel</Link>
+            <Link href="/portal/dashboard">Ir para o Painel</Link>
           </Button>
         </CardContent>
       </Card>
