@@ -1,8 +1,7 @@
-
 "use strict";
 
 import { logger } from "firebase-functions";
-import { initializeApp } from "firebase-admin/app";
+import { initializeApp, getApps } from "firebase-admin/app";
 import { getStorage } from "firebase-admin/storage";
 import { defineSecret, defineString } from "firebase-functions/params";
 import OpenAI from "openai";
@@ -12,7 +11,6 @@ import { HttpsError, onCall } from "firebase-functions/v2/https";
 import { genkit, z } from 'genkit';
 import { googleAI } from '@genkit-ai/googleai';
 
-// Linha 15
 const ai = genkit({
     plugins: [
         googleAI(),
@@ -20,7 +18,7 @@ const ai = genkit({
 });
 
 // ---------- Firebase Admin ----------
-initializeApp();
+// LINHA 23: A linha initializeApp(); foi REMOVIDA daqui para a "Inicialização Tardia".
 
 // ---------- Secrets ----------
 const OPENAI_API_KEY = defineSecret("OPENAI_API_KEY");
@@ -30,12 +28,11 @@ const NEXT_PUBLIC_APP_URL = defineString("NEXT_PUBLIC_APP_URL", {
 });
 
 // ---------- Schemas de Validação (Zod) ----------
-// Linha 32
 const PayloadSchema = z.object({
   plano: z.enum(["basic", "plus", "premium", "pro"]),
   modalidade: z.string().min(1, "Modalidade é obrigatória"),
   nome: z.string().min(1, "Nome é obrigatório"),
-  dataNascimento: z.string().min(1, "Data de nascimento é obrigatória"),
+  data_nascimento: z.string().min(1, "Data de nascimento é obrigatória"),
   status: z.enum(["Amador", "Profissional"]).optional(),
   graduacao: z.string().min(1, "Graduação é obrigatória"),
   equipe: z.string().min(1, "Equipe é obrigatória"),
@@ -170,6 +167,10 @@ Diretrizes visuais sugeridas:
 
 // ---------- Garantia de Background ----------
 async function ensureBackground(modalidade: string): Promise<string | null> {
+  // LINHA 228: ADICIONADA A INICIALIZAÇÃO TARDIA
+  if (getApps().length === 0) {
+      initializeApp();
+  }
   try {
     const bucket = getStorage().bucket();
     const slug = slugify(modalidade) || "bg";
@@ -257,7 +258,7 @@ DADOS DO ATLETA:
 - VARIANT_ID: ${v}
 - Modalidade: ${p.modalidade}
 - Nome: ${p.nome}
-- Nascimento: ${p.dataNascimento}
+- Nascimento: ${p.data_nascimento}
 - Status: ${p.status ?? "Profissional"}
 - Graduação: ${p.graduacao}
 - Equipe: ${p.equipe}
@@ -336,7 +337,7 @@ ${useParallax ? `.hero-bg{background-attachment: fixed;}` : ""}
     <img class="athlete-photo" src="${p.imagem}" alt="Foto de ${p.nome}">
     <div>
       <h1 class="hero-title">${p.nome}</h1>
-      <p class="hero-sub"><strong>${p.modalidade}</strong> • ${p.graduacao} • ${p.equipe} • Nasc. ${p.dataNascimento} • ${p.status ?? "Profissional"}</p>
+      <p class="hero-sub"><strong>${p.modalidade}</strong> • ${p.graduacao} • ${p.equipe} • Nasc. ${p.data_nascimento} • ${p.status ?? "Profissional"}</p>
       <p class="hero-desc">Proposta de patrocínio do atleta.</p>
       <div class="cta-row">${ctas(p.nome, p.contato)}</div>
     </div>
@@ -469,11 +470,15 @@ const generateLandingFlow = ai.defineFlow(
 
                 html = completion.choices[0]?.message?.content || "";
                 
+                // LINHA 496: ADICIONADA ESTA LINHA PARA VER A RESPOSTA DA IA.
+                logger.info("---- RESPOSTA RECEBIDA DA OPENAI ----", { response: html });
+
                 if (!html.includes("<!doctype html")) {
                     throw new Error("HTML inválido da LLM.");
                 }
             } catch (err: any) {
                 usedFallback = true;
+                // LINHA 503: ALTERADA ESTA LINHA PARA VER O ERRO COMPLETO DA IA.
                 logger.error("!!!! ERRO DETALHADO DA API OPENAI !!!!", err);
                 html = buildFallbackHTML(data);
             }
@@ -598,5 +603,3 @@ export const createStripeCheckoutSession = onCall(
         }
     }
 );
-
-    
