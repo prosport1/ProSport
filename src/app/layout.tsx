@@ -2,6 +2,20 @@ import type { Metadata } from 'next';
 import './globals.css';
 import { Toaster } from "@/components/ui/toaster";
 import { cn } from '@/lib/utils';
+import { Poppins, PT_Sans } from 'next/font/google';
+
+const fontHeadline = Poppins({
+  subsets: ['latin'],
+  weight: ['400', '700'],
+  variable: '--font-headline',
+});
+
+const fontBody = PT_Sans({
+  subsets: ['latin'],
+  weight: ['400', '700'],
+  variable: '--font-body',
+});
+
 
 export const metadata: Metadata = {
   title: 'Portfólio ProSport',
@@ -14,13 +28,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pt-BR" className='h-full'>
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet" />
-        <link href="https://fonts.googleapis.com/css2?family=PT+Sans&display=swap" rel="stylesheet" />
-      </head>
+    <html lang="pt-BR" className={cn('h-full', fontHeadline.variable, fontBody.variable)}>
       <body className={cn("font-body antialiased h-full")}>
         {children}
         <Toaster />

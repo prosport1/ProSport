@@ -9,9 +9,12 @@ export default {
   ],
   theme: {
     extend: {
+      backgroundImage: {
+        'cover-video': "url('https://storage.googleapis.com/aip-dev-buddy-user-assets/images/de4a9b5f-a0a8-42bd-9c7a-59f77f0a6d1c.png')",
+      },
       fontFamily: {
-        body: ['"PT Sans"', 'sans-serif'],
-        headline: ['Poppins', 'sans-serif'],
+        body: ['var(--font-body)', 'sans-serif'],
+        headline: ['var(--font-headline)', 'sans-serif'],
         code: ['monospace'],
       },
       colors: {
