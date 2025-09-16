@@ -263,7 +263,7 @@ export function AthleteDashboardClient({ onPageGenerated, generatePageFunction }
             plano: userPlan,
             modalidade: values.sport,
             nome: values.fullName,
-            data_nascimento: format(values.dateOfBirth, "dd/MM/yyyy"),
+            dataNascimento: format(values.dateOfBirth, "dd/MM/yyyy"),
             graduacao: values.details,
             equipe: values.team,
             titulos: values.achievements,
@@ -685,6 +685,8 @@ export function AthleteDashboardClient({ onPageGenerated, generatePageFunction }
     </Card>
   );
 }
+
+    
 
     
 
