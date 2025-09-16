@@ -1,3 +1,4 @@
+
 import Link from "next/link";
 import { ForgotPasswordForm } from "@/components/auth/forgot-password-form";
 import { Icons } from "@/components/icons";
@@ -32,7 +33,7 @@ export default function ForgotPasswordPage() {
              <div className="mt-4 text-center text-sm">
               Lembrou sua senha?{" "}
               <Button variant="link" asChild className="p-0">
-                <Link href="/">Faça login</Link>
+                <Link href="/portal/athlete/login">Faça login</Link>
               </Button>
             </div>
           </CardContent>

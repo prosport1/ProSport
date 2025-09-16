@@ -41,7 +41,7 @@ export function CheckoutForm() {
   const [isProcessing, startTransition] = useTransition();
 
   if (!plan || !planDetails[plan]) {
-    const defaultPlanPath = plan === 'pro' ? '/company/plans' : '/plans';
+    const defaultPlanPath = plan === 'pro' ? '/portal/company/plans' : '/portal/plans';
     return (
         <Card>
             <CardHeader>
@@ -149,5 +149,3 @@ export function CheckoutForm() {
     </div>
   );
 }
-
-    

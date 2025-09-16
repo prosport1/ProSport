@@ -10,7 +10,7 @@ export default function PortalPage() {
 
   useEffect(() => {
     // Redirect to the athlete login page, which is the main entry for the portal
-    router.replace('/athlete/login');
+    router.replace('/portal/athlete/login');
   }, [router]);
 
   return (

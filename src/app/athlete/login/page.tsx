@@ -37,7 +37,7 @@ export default function AthleteLoginPage() {
               <div className="mt-4 text-center text-sm">
                 Não tem uma conta?{" "}
                 <Button variant="link" asChild className="p-0">
-                  <Link href="/portal/signup">Cadastre-se</Link>
+                  <Link href="/signup">Cadastre-se</Link>
                 </Button>
               </div>
               <div className="mt-6 text-center text-sm">
