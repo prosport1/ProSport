@@ -597,5 +597,3 @@ export const createStripeCheckoutSession = onCall(
         }
     }
 );
-
-    
