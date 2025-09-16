@@ -1,0 +1,16 @@
+# Ficheiro: apphosting.yaml
+
+env:
+  # Variável de ambiente pública
+  - variable: NEXT_PUBLIC_FIREBASE_API_KEY
+    value: 'AIzaSyAgMSUe5dirRmWb7j9YkA61qw1t7E3MYX4'
+
+  # Segredos do Secret Manager
+  - variable: OPENAI_API_KEY
+    secret: OPENAI_API_KEY
+  - variable: STRIPE_SECRET_KEY
+    secret: STRIPE_SECRET_KEY
+  - variable: STRIPE_WEBHOOK_SECRET
+    secret: STRIPE_WEBHOOK_SECRET
+
+#

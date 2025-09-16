@@ -1,0 +1,8 @@
+env:
+  # Variável de ambiente pública
+  - variable: NEXT_PUBLIC_FIREBASE_API_KEY
+    value: 'AIzaSyAgMSUe5dirRmWb7j9YkA61qw1t7E3MYX4'
+
+  - variable: STRIPE_SECRET_KEY
+    secret: STRIPE_SECRET_KEY
+  

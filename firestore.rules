@@ -1,0 +1,12 @@
+
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Nega explicitamente todas as leituras e escritas para qualquer coleção.
+    // Esta é uma regra de segurança importante quando o Firestore não é usado ativamente.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

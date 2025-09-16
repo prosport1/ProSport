@@ -1,0 +1,24 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    // Regra para a pasta de imagens dos atletas
+    match /athlete-images/{fileName} {
+      // Permite a criação (upload) se o usuário estiver logado,
+      // o arquivo for do tipo imagem e tiver menos de 5MB.
+      allow create: if request.auth != null
+                      && request.resource.size < 5 * 1024 * 1024
+                      && request.resource.contentType.matches('image/.*');
+
+      // Permite que qualquer pessoa leia as imagens (essencial para as páginas públicas)
+      allow read;
+    }
+
+    // Regra para a pasta de backgrounds (se aplicável, para o ensureBackground)
+    match /backgrounds/{fileName} {
+       // Qualquer pessoa pode ler os backgrounds
+       allow read;
+       // Apenas sua Cloud Function (servidor) deve escrever aqui.
+       // Não adicionamos permissão de escrita para clientes.
+    }
+  }
+}
