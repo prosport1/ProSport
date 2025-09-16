@@ -12,4 +12,4 @@ env:
   - variable: NEXT_PUBLIC_APP_URL
     value: "https://prosport-portfolio.web.app"
   - variable: NEXT_PUBLIC_FIREBASE_API_KEY
-    value: "AIzaSyAgMSUe5dirRmWb7j9YkA61qw1t7E3MYX4n"
+    value: NEXT_PUBLIC_FIREBASE_API_KEY
