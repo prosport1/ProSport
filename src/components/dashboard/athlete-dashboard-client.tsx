@@ -269,8 +269,8 @@ export function AthleteDashboardClient({ onPageGenerated, generatePageFunction }
             titulos: values.achievements,
             imagem: imageUrl,
             contato: values.contato,
-            instagramUrl: `https://instagram.com/${values.instagramUsername}`,
-            facebookUrl: `https://facebook.com/${values.facebookUsername}`,
+            instagramUrl: `https://instagram.com/${encodeURIComponent(values.instagramUsername)}`,
+            facebookUrl: `https://facebook.com/${encodeURIComponent(values.facebookUsername)}`,
         };
         
         if (values.isAmateur === "true" || values.isAmateur === "false") {
