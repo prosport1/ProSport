@@ -171,7 +171,7 @@ Diretrizes visuais sugeridas:
 // ---------- Garantia de Background ----------
 async function ensureBackground(modalidade: string): Promise<string | null> {
   if (getApps().length === 0) {
-      initializeApp();
+    initializeApp();
   }
   try {
     const bucket = getStorage().bucket();
