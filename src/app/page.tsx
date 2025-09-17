@@ -2,13 +2,27 @@
 "use client";
 
 import Link from "next/link";
+import { useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Icons } from "@/components/icons";
 
 export default function CoverPage() {
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    // Garante que o vídeo seja reproduzido após a montagem do componente no cliente.
+    if (videoRef.current) {
+      videoRef.current.play().catch(error => {
+        // A reprodução automática pode falhar se o usuário tiver configurações de navegador restritivas.
+        console.error("Erro ao tentar reproduzir o vídeo automaticamente:", error);
+      });
+    }
+  }, []);
+
   return (
     <div className="relative h-screen w-full">
       <video
+        ref={videoRef}
         autoPlay
         loop
         muted
