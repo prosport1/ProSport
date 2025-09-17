@@ -3,6 +3,8 @@ import { initializeApp, getApps, getApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { getStorage } from "firebase/storage";
 
+// The Firebase config object reads from public environment variables
+// prefixed with NEXT_PUBLIC_. These are available client-side.
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
   authDomain: "prosport-portfolio.firebaseapp.com",
@@ -12,7 +14,8 @@ const firebaseConfig = {
   appId: "1:785009102684:web:ff389cc050c0978090bb99",
 };
 
-// Inicialize o Firebase
+// Initialize Firebase
+// This check prevents re-initializing the app on every hot-reload.
 const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
 const auth = getAuth(app);
 const storage = getStorage(app);
