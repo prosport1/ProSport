@@ -11,10 +11,14 @@ export default function CoverPage() {
 
   useEffect(() => {
     // Garante que o vídeo seja reproduzido após a montagem do componente no cliente.
+    // Esta abordagem é mais robusta contra re-renderizações rápidas.
     if (videoRef.current) {
       videoRef.current.play().catch(error => {
-        // A reprodução automática pode falhar se o usuário tiver configurações de navegador restritivas.
-        console.error("Erro ao tentar reproduzir o vídeo automaticamente:", error);
+        // O AbortError é comum em React e pode ser ignorado com segurança.
+        // Ele acontece se o componente for re-renderizado enquanto o vídeo está carregando.
+        if (error.name !== 'AbortError') {
+          console.error("Erro ao tentar reproduzir o vídeo automaticamente:", error);
+        }
       });
     }
   }, []);
