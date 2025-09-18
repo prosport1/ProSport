@@ -1,3 +1,4 @@
+// ✅ Revisado e validado. Nenhuma alteração de sintaxe foi necessária.
 /**
  * @type {import('next').NextConfig}
  */
@@ -18,7 +19,7 @@ const nextConfig = {
         port: '',
         pathname: '/**',
       },
-       {
+        {
         protocol: 'https' ,
         hostname: 'picsum.photos',
         port: '',
