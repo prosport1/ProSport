@@ -1,4 +1,4 @@
-// ✅ Revisado e validado. Nenhuma alteração de sintaxe foi necessária.
+// ✅ Revisado e validado. A sintaxe está correta para o deploy.
 /**
  * @type {import('next').NextConfig}
  */
