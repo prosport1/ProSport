@@ -37,3 +37,5 @@ yarn-debug.log*
 yarn-error.log*
 firebase-debug.log*
 firebase-debug.*.log*
+.env.local
+ npm run dev

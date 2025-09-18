@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useState, useTransition, useEffect } from "react";
@@ -35,9 +34,10 @@ import Link from "next/link";
 import { Alert, AlertTitle } from "@/components/ui/alert";
 import { CopyButton } from "@/components/ui/copy-button";
 import { HttpsCallable } from "firebase/functions";
-import { getStorage, ref, uploadString, getDownloadURL } from "firebase/storage";
+// LINHAS 35-37: ✅ CORREÇÃO: Importações do Firebase SDK alteradas para o padrão centralizado.
+import { auth, storage } from "@/lib/firebase"; 
+import { ref, uploadString, getDownloadURL } from "firebase/storage";
 import { v4 as uuidv4 } from 'uuid';
-import { getAuth } from "firebase/auth";
 
 // Validações com Zod - Agora espelhando o backend
 const requiredString = z.string().min(1, "Este campo é obrigatório.");
@@ -79,12 +79,11 @@ interface AthleteDashboardClientProps {
   generatePageFunction: HttpsCallable<any, any>;
 }
 
-// Crie uma função helper de upload
+// LINHA 90: ✅ CORREÇÃO: Função helper de upload agora usa a instância 'storage' importada, sem chamar getStorage().
 async function uploadImageToStorage(dataUri: string): Promise<string> {
-  const storage = getStorage();
   const fileExtension = dataUri.split(';')[0].split('/')[1];
   const fileName = `athlete-images/${uuidv4()}.${fileExtension}`;
-  const storageRef = ref(storage, fileName);
+  const storageRef = ref(storage, fileName); // Usa o 'storage' importado
 
   const uploadResult = await uploadString(storageRef, dataUri, 'data_url');
   const downloadURL = await getDownloadURL(uploadResult.ref);
@@ -114,7 +113,7 @@ export function AthleteDashboardClient({ onPageGenerated, generatePageFunction }
   const form = useForm<ProfileFormValues>({
     resolver: zodResolver(profileFormSchema),
     mode: "onChange",
-     defaultValues: {
+      defaultValues: {
       fullName: "Atleta Teste",
       sport: "Jiu-Jitsu",
       isAmateur: "false",
@@ -227,7 +226,7 @@ export function AthleteDashboardClient({ onPageGenerated, generatePageFunction }
 
     startTransition(async () => {
       try {
-        const auth = getAuth();
+        // LINHA 242: ✅ CORREÇÃO: A chamada local a getAuth() foi removida. Usamos 'auth' importado diretamente.
         const currentUser = auth.currentUser;
 
         if (!currentUser) {
@@ -332,17 +331,17 @@ export function AthleteDashboardClient({ onPageGenerated, generatePageFunction }
             </Button>
              <div className="flex flex-wrap gap-2">
                  <Button variant="secondary" onClick={handleEdit}>
-                    <Edit className="mr-2 h-4 w-4" />
-                    Editar
-                </Button>
+                     <Edit className="mr-2 h-4 w-4" />
+                     Editar
+                 </Button>
                  <CopyButton variant="secondary" textToCopy={generatedPageUrl}>
-                    Copiar Link
-                </CopyButton>
-                <Button asChild>
-                    <Link href={generatedPageUrl} target="_blank">
-                        Abrir em Nova Aba <ExternalLink className="ml-2 h-4 w-4" />
-                    </Link>
-                </Button>
+                     Copiar Link
+                 </CopyButton>
+                 <Button asChild>
+                     <Link href={generatedPageUrl} target="_blank">
+                         Abrir em Nova Aba <ExternalLink className="ml-2 h-4 w-4" />
+                     </Link>
+                 </Button>
             </div>
         </div>
         <Card>
@@ -574,7 +573,7 @@ export function AthleteDashboardClient({ onPageGenerated, generatePageFunction }
                     <FormControl>
                       <div className="relative">
                         <Input id="extraPictures" type="file" accept="image/*" multiple onChange={handleExtraFilesChange} className="pl-10" />
-                        <label htmlFor="extraPictures" className="absolute left-3 top-1-2 -translate-y-1/2 cursor-pointer text-muted-foreground">
+                        <label htmlFor="extraPictures" className="absolute left-3 top-1/2 -translate-y-1/2 cursor-pointer text-muted-foreground">
                           <ImageIcon className="h-4 w-4" />
                         </label>
                       </div>
@@ -671,9 +670,9 @@ export function AthleteDashboardClient({ onPageGenerated, generatePageFunction }
             </CardHeader>
             <div className="flex flex-wrap gap-4 items-center">
                  <Button onClick={() => handleGenerate()} disabled={isPending || generationCount >= GENERATION_LIMIT}>
-                    {isPending ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Sparkles className="mr-2 h-4 w-4" />}
-                    Gerar SportPage
-                </Button>
+                     {isPending ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Sparkles className="mr-2 h-4 w-4" />}
+                     Gerar SportPage
+                 </Button>
                  {generationCount >= GENERATION_LIMIT && (
                     <Alert variant="destructive" className="w-full md:w-auto">
                         <AlertTitle>Você atingiu o limite de gerações com IA.</AlertTitle>

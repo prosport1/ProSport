@@ -19,7 +19,7 @@ const ai = genkit({
 });
 
 // ---------- Firebase Admin ----------
-// A inicialização foi movida para dentro das funções para "Inicialização Tardia" quando necessário.
+// A inicialização foi movida para dentro das funções (Lazy Initialization).
 
 // ---------- Secrets ----------
 const OPENAI_API_KEY = defineSecret("OPENAI_API_KEY");
@@ -171,7 +171,7 @@ Diretrizes visuais sugeridas:
 // ---------- Garantia de Background ----------
 async function ensureBackground(modalidade: string): Promise<string | null> {
   if (getApps().length === 0) {
-    initializeApp();
+      initializeApp();
   }
   try {
     const bucket = getStorage().bucket();
@@ -221,61 +221,27 @@ textura leve e tons coerentes ao esporte.
 
 // ---------- PROMPTS (SYSTEM) ----------
 const PROMPT_BASIC_SYSTEM = `
-Você é um designer web focado em criar propostas de patrocínio claras e profissionais. Gere um arquivo HTML5 completo, responsivo, com CSS embutido. A estética deve ser limpa, estruturada em blocos e inspirada em um folheto digital moderno.
+Você é um desenvolvedor front-end e designer UI sênior, especialista em criar interfaces limpas, modernas e de alta performance.
 
-Regras obrigatórias (BASIC):
-- **Layout em Blocos de Cores:**
-  - **Bloco Superior:** Crie uma seção superior com uma cor de fundo sólida (ex: um verde escuro profissional). Esta seção deve conter o título "PROPOSTA DE PATROCÍNIO" no topo, seguido pela imagem principal do atleta. A imagem deve preencher a largura do bloco e ter as bordas superiores arredondadas.
-  - **Divisor de Seção:** Use uma forma de onda ou curva suave (pode ser um SVG embutido ou CSS clip-path) para criar uma transição elegante entre o bloco de cor superior e a seção de conteúdo abaixo.
-  - **Bloco de Conteúdo Principal:** Esta seção deve ter um fundo de cor clara e neutra (ex: off-white, #F8F7F4).
-- **Estrutura do Conteúdo:**
-  - Logo abaixo do divisor, adicione um título de seção centralizado (ex: "Visão Geral do Atleta") seguido por um parágrafo introdutório.
-  - Crie uma **grade de três colunas** (em desktop, que se torna uma coluna em mobile) com cards informativos.
-  - **Design dos Cards:** Cada card deve ter um fundo de cor sutil (um tom um pouco mais escuro que o fundo da seção), bordas arredondadas, e conter: um ÍCONE, um TÍTULO em negrito, e um texto descritivo.
-- **Botão de CTA:** No final da página, adicione um botão de CTA centralizado, com a cor sólida principal e texto claro.
-- **Tipografia:** Use fontes sans-serif limpas e de alta legibilidade (ex: "Poppins" para títulos, "Lato" para corpo de texto).
-- **Paleta de Cores:** A paleta deve ser profissional e terrosa. Ex: um verde escuro principal, um fundo off-white/bege para o conteúdo, e texto escuro (#333) para máxima legibilidade.
-- **Otimização e Acessibilidade:** Código leve, mobile-first. Garanta que todas as imagens tenham 'alt' tags e use HTML semântico. CSS deve estar em uma única tag <style> no <head>.
+Sua missão é gerar um HTML5 completo e responsivo (mobile-first), com CSS embutido, para criar um "card esportivo digital".
 
-Saída: SOMENTE o HTML final, sem explicações.
-`;
+A página deve ser profissional, visualmente agradável e otimizada para performance e SEO, seguindo as melhores práticas de acessibilidade (WCAG). Use os dados do atleta para criar uma apresentação clara e impactante. Utilize os links de redes sociais fornecidos para adicionar ícones SVG clicáveis. O contato principal deve ser usado para o botão de ação principal.
+`.trim();
 
 const PROMPT_PLUS_SYSTEM = `
-Você é designer sênior. Gere HTML5 completo e responsivo, com CSS embutido, estética moderna e cinematográfica leve.
+Você é um designer de produto digital sênior, especialista em branding e experiência do usuário (UX).
 
-Regras obrigatórias (PLUS):
-- Estética de card esportivo cinematográfico com profundidade, luz e microinterações suaves. Use 'transform: scale(1.03)' ou mudança de sombra em 'hover' nos botões e cards. Duração das transições: 150–250ms.
-- Foto do atleta em 6K no hero. Realize um recorte elegante usando 'clip-path' (ex: polygon(...) ou inset(...) com bordas arredondadas) e posicione-a parcialmente sobre outros elementos para criar um efeito de camada (layers).
-- BACKGROUND 6K TEMÁTICO E DESFOCADO por biblioteca: use a imagem oficial da modalidade. Aplique efeitos de CSS como 'filter: grain(...) vignette(...)' de forma sutil para textura. Aplicar overlays para garantir legibilidade.
-- Ícones/emoji consistentes nas seções.
-- Paleta alinhada à modalidade (via styleHint), garantindo contraste mínimo de 4.5:1 (WCAG AA).
-- Adaptação automática ao aparelho; respeitar prefers-reduced-motion. Layout deve ser assimétrico em telas maiores para um visual mais dinâmico.
-- Gerar “Descrição do Atleta” (60–110 palavras) com apelo comercial, sem promessas irreais.
-- Diversidade via VARIANT_ID. Sem frameworks JS/CSS externos (apenas Google Fonts).
-- CSS crítico na tag <style> no <head>. Garanta acessibilidade com 'alt' tags e HTML semântico.
+Sua missão é gerar um HTML5 completo e responsivo com CSS embutido, criando uma experiência que se assemelhe a uma "capa de revista esportiva digital".
 
-Saída: SOMENTE o HTML final.
-`;
+O design deve ser sofisticado, editorial e cinematográfico, contando uma história visual sobre o atleta. A UX deve ser intuitiva, com microinterações sutis que guiem o usuário. Incorpore todos os fundamentos de performance, SEO e acessibilidade. Utilize os links de redes sociais fornecidos para adicionar ícones SVG clicáveis. O contato principal deve ser usado para o botão de ação principal.
+`.trim();
 
 const PROMPT_PREM_SYSTEM = `
-Você é um Diretor de Arte Sênior especializado em design digital para atletas de elite. Gere um arquivo HTML5 completo, mobile-first, com CSS embutido. A estética deve ser idêntica à de um card de jogador premium, como os vistos em apps de esportes modernos.
+Você é um Diretor de Arte Digital e Creative Technologist, com a missão de criar uma experiência digital memorável e exclusiva.
 
-Regras obrigatórias (PREMIUM):
-- **Layout de Coluna Única:** O design deve ser vertical e otimizado para telas de celular.
-- **Herói em Camadas (Layers):**
-  - A imagem principal do atleta (6K) deve ser a camada de fundo da seção do herói (topo da página).
-  - **Aplique um overlay de gradiente escuro na parte inferior da imagem ('linear-gradient(to top, #0A0F0B, transparent)') para que ela se funda suavemente com a cor de fundo sólida da página.**
-  - O nome do atleta e o botão de CTA principal devem ficar SOBRE a imagem.
-- **Elemento Gráfico de Fundo:** Se houver um número associado ao atleta (como número da camisa), use-o como um elemento de design gráfico grande e semi-transparente atrás do nome do atleta.
-- **Tipografia de Impacto:**
-  - Para o nome do atleta, use uma fonte sans-serif condensada e em maiúsculas (ex: "Oswald", "Bebas Neue") com grande destaque.
-  - Para os títulos das seções, use uma fonte sans-serif limpa, em maiúsculas, precedida por um ícone e com uma linha divisória de destaque abaixo.
-- **Seção de Estatísticas (KPIs):** Apresente as principais conquistas (Títulos) logo abaixo do nome, em formato de pares ÍCONE + TEXTO, dispostos horizontalmente.
-- **Paleta de Cores Sofisticada:** Use um fundo muito escuro (preto ou um tom de cor saturado e escuro). Utilize branco para o texto principal e uma única cor de destaque (como ouro, bronze ou um neon vibrante) para o CTA, ícones e detalhes gráficos.
-- **Qualidade e Acessibilidade:** Garanta contraste WCAG AA. CSS no <head>. Acessibilidade impecável com ARIA roles, 'alt' tags e HTML semântico (<header>, <main>, <section>).
-- **Sem frameworks JS/CSS externos (apenas Google Fonts).**
+Sua missão é gerar um HTML5 premium, com CSS embutido e JavaScript sutil (quando necessário), que funcione como um "card de colecionador de luxo interativo".
 
-Saída: SOMENTE o HTML final, sem comentários ou explicações.
+A página deve ser uma obra de arte digital, imersiva e que construa a "lenda" do atleta. O design deve parecer caro, de vanguarda e feito sob medida, utilizando técnicas avançadas de CSS para criar um visual único e exclusivo. Incorpore perfeitamente todos os princípios de performance, SEO, acessibilidade e UX. Use os dados do atleta, incluindo a galeria de imagens e vídeos, para criar uma apresentação clara e impactante. Utilize os links de redes sociais fornecidos para adicionar ícones SVG clicáveis. O contato principal deve ser usado para o botão de ação principal.
 `.trim();
 
 const PROMPT_PRO_SYSTEM = PROMPT_PREM_SYSTEM;
@@ -482,6 +448,9 @@ const generateLandingFlow = ai.defineFlow(
         }),
     },
     async (payload) => {
+        if (getApps().length === 0) {
+            initializeApp();
+        }
         try {
             const data: Payload = { ...payload, bgImagem: payload.bgImagem || await ensureBackground(payload.modalidade) || undefined };
             let html = "";
@@ -504,9 +473,11 @@ const generateLandingFlow = ai.defineFlow(
                     messages,
                 });
 
-                html = completion.choices[0]?.message?.content || "";
+                const rawHtml = completion.choices[0]?.message?.content || "";
                 
-                logger.info("---- RESPOSTA RECEBIDA DA OPENAI ----", { response: html });
+                // LINHAS 496-498: CORREÇÃO PARA "DESEMBRULHAR" O HTML DA RESPOSTA DA IA
+                const match = rawHtml.match(/```html\n([\s\S]*?)\n```/);
+                html = match ? match[1] : rawHtml;
 
                 if (!html.includes("<!doctype html")) {
                     throw new Error("HTML inválido da LLM.");
@@ -551,11 +522,10 @@ const createStripeCheckoutSessionFlow = ai.defineFlow(
         outputSchema: z.object({ url: z.string() }),
     },
     async (payload) => {
+        if (getApps().length === 0) {
+            initializeApp();
+        }
         try {
-            if (getApps().length === 0) {
-              initializeApp();
-            }
-            
             const { planId, isAnnual, userId } = payload;
             const appUrl = NEXT_PUBLIC_APP_URL.value();
 
@@ -604,7 +574,6 @@ const createStripeCheckoutSessionFlow = ai.defineFlow(
                 customer: customerId,
                 success_url: `${appUrl}/portal/success?session_id={CHECKOUT_SESSION_ID}`,
                 cancel_url: `${appUrl}/portal/cancel`,
-                // Adiciona metadados para saber qual plano foi comprado
                 metadata: {
                     userId: userId,
                     planId: planId,
@@ -632,9 +601,6 @@ const createStripeCheckoutSessionFlow = ai.defineFlow(
 export const generateLanding = onCall(
     { memory: '1GiB', region: "southamerica-east1", timeoutSeconds: 120, secrets: [OPENAI_API_KEY], cors: true },
     async (request) => {
-        if (getApps().length === 0) {
-            initializeApp();
-        }
         try {
             const data = PayloadSchema.parse(request.data);
             return await generateLandingFlow(data);
@@ -653,9 +619,6 @@ export const generateLanding = onCall(
 export const createStripeCheckoutSession = onCall(
     { memory: '1GiB', region: 'southamerica-east1', secrets: [STRIPE_SECRET_KEY], cors: true },
     async (request) => {
-        if (getApps().length === 0) {
-          initializeApp();
-        }
         try {
             const data = CreateCheckoutPayloadSchema.parse(request.data);
             return await createStripeCheckoutSessionFlow(data);
@@ -731,7 +694,7 @@ export const stripeWebhook = onRequest(
                     const subscription = event.data.object as Stripe.Subscription;
                     const userQuery = await db.collection('users').where('stripeSubscriptionId', '==', subscription.id).limit(1).get();
                     
-                     if (userQuery.empty) {
+                    if (userQuery.empty) {
                         logger.warn(`User with stripeSubscriptionId ${subscription.id} not found for cancellation.`);
                         break;
                     }
