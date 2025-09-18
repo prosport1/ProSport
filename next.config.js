@@ -1,10 +1,5 @@
-// ✅ Revisado e validado. A sintaxe está correta para o deploy.
-/**
- * @type {import('next').NextConfig}
- */
-
+echo '/** @type {import("next").NextConfig} */
 const nextConfig = {
-  /* config options here */
   typescript: {
     ignoreBuildErrors: true,
   },
@@ -14,25 +9,25 @@ const nextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: 'https' ,
-        hostname: 'placehold.co',
-        port: '',
-        pathname: '/**',
-      },
-        {
-        protocol: 'https' ,
-        hostname: 'picsum.photos',
-        port: '',
-        pathname: '/**',
+        protocol: "https",
+        hostname: "placehold.co",
+        port: "",
+        pathname: "/**",
       },
       {
-        protocol: 'https' ,
-        hostname: 'storage.googleapis.com',
-        port: '',
-        pathname: '/**',
+        protocol: "https",
+        hostname: "picsum.photos",
+        port: "",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "storage.googleapis.com",
+        port: "",
+        pathname: "/**",
       },
     ],
   },
 };
 
-export default nextConfig;
+export default nextConfig;' > next.config.js
