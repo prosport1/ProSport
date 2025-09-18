@@ -48,7 +48,7 @@
     "firebase": "^12.2.1",
     "genkit": "1.19.1",
     "lucide-react": "^0.475.0",
-    "next": "^14.2.4",
+    "next": "^15.0.0",
     "next-auth": "^4.24.7",
     "openai": "^4.52.7",
     "patch-package": "^8.0.0",
