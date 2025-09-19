@@ -170,6 +170,7 @@ Diretrizes visuais sugeridas:
 
 // ---------- Garantia de Background ----------
 async function ensureBackground(modalidade: string): Promise<string | null> {
+  // GARANTIA: Inicialização do Firebase Admin.
   if (getApps().length === 0) {
       initializeApp();
   }
@@ -448,6 +449,7 @@ const generateLandingFlow = ai.defineFlow(
         }),
     },
     async (payload) => {
+        // GARANTIA: Inicialização do Firebase Admin.
         if (getApps().length === 0) {
             initializeApp();
         }
@@ -475,7 +477,6 @@ const generateLandingFlow = ai.defineFlow(
 
                 const rawHtml = completion.choices[0]?.message?.content || "";
                 
-                // LINHAS 496-498: CORREÇÃO PARA "DESEMBRULHAR" O HTML DA RESPOSTA DA IA
                 const match = rawHtml.match(/```html\n([\s\S]*?)\n```/);
                 html = match ? match[1] : rawHtml;
 
@@ -522,6 +523,7 @@ const createStripeCheckoutSessionFlow = ai.defineFlow(
         outputSchema: z.object({ url: z.string() }),
     },
     async (payload) => {
+        // GARANTIA: Inicialização do Firebase Admin.
         if (getApps().length === 0) {
             initializeApp();
         }
@@ -601,6 +603,10 @@ const createStripeCheckoutSessionFlow = ai.defineFlow(
 export const generateLanding = onCall(
     { memory: '1GiB', region: "southamerica-east1", timeoutSeconds: 120, secrets: [OPENAI_API_KEY], cors: true },
     async (request) => {
+        // GARANTIA: Inicialização do Firebase Admin.
+        if (getApps().length === 0) {
+            initializeApp();
+        }
         try {
             const data = PayloadSchema.parse(request.data);
             return await generateLandingFlow(data);
@@ -619,6 +625,10 @@ export const generateLanding = onCall(
 export const createStripeCheckoutSession = onCall(
     { memory: '1GiB', region: 'southamerica-east1', secrets: [STRIPE_SECRET_KEY], cors: true },
     async (request) => {
+        // GARANTIA: Inicialização do Firebase Admin.
+        if (getApps().length === 0) {
+            initializeApp();
+        }
         try {
             const data = CreateCheckoutPayloadSchema.parse(request.data);
             return await createStripeCheckoutSessionFlow(data);
@@ -638,6 +648,7 @@ export const createStripeCheckoutSession = onCall(
 export const stripeWebhook = onRequest(
     { region: 'southamerica-east1', secrets: [STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET] },
     async (request, response) => {
+        // GARANTIA: Inicialização do Firebase Admin.
         if (getApps().length === 0) {
             initializeApp();
         }
