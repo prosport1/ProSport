@@ -18,9 +18,6 @@ const ai = genkit({
     ],
 });
 
-// ---------- Firebase Admin ----------
-// A inicialização foi movida para dentro das funções (Lazy Initialization).
-
 // ---------- Secrets ----------
 const OPENAI_API_KEY = defineSecret("OPENAI_API_KEY");
 const STRIPE_SECRET_KEY = defineSecret("STRIPE_SECRET_KEY");
@@ -449,7 +446,6 @@ const generateLandingFlow = ai.defineFlow(
         }),
     },
     async (payload) => {
-        // GARANTIA: Inicialização do Firebase Admin.
         if (getApps().length === 0) {
             initializeApp();
         }
@@ -523,7 +519,6 @@ const createStripeCheckoutSessionFlow = ai.defineFlow(
         outputSchema: z.object({ url: z.string() }),
     },
     async (payload) => {
-        // GARANTIA: Inicialização do Firebase Admin.
         if (getApps().length === 0) {
             initializeApp();
         }
@@ -603,7 +598,6 @@ const createStripeCheckoutSessionFlow = ai.defineFlow(
 export const generateLanding = onCall(
     { memory: '1GiB', region: "southamerica-east1", timeoutSeconds: 120, secrets: [OPENAI_API_KEY], cors: true },
     async (request) => {
-        // GARANTIA: Inicialização do Firebase Admin.
         if (getApps().length === 0) {
             initializeApp();
         }
@@ -625,7 +619,6 @@ export const generateLanding = onCall(
 export const createStripeCheckoutSession = onCall(
     { memory: '1GiB', region: 'southamerica-east1', secrets: [STRIPE_SECRET_KEY], cors: true },
     async (request) => {
-        // GARANTIA: Inicialização do Firebase Admin.
         if (getApps().length === 0) {
             initializeApp();
         }
@@ -648,7 +641,6 @@ export const createStripeCheckoutSession = onCall(
 export const stripeWebhook = onRequest(
     { region: 'southamerica-east1', secrets: [STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET] },
     async (request, response) => {
-        // GARANTIA: Inicialização do Firebase Admin.
         if (getApps().length === 0) {
             initializeApp();
         }
@@ -727,3 +719,5 @@ export const stripeWebhook = onRequest(
         }
     }
 );
+
+    
