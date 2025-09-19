@@ -34,7 +34,6 @@ import Link from "next/link";
 import { Alert, AlertTitle } from "@/components/ui/alert";
 import { CopyButton } from "@/components/ui/copy-button";
 import { HttpsCallable } from "firebase/functions";
-// LINHAS 35-37: ✅ CORREÇÃO: Importações do Firebase SDK alteradas para o padrão centralizado.
 import { auth, storage } from "@/lib/firebase"; 
 import { ref, uploadString, getDownloadURL } from "firebase/storage";
 import { v4 as uuidv4 } from 'uuid';
@@ -79,7 +78,6 @@ interface AthleteDashboardClientProps {
   generatePageFunction: HttpsCallable<any, any>;
 }
 
-// LINHA 90: ✅ CORREÇÃO: Função helper de upload agora usa a instância 'storage' importada, sem chamar getStorage().
 async function uploadImageToStorage(dataUri: string): Promise<string> {
   const fileExtension = dataUri.split(';')[0].split('/')[1];
   const fileName = `athlete-images/${uuidv4()}.${fileExtension}`;
@@ -226,7 +224,6 @@ export function AthleteDashboardClient({ onPageGenerated, generatePageFunction }
 
     startTransition(async () => {
       try {
-        // LINHA 242: ✅ CORREÇÃO: A chamada local a getAuth() foi removida. Usamos 'auth' importado diretamente.
         const currentUser = auth.currentUser;
 
         if (!currentUser) {
