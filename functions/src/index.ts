@@ -12,6 +12,11 @@ import { genkit, z } from 'genkit';
 import { googleAI } from '@genkit-ai/googleai';
 import { getFirestore } from "firebase-admin/firestore";
 
+// Garante a inicialização do Firebase Admin no escopo global
+if (getApps().length === 0) {
+    initializeApp();
+}
+
 const ai = genkit({
     plugins: [
         googleAI(),
@@ -167,9 +172,6 @@ Diretrizes visuais sugeridas:
 
 // ---------- Garantia de Background ----------
 async function ensureBackground(modalidade: string): Promise<string | null> {
-  if (getApps().length === 0) {
-      initializeApp();
-  }
   try {
     const bucket = getStorage().bucket();
     const slug = slugify(modalidade) || "bg";
@@ -445,9 +447,6 @@ const generateLandingFlow = ai.defineFlow(
         }),
     },
     async (payload) => {
-        if (getApps().length === 0) {
-            initializeApp();
-        }
         try {
             const data: Payload = { ...payload, bgImagem: payload.bgImagem || await ensureBackground(payload.modalidade) || undefined };
             let html = "";
@@ -518,9 +517,6 @@ const createStripeCheckoutSessionFlow = ai.defineFlow(
         outputSchema: z.object({ url: z.string() }),
     },
     async (payload) => {
-        if (getApps().length === 0) {
-            initializeApp();
-        }
         try {
             const { planId, isAnnual, userId } = payload;
             const appUrl = NEXT_PUBLIC_APP_URL.value();
@@ -597,9 +593,6 @@ const createStripeCheckoutSessionFlow = ai.defineFlow(
 export const generateLanding = onCall(
     { memory: '1GiB', region: "southamerica-east1", timeoutSeconds: 120, secrets: [OPENAI_API_KEY], cors: true },
     async (request) => {
-        if (getApps().length === 0) {
-            initializeApp();
-        }
         try {
             const data = PayloadSchema.parse(request.data);
             return await generateLandingFlow(data);
@@ -618,9 +611,6 @@ export const generateLanding = onCall(
 export const createStripeCheckoutSession = onCall(
     { memory: '1GiB', region: 'southamerica-east1', secrets: [STRIPE_SECRET_KEY], cors: true },
     async (request) => {
-        if (getApps().length === 0) {
-            initializeApp();
-        }
         try {
             const data = CreateCheckoutPayloadSchema.parse(request.data);
             return await createStripeCheckoutSessionFlow(data);
@@ -640,10 +630,6 @@ export const createStripeCheckoutSession = onCall(
 export const stripeWebhook = onRequest(
     { region: 'southamerica-east1', secrets: [STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET] },
     async (request, response) => {
-        if (getApps().length === 0) {
-            initializeApp();
-        }
-        
         const stripe = new Stripe(STRIPE_SECRET_KEY.value(), { apiVersion: '2024-06-20' });
         const webhookSecret = STRIPE_WEBHOOK_SECRET.value();
         
