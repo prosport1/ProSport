@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState, useTransition } from "react";
@@ -9,6 +8,8 @@ import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { getFunctions, httpsCallable, HttpsCallable } from 'firebase/functions';
 import { app } from '@/lib/firebase';
 import Link from "next/link";
+import { getAuth, onAuthStateChanged, User } from 'firebase/auth'; // Usar o SDK do cliente
+
 
 // --- Firebase Functions ---
 const functions = getFunctions(app, 'southamerica-east1');
@@ -26,16 +27,30 @@ export default function TestStripePage() {
   const [isPending, startTransition] = useTransition();
   const [result, setResult] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [user, setUser] = useState<User | null>(null);
+
+  useState(() => {
+    const auth = getAuth(app);
+    onAuthStateChanged(auth, (user) => {
+      setUser(user);
+    });
+  });
 
   const handleTest = () => {
     startTransition(async () => {
       setResult(null);
       setError(null);
       
+      if (!user) {
+        setError("Você precisa estar logado para realizar este teste.");
+        return;
+      }
+      
       try {
         const response = await createStripeCheckoutSession({
             planId: 'basic', // Usamos um plano fixo para o teste
             isAnnual: false,
+            userId: user.uid,
         });
 
         const data = response.data as { url?: string; error?: string; message?: string };
@@ -60,11 +75,12 @@ export default function TestStripePage() {
           <CardTitle>Teste de Integração com o Stripe</CardTitle>
           <CardDescription>
             Clique no botão abaixo para criar uma sessão de checkout de teste para o "Plano Básico".
+            {!user && <p className="text-destructive font-bold mt-2">Você precisa estar logado.</p>}
           </CardDescription>
         </CardHeader>
         <CardContent>
           <div className="flex flex-col items-center space-y-4">
-            <Button onClick={handleTest} disabled={isPending}>
+            <Button onClick={handleTest} disabled={isPending || !user}>
               {isPending ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -92,7 +108,7 @@ export default function TestStripePage() {
                     <p className="font-mono mt-2">{error}</p>
                     <p className="mt-4 text-xs text-muted-foreground">
                         <strong>Possíveis Causas:</strong><br/>
-                        1. As chaves de API do Stripe não foram configuradas no arquivo .env.<br/>
+                        1. As chaves de API do Stripe não foram configuradas como segredos.<br/>
                         2. O ID do plano ('basic') não corresponde a um preço criado no seu painel do Stripe.<br/>
                         3. A Cloud Function não foi implantada corretamente.<br/>
                         4. Verifique os logs da função 'createStripeCheckoutSession' no console do Firebase para mais detalhes.
