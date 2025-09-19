@@ -25,7 +25,8 @@
     "node-fetch": "^3.3.2",
     "openai": "^4.52.7",
     "stripe": "^16.5.0",
-    "zod": "^3.23.8"
+    "zod": "^3.23.8",
+    "wav": "^1.0.2"
   },
   "devDependencies": {
     "@types/cors": "^2.8.17",
@@ -40,5 +41,3 @@
   },
   "private": true
 }
-
-    
