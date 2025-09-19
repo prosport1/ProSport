@@ -167,7 +167,6 @@ Diretrizes visuais sugeridas:
 
 // ---------- Garantia de Background ----------
 async function ensureBackground(modalidade: string): Promise<string | null> {
-  // GARANTIA: Inicialização do Firebase Admin.
   if (getApps().length === 0) {
       initializeApp();
   }
@@ -719,5 +718,3 @@ export const stripeWebhook = onRequest(
         }
     }
 );
-
-    
