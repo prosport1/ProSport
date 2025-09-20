@@ -1,33 +1,11 @@
-/** @type {import("next").NextConfig} */
+/** @type {import('next').NextConfig} */
 const nextConfig = {
-  typescript: {
-    ignoreBuildErrors: true,
+  reactStrictMode: true,
+  experimental: {
+    typedRoutes: false,
   },
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
-  images: {
-    remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "placehold.co",
-        port: "",
-        pathname: "/**",
-      },
-      {
-        protocol: "https",
-        hostname: "picsum.photos",
-        port: "",
-        pathname: "/**",
-      },
-      {
-        protocol: "https",
-        hostname: "storage.googleapis.com",
-        port: "",
-        pathname: "/**",
-      },
-    ],
-  },
+  typescript: { ignoreBuildErrors: false }, // pode trocar pra true se quiser destravar rápido
+  eslint: { ignoreDuringBuilds: true },
 };
 
-export default nextConfig;
+module.exports = nextConfig;
