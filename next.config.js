@@ -4,7 +4,7 @@ const nextConfig = {
   experimental: {
     typedRoutes: false,
   },
-  typescript: { ignoreBuildErrors: false }, // pode trocar pra true se quiser destravar rápido
+  typescript: { ignoreBuildErrors: false }, // se travar por TS, mude para true temporariamente
   eslint: { ignoreDuringBuilds: true },
 };
 
